@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package projekt_zespolowy.restapi.model;
 
 import javax.persistence.Column;
@@ -15,16 +10,12 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
-/**
- *
- * @author guncda, Piotr, Kacper
- */
 @Entity
 @Table(name="uzytkownicy")
 @XmlRootElement(name = "uzytkownicy")
 @XmlType(propOrder={"id_uzytkownika", "nick", "email", "haslo", "admin"})
-public class Uzytkownicy {
-    
+public class Uzytkownicy
+{
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Column(name="id_uzytkownika")
@@ -47,14 +38,6 @@ public class Uzytkownicy {
         this.id_uzytkownika = id_uzytkownika;
     }
 
-    public int setId_uzytkownikaByJSON(String json, int idx) {
-        if ((idx = json.indexOf("\"id_uzytkownika\":", idx)) > -1) {
-            id_uzytkownika = Integer.parseInt(json.substring(idx += "\"id_uzytkownika\":".length(), json.indexOf(",", idx)));
-        }
-
-        return idx;
-    }
-
     @XmlElement
     public String getNick() {
         return nick;
@@ -62,14 +45,6 @@ public class Uzytkownicy {
 
     public void setNick(String nick) {
         this.nick = nick;
-    }
-    
-    public int setNickByJSON(String json, int idx) {
-        if ((idx = json.indexOf("\"nick\":\"", idx)) > -1) {
-            nick = json.substring(idx += "\"nick\":\"".length(), json.indexOf("\"", idx));
-        }
-
-        return idx;
     }
 
     @XmlElement
@@ -80,14 +55,6 @@ public class Uzytkownicy {
     public void setEmail(String email) {
         this.email = email;
     }
-    
-    public int setEmailByJSON(String json, int idx) {
-        if ((idx = json.indexOf("\"email\":\"", idx)) > -1) {
-            email = json.substring(idx += "\"email\":\"".length(), json.indexOf("\"", idx));
-        }
-
-        return idx;
-    }  
 
     @XmlElement
     public String getHaslo() {
@@ -96,14 +63,6 @@ public class Uzytkownicy {
 
     public void setHaslo(String haslo) {
         this.haslo = haslo;
-    }
-    
-    public int setHasloByJSON(String json, int idx) {
-        if ((idx = json.indexOf("\"haslo\":\"", idx)) > -1) {
-            haslo = json.substring(idx += "\"haslo\":\"".length(), json.indexOf("\"", idx));
-        }
-
-        return idx;
     }
 
     @XmlElement
@@ -114,5 +73,4 @@ public class Uzytkownicy {
     public void setAdmin(boolean admin) {
         this.admin = admin;
     }
-    
 }
