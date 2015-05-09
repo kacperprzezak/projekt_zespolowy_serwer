@@ -13,14 +13,14 @@
         <endorsed.dir>${project.build.directory}/endorsed</endorsed.dir>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
-
+    
     <repositories>
         <repository>
             <id>org.jboss.resteasy</id>
             <url>http://repository.jboss.org/maven2/</url>
         </repository>
     </repositories>
-
+    
     <dependencies>
         <dependency>
             <groupId>javax</groupId>
@@ -47,6 +47,11 @@
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
             <version>9.2-1002-jdbc4</version>
+        </dependency>
+        <dependency>
+            <groupId>org.glassfish.jersey.media</groupId>
+            <artifactId>jersey-media-multipart</artifactId>
+            <version>2.17</version>
         </dependency>
     </dependencies>
 

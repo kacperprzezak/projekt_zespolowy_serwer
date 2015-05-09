@@ -1,37 +1,45 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package projekt_zespolowy.restapi.dao;
 
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-import javax.ws.rs.core.Response;
 import projekt_zespolowy.restapi.model.Uzytkownicy;
 import projekt_zespolowy.restapi.util.DatabaseConnection;
 
-public class UzytkownicyDao
-{
+/**
+ *
+ * @author guncda, Piotr, Kacper
+ */
+public class UzytkownicyDao {
+    
     private static DatabaseConnection connection = new DatabaseConnection();
-
+    
     public List<Uzytkownicy> getAll() {
-        List<Uzytkownicy> list = new ArrayList<>();
-        Uzytkownicy uzytkownicy;
-        Statement statement;
-        ResultSet resultSet;
-
+        List<Uzytkownicy> list = new ArrayList<Uzytkownicy>();
+        Uzytkownicy uzytkownicy = null;
+        Statement statement = null;
+        ResultSet resultSet = null;
+        
         try {
             connection.establishConnection();
             statement = connection.getConnection().createStatement();
             resultSet = statement.executeQuery("SELECT * FROM uzytkownicy");
-
+            
             while (resultSet.next()) {
                 uzytkownicy = new Uzytkownicy();
-
+                
                 uzytkownicy.setId_uzytkownika(resultSet.getInt("id_uzytkownika"));
                 uzytkownicy.setAdmin(resultSet.getBoolean("admin"));
                 uzytkownicy.setHaslo(resultSet.getString("haslo"));
                 uzytkownicy.setEmail(resultSet.getString("email"));
                 uzytkownicy.setNick(resultSet.getString("nick"));
-
+                
                 list.add(uzytkownicy);
             }
         }
@@ -41,20 +49,20 @@ public class UzytkownicyDao
         connection.closeConnection();
         return list;
     }
-
+    
     public Uzytkownicy getById(int id) {
         Uzytkownicy uzytkownicy = null;
-        Statement statement;
-        ResultSet resultSet;
-
+        Statement statement = null;
+        ResultSet resultSet = null;
+        
         try {
             connection.establishConnection();
             statement = connection.getConnection().createStatement();
             resultSet = statement.executeQuery("SELECT * FROM uzytkownicy WHERE id_uzytkownika = " + id);
-
+            
             while (resultSet.next()) {
                 uzytkownicy = new Uzytkownicy();
-
+                
                 uzytkownicy.setId_uzytkownika(resultSet.getInt("id_uzytkownika"));
                 uzytkownicy.setAdmin(resultSet.getBoolean("admin"));
                 uzytkownicy.setHaslo(resultSet.getString("haslo"));
@@ -68,20 +76,20 @@ public class UzytkownicyDao
         connection.closeConnection();
         return uzytkownicy;
     }
-
+    
     public Uzytkownicy getByNick(String nick) {
         Uzytkownicy uzytkownicy = null;
-        Statement statement;
-        ResultSet resultSet;
-
+        Statement statement = null;
+        ResultSet resultSet = null;
+        
         try {
             connection.establishConnection();
             statement = connection.getConnection().createStatement();
             resultSet = statement.executeQuery("SELECT * FROM uzytkownicy WHERE nick = '" + nick + "'");
-
+            
             while (resultSet.next()) {
                 uzytkownicy = new Uzytkownicy();
-
+                
                 uzytkownicy.setId_uzytkownika(resultSet.getInt("id_uzytkownika"));
                 uzytkownicy.setAdmin(resultSet.getBoolean("admin"));
                 uzytkownicy.setHaslo(resultSet.getString("haslo"));
@@ -95,20 +103,20 @@ public class UzytkownicyDao
         connection.closeConnection();
         return uzytkownicy;
     }
-
+    
     public Uzytkownicy getByEmail(String email) {
         Uzytkownicy uzytkownicy = null;
-        Statement statement;
-        ResultSet resultSet;
-
+        Statement statement = null;
+        ResultSet resultSet = null;
+        
         try {
             connection.establishConnection();
             statement = connection.getConnection().createStatement();
             resultSet = statement.executeQuery("SELECT * FROM uzytkownicy WHERE email = '" + email + "'");
-
+            
             while (resultSet.next()) {
                 uzytkownicy = new Uzytkownicy();
-
+                
                 uzytkownicy.setId_uzytkownika(resultSet.getInt("id_uzytkownika"));
                 uzytkownicy.setAdmin(resultSet.getBoolean("admin"));
                 uzytkownicy.setHaslo(resultSet.getString("haslo"));
@@ -122,27 +130,27 @@ public class UzytkownicyDao
         connection.closeConnection();
         return uzytkownicy;
     }
-
+    
     public List<Uzytkownicy> getWithAdminRights() {
-        List<Uzytkownicy> list = new ArrayList<>();
-        Uzytkownicy uzytkownicy;
-        Statement statement;
-        ResultSet resultSet;
-
+        List<Uzytkownicy> list = new ArrayList<Uzytkownicy>();
+        Uzytkownicy uzytkownicy = null;
+        Statement statement = null;
+        ResultSet resultSet = null;
+        
         try {
             connection.establishConnection();
             statement = connection.getConnection().createStatement();
             resultSet = statement.executeQuery("SELECT * FROM uzytkownicy WHERE admin = " + true);
-
+            
             while (resultSet.next()) {
                 uzytkownicy = new Uzytkownicy();
-
+                
                 uzytkownicy.setId_uzytkownika(resultSet.getInt("id_uzytkownika"));
                 uzytkownicy.setAdmin(resultSet.getBoolean("admin"));
                 uzytkownicy.setHaslo(resultSet.getString("haslo"));
                 uzytkownicy.setEmail(resultSet.getString("email"));
                 uzytkownicy.setNick(resultSet.getString("nick"));
-
+                
                 list.add(uzytkownicy);
             }
         }
@@ -152,53 +160,59 @@ public class UzytkownicyDao
         connection.closeConnection();
         return list;
     }
-
-    public Response postUzytkownicy(Uzytkownicy uzytkownicy) {
-        Statement statement;
+    
+    public int postUzytkownicy(Uzytkownicy uzytkownicy) throws Exception {
+        Statement statement = null;
+        ResultSet resultSet = null;
 
         try {
             connection.establishConnection();
             statement = connection.getConnection().createStatement();
-            statement.executeQuery("SELECT adduzytkownik('" + uzytkownicy.getNick()
-                    + "', '" + uzytkownicy.getEmail() + "', '" + uzytkownicy.getHaslo() + "')");
+            resultSet = statement.executeQuery(
+                    "INSERT INTO uzytkownicy (nick, email, haslo, admin)"
+                    + "VALUES('" + uzytkownicy.getNick() + "', '" + uzytkownicy.getEmail() + "', '"
+                    + uzytkownicy.getHaslo() + "', '" + uzytkownicy.isAdmin() + "')");
+           
+            while (resultSet.next()) {
+                
+            }
         } catch (Exception ex) {
-            // Wypisanie bledu na serwer
-            System.err.println(ex);
-
-            // Zwrocenie informacji o bledzie uzytkownikowi
-            if (ex.toString().contains("(email)=") && ex.toString().contains("już istnieje")) {
-                return Response.ok("Podany email jest juz zajety").build();
+            if (!ex.toString().contains("Zapytanie nie zwróciło żadnych wyników.")) {
+                System.out.println("Zapytanie nie zostalo wykonane: " + ex.toString());
+                connection.closeConnection();
+                return 500;
             }
-            else if (ex.toString().contains("(nick)=") && ex.toString().contains("już istnieje")) {
-                return Response.ok("Podany nick jest juz zajety").build();
-            }
-
-            connection.closeConnection();
-            return Response.ok("Wystapil nieznany blad").build();
         }
-
         connection.closeConnection();
-        return Response.ok("OK").build();
+        System.out.println("Zapytanie wykonane pomyslenie");
+        
+        return 200;
     }
-
-    public Response updateEmail(Uzytkownicy uzytkownicy) {
-        Statement statement;
+    
+    public int updateEmail(Uzytkownicy uzytkownicy) throws Exception {
+        Statement statement = null;
+        ResultSet resultSet = null;
 
         try {
             connection.establishConnection();
             statement = connection.getConnection().createStatement();
-            statement.executeQuery("SELECT updateEmail(" + uzytkownicy.getId_uzytkownika() + ", '"
+            resultSet = statement.executeQuery("SELECT updateEmail(" + uzytkownicy.getId_uzytkownika() + ", '"
                     + uzytkownicy.getEmail() + "', '" + uzytkownicy.getHaslo() + "')");
-
+                    
+            while (resultSet.next()) {
+                
+            }
         } catch (Exception ex) {
-            // Wypisanie bledu na serwer
-            System.err.println(ex);
-
-            connection.closeConnection();
-            return Response.ok("Wystapil nieznany blad").build();
+            if (!ex.toString().contains("Zapytanie nie zwróciło żadnych wyników.")) {
+                System.out.println("Zapytanie nie zostalo wykonane: " + ex.toString());
+                connection.closeConnection();
+                return 500;
+            }
         }
-
         connection.closeConnection();
-        return Response.ok("OK").build();
+        System.out.println("Zapytanie wykonane pomyslenie");
+        
+        return 200;
     }
+    
 }
