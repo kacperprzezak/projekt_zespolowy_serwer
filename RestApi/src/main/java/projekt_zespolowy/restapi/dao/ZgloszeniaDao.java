@@ -27,12 +27,12 @@ public class ZgloszeniaDao
             while (resultSet.next()) {
                 zgloszenia = new Zgloszenia();
                 zgloszenia.setId_zgloszenia(resultSet.getInt("id_zgloszenia"));
-                zgloszenia.setId_uzytkownika(resultSet.getInt("id_uzytkownika"));
                 zgloszenia.setId_typu(resultSet.getInt("id_typu"));
                 zgloszenia.setId_statusu(resultSet.getInt("id_statusu"));
                 zgloszenia.setKalendarz(resultSet.getString("data"));
-                zgloszenia.setId_disqus(resultSet.getInt("disqus_identifier"));
                 zgloszenia.setWspolrzedne((PGpoint)resultSet.getObject("wspolrzedne"));
+                zgloszenia.setOpis(resultSet.getString("opis"));
+                zgloszenia.setEmail_uzytkownika(resultSet.getString("email_uzytkownika"));
 
                 list.add(zgloszenia);
             }
@@ -58,12 +58,12 @@ public class ZgloszeniaDao
                 zgloszenia = new Zgloszenia();
 
                 zgloszenia.setId_zgloszenia(resultSet.getInt("id_zgloszenia"));
-                zgloszenia.setId_uzytkownika(resultSet.getInt("id_uzytkownika"));
                 zgloszenia.setId_typu(resultSet.getInt("id_typu"));
                 zgloszenia.setId_statusu(resultSet.getInt("id_statusu"));
                 zgloszenia.setKalendarz(resultSet.getString("data"));
-                zgloszenia.setId_disqus(resultSet.getInt("disqus_identifier"));
                 zgloszenia.setWspolrzedne((PGpoint)resultSet.getObject("wspolrzedne"));
+                zgloszenia.setOpis(resultSet.getString("opis"));
+                zgloszenia.setEmail_uzytkownika(resultSet.getString("email_uzytkownika"));
             }
         }
         catch(Exception ex) {
@@ -88,12 +88,12 @@ public class ZgloszeniaDao
                 zgloszenia = new Zgloszenia();
 
                 zgloszenia.setId_zgloszenia(resultSet.getInt("id_zgloszenia"));
-                zgloszenia.setId_uzytkownika(resultSet.getInt("id_uzytkownika"));
                 zgloszenia.setId_typu(resultSet.getInt("id_typu"));
                 zgloszenia.setId_statusu(resultSet.getInt("id_statusu"));
                 zgloszenia.setKalendarz(resultSet.getString("data"));
-                zgloszenia.setId_disqus(resultSet.getInt("disqus_identifier"));
                 zgloszenia.setWspolrzedne((PGpoint)resultSet.getObject("wspolrzedne"));
+                zgloszenia.setOpis(resultSet.getString("opis"));
+                zgloszenia.setEmail_uzytkownika(resultSet.getString("email_uzytkownika"));
 
                 list.add(zgloszenia);
             }
@@ -111,16 +111,16 @@ public class ZgloszeniaDao
         try {
             connection.establishConnection();
             statement = connection.getConnection().createStatement();
-            statement.executeQuery("SELECT addZgloszenie(" + zgloszenia.getId_uzytkownika()
-                    + ", " + zgloszenia.getId_typu() + ", " + zgloszenia.getId_disqus()
-                    + ", POINT(" + zgloszenia.getWspolrzedne().x + ", " + zgloszenia.getWspolrzedne().y + "))");
+            statement.executeQuery("SELECT addZgloszenie(" + zgloszenia.getId_typu()
+                    + ", POINT(" + zgloszenia.getWspolrzedne().x + ", " + zgloszenia.getWspolrzedne().y
+                    + "), '" + zgloszenia.getOpis() + "', '" + zgloszenia.getEmail_uzytkownika() + "'" + ")");
         } catch (Exception ex) {
             // Wypisanie bledu na serwer
             System.err.println(ex);
 
             // Zwrocenie informacji o bledzie użytkownikowi
-            if (ex.toString().contains("(id_uzytkownika)=") && ex.toString().contains("nie występuje")) {
-                return Response.ok("Podane id_uzytkownika nie wystepuje w bazie danych").build();
+            if (ex.toString().contains("(email_uzytkownika)=") && ex.toString().contains("nie występuje")) {
+                return Response.ok("Podany email_uzytkownika nie wystepuje w bazie danych").build();
             }
             else if (ex.toString().contains("(id_typu)=") && ex.toString().contains("nie występuje")) {
                 return Response.ok("Podane id_typu nie wystepuje w bazie danych").build();

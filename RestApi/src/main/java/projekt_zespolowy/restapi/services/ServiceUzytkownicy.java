@@ -28,20 +28,6 @@ public class ServiceUzytkownicy
     }
 
     @GET
-    @Path("/getById/{id}")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Uzytkownicy getById(@PathParam("id") int id) {
-        return uzytkownicyDao.getById(id);
-    }
-
-    @GET
-    @Path("/getByNick/{nick}")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Uzytkownicy getByNick(@PathParam("nick") String nick) {
-        return uzytkownicyDao.getByNick(nick);
-    }
-
-    @GET
     @Path("/getByEmail/{email}")
     @Produces(MediaType.APPLICATION_JSON)
     public Uzytkownicy getByEmail(@PathParam("email") String email) {
@@ -61,9 +47,11 @@ public class ServiceUzytkownicy
     public Response add(String incomingData) {
         Uzytkownicy uzytkownicy = new Uzytkownicy();
 
-        String nick;
         String email;
         String haslo;
+        long facebook;
+        long google;
+        String typ;
 
         try {
             JSONObject json = new JSONObject(incomingData);
@@ -72,48 +60,21 @@ public class ServiceUzytkownicy
             json = json.getJSONObject("uzytkownicy");
 
             // Sprawdzenie czy JSON zgloszenia zawiera wszystkie potrzebne pola
-            nick = json.getString("nick");
             email = json.getString("email");
             haslo = json.getString("haslo");
+            facebook = json.getLong("facebook");
+            google = json.getLong("google");
+            typ = json.getString("typ");
         } catch (JSONException ex) {
             return Response.ok("Niepoprawny format JSONa").build();
         }
 
-        uzytkownicy.setNick(nick);
         uzytkownicy.setEmail(email);
         uzytkownicy.setHaslo(haslo);
+        uzytkownicy.setFacebook(facebook);
+        uzytkownicy.setGoogle(google);
+        uzytkownicy.setTyp(typ);
 
         return uzytkownicyDao.postUzytkownicy(uzytkownicy);
-    }
-
-    @PUT
-    @Path("/putEmail")
-    @Consumes(MediaType.APPLICATION_JSON)
-    public Response updateEmail(String incomingData) {
-        Uzytkownicy uzytkownicy = new Uzytkownicy();
-
-        int id_uzytkownika;
-        String email;
-        String haslo;
-
-        try {
-            JSONObject json = new JSONObject(incomingData);
-
-            // Wyciagniecie danych o zgloszeniu
-            json = json.getJSONObject("uzytkownicy");
-
-            // Sprawdzenie czy JSON zgloszenia zawiera wszystkie potrzebne pola
-            id_uzytkownika = json.getInt("id_uzytkownika");
-            email = json.getString("email");
-            haslo = json.getString("haslo");
-        } catch (JSONException ex) {
-            return Response.ok("Niepoprawny format JSONa").build();
-        }
-
-        uzytkownicy.setId_uzytkownika(id_uzytkownika);
-        uzytkownicy.setEmail(email);
-        uzytkownicy.setHaslo(haslo);
-
-        return uzytkownicyDao.updateEmail(uzytkownicy);
     }
 }

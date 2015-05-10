@@ -12,14 +12,16 @@ import org.postgresql.geometric.PGpoint;
 
 public class ClientTest
 {
-    private String dodajUzytkownika(String nick, String email, String haslo) {
+    private String dodajUzytkownika(String email, String haslo, long facebook, long google, String typ) {
         JSONObject json = null;
         try {
             json = new JSONObject()
                 .put("uzytkownicy", new JSONObject()
-                    .put("nick", nick)
                     .put("email", email)
                     .put("haslo", haslo)
+                    .put("facebook", facebook)
+                    .put("google", google)
+                    .put("typ", typ)
             );
         } catch (JSONException ex) {
             return "Klient: Blad przy tworzeniu JSONa";
@@ -32,41 +34,21 @@ public class ClientTest
         return help;
     }
 
-    private String dodajZgloszenie(int id_uzytkownika, int id_typu, int id_disqus, PGpoint punkt) {
+    private String dodajZgloszenie(int id_typu, PGpoint punkt, String opis, String email_uzytkownika) {
         JSONObject json = null;
         try {
             json = new JSONObject()
                 .put("zgloszenia", new JSONObject()
-                    .put("id_uzytkownika", id_uzytkownika)
                     .put("id_typu", id_typu)
-                    .put("id_disqus", id_disqus)
                     .put("wspolrzedne", punkt)
+                    .put("opis", opis)
+                    .put("email_uzytkownika", email_uzytkownika)
             );
         } catch (JSONException ex) {
             return "Klient: Blad przy tworzeniu JSONa";
         }
 
         String url_address = "http://localhost:8080/RestApi/service/zgloszenia/post";
-
-        String help;
-        help = dataTransfer(json, url_address);
-        return help;
-    }
-
-    private String updateEmail (int id_uzytkownika, String email, String haslo) {
-        JSONObject json = null;
-        try {
-            json = new JSONObject()
-                .put("uzytkownicy", new JSONObject()
-                    .put("id_uzytkownika", id_uzytkownika)
-                    .put("email", email)
-                    .put("haslo", haslo)
-            );
-        } catch (JSONException ex) {
-            return "Klient: Blad przy tworzeniu JSONa";
-        }
-
-        String url_address = "http://localhost:8080/RestApi/service/uzytkownicy/putEmail";
 
         String help;
         help = dataTransfer(json, url_address);
@@ -115,11 +97,8 @@ public class ClientTest
         String help;
 
         // TESTY - dokladniejsze informacje o bledach sa wypisywane w oknie serwera
-        help = test.dodajUzytkownika("bob", "przyklad@email.com", "1234");
-        //help = test.dodajZgloszenie(9, 1, 100, new PGpoint(51.094703, 17.021475));
-
-        // TODO naprawic aktualizacje emaila
-        //help = test.updateEmail(1, "email", "haslo");
+        help = test.dodajUzytkownika("przyklad@email.com", "1234", 1, 2, "restapi");
+        //help = test.dodajZgloszenie(1, new PGpoint(51.094703, 17.021475), "opis", "email");
 
         System.out.println(help);
     }
