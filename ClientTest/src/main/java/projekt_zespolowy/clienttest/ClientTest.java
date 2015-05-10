@@ -97,8 +97,8 @@ public class ClientTest
         String help;
 
         // TESTY - dokladniejsze informacje o bledach sa wypisywane w oknie serwera
-        help = test.dodajUzytkownika("przyklad@email.com", "1234", 1, 2, "restapi");
-        //help = test.dodajZgloszenie(1, new PGpoint(51.094703, 17.021475), "opis", "email");
+        //help = test.dodajUzytkownika("przyklad@email.com", "1234", 0, 0, "restapi");
+        help = test.dodajZgloszenie(1, new PGpoint(51.094703, 17.021475), "opis", "email");
 
         System.out.println(help);
     }
