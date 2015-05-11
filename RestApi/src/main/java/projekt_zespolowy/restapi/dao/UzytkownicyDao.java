@@ -142,4 +142,173 @@ public class UzytkownicyDao
         connection.closeConnection();
         return Response.ok("OK").build();
     }
+    
+    public Response register(Uzytkownicy uzytkownicy) {
+        Statement statement;
+
+        try {
+            connection.establishConnection();
+            statement = connection.getConnection().createStatement();
+            statement.executeQuery("SELECT register('" + uzytkownicy.getEmail()
+                    + "', '" + uzytkownicy.getHaslo() + "')");
+        } catch (Exception ex) {
+            // Wypisanie bledu na serwer
+            System.err.println(ex);
+
+            // Zwrocenie informacji o bledzie uzytkownikowi
+            if (ex.toString().contains("(email)=") && ex.toString().contains("już istnieje")) {
+                return Response.status(500).entity("Podany email jest juz zajety").build();
+            }
+            connection.closeConnection();
+            return Response.status(500).entity("Wystapil nieznany blad").build();
+        }
+
+        connection.closeConnection();
+        return Response.ok("OK").build();
+    }
+    
+    public Response registerWithFacebook(Uzytkownicy uzytkownicy) {
+        Statement statement;
+
+        try {
+            connection.establishConnection();
+            statement = connection.getConnection().createStatement();
+            statement.executeQuery("SELECT register('" + uzytkownicy.getEmail()
+                    + "', " + uzytkownicy.getFacebook() + ")");
+        } catch (Exception ex) {
+            // Wypisanie bledu na serwer
+            System.err.println(ex);
+
+            // Zwrocenie informacji o bledzie uzytkownikowi
+            if (ex.toString().contains("(email)=") && ex.toString().contains("już istnieje")) {
+                return Response.status(500).entity("Podany email jest juz zajety").build();
+            }
+            else if (ex.toString().contains("(facebook)=") && ex.toString().contains("już istnieje")) {
+                return Response.status(500).entity("Podane id facebooka jest juz zajete").build();
+            }
+            connection.closeConnection();
+            return Response.status(500).entity("Wystapil nieznany blad").build();
+        }
+
+        connection.closeConnection();
+        return Response.ok("OK").build();
+    }
+    
+    public Response registerWithGoogle(Uzytkownicy uzytkownicy) {
+        Statement statement;
+
+        try {
+            connection.establishConnection();
+            statement = connection.getConnection().createStatement();
+            statement.executeQuery("SELECT register('" + uzytkownicy.getEmail()
+                    + "', " + uzytkownicy.getGoogle() + ")");
+        } catch (Exception ex) {
+            // Wypisanie bledu na serwer
+            System.err.println(ex);
+
+            // Zwrocenie informacji o bledzie uzytkownikowi
+            if (ex.toString().contains("(email)=") && ex.toString().contains("już istnieje")) {
+                return Response.status(500).entity("Podany email jest juz zajety").build();
+            }
+            else if (ex.toString().contains("(google)=") && ex.toString().contains("już istnieje")) {
+                return Response.ok("Podane if google jest juz zajete").build();
+            }
+            connection.closeConnection();
+            return Response.status(500).entity("Wystapil nieznany blad").build();
+        }
+
+        connection.closeConnection();
+        return Response.ok("OK").build();
+    }
+    
+    public Response login(Uzytkownicy uzytkownicy) {
+        Statement statement;
+        ResultSet resultSet;
+
+        try {
+            connection.establishConnection();
+            statement = connection.getConnection().createStatement();
+            resultSet = statement.executeQuery("SELECT login('" + uzytkownicy.getEmail()
+                    + "', " + uzytkownicy.getHaslo() + ")");
+            
+            while (resultSet.next()) {
+                uzytkownicy.setToken(resultSet.getString(1));
+            }
+        } catch (Exception ex) {
+            // Wypisanie bledu na serwer
+            System.err.println(ex);
+
+            // Zwrocenie informacji o bledzie uzytkownikowi
+            connection.closeConnection();
+            return Response.status(500).entity("Wystapil nieznany blad").build();
+        }
+
+        connection.closeConnection();
+        if (uzytkownicy.getToken() == null) {
+            return Response.status(404).entity("Nie ma takieg uzytkownika").build();
+        } else {
+            return Response.ok("{\"token\":\"" + uzytkownicy.getToken() + "\"}").build();
+        }
+    }
+    
+    public Response loginWithFacebook(Uzytkownicy uzytkownicy) {
+        Statement statement;
+        ResultSet resultSet;
+
+        try {
+            connection.establishConnection();
+            statement = connection.getConnection().createStatement();
+            resultSet = statement.executeQuery("SELECT loginWithFacebook('" + uzytkownicy.getEmail()
+                    + "', " + uzytkownicy.getFacebook() + ")");
+            
+            while (resultSet.next()) {
+                uzytkownicy.setToken(resultSet.getString(1));
+            }
+        } catch (Exception ex) {
+            // Wypisanie bledu na serwer
+            System.err.println(ex);
+
+            // Zwrocenie informacji o bledzie uzytkownikowi
+            connection.closeConnection();
+            return Response.status(500).entity("Wystapil nieznany blad").build();
+        }
+
+        connection.closeConnection();
+        if (uzytkownicy.getToken() == null) {
+            return Response.status(404).entity("Nie ma takieg uzytkownika").build();
+        } else {
+            return Response.ok("{\"token\":\"" + uzytkownicy.getToken() + "\"}").build();
+        }
+    }
+    
+    public Response loginWithGoogle(Uzytkownicy uzytkownicy) {
+        Statement statement;
+        ResultSet resultSet;
+
+        try {
+            connection.establishConnection();
+            statement = connection.getConnection().createStatement();
+            resultSet = statement.executeQuery("SELECT loginWithFacebook('" + uzytkownicy.getEmail()
+                    + "', " + uzytkownicy.getGoogle() + ")");
+            
+            while (resultSet.next()) {
+                uzytkownicy.setToken(resultSet.getString(1));
+            }
+        } catch (Exception ex) {
+            // Wypisanie bledu na serwer
+            System.err.println(ex);
+
+            // Zwrocenie informacji o bledzie uzytkownikowi
+            connection.closeConnection();
+            return Response.status(500).entity("Wystapil nieznany blad").build();
+        }
+
+        connection.closeConnection();
+        if (uzytkownicy.getToken() == null) {
+            return Response.status(404).entity("Nie ma takieg uzytkownika").build();
+        } else {
+            return Response.ok("{\"token\":\"" + uzytkownicy.getToken() + "\"}").build();
+        }
+    }
+    
 }
