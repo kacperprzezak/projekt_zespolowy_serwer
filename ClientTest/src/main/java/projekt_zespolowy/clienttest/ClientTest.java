@@ -32,7 +32,8 @@ public class ClientTest
             return "Klient: Blad przy tworzeniu JSONa";
         }
 
-        String url_address = "http://virt2.iiar.pwr.edu.pl:8080/RestApi/service/uzytkownicy/register";
+        //String url_address = "http://virt2.iiar.pwr.edu.pl:8080/RestApi/service/uzytkownicy/register";
+        String url_address = "http://localhost:8084/RestApi/service/uzytkownicy/register";
 
         String help;
         help = dataTransfer(json, url_address);
@@ -53,7 +54,7 @@ public class ClientTest
             return "Klient: Blad przy tworzeniu JSONa";
         }
 
-        String url_address = "http://virt2.iiar.pwr.edu.pl:8080/RestApi/service/uzytkownicy/login";
+        String url_address = "http://localhost:8084/RestApi/service/uzytkownicy/login";
 
         String help;
         help = dataTransfer(json, url_address);
@@ -153,7 +154,7 @@ public class ClientTest
         String help;
 
         // TESTY - dokladniejsze informacje o bledach sa wypisywane w oknie serwera
-        help = test.dodajUzytkownika("przyklad@email.com", "1234", 0, 0, "restapi");
+        //help = test.dodajUzytkownika("przyklad@email.com", "1234", 0, 0, "restapi");
         help = test.login("przyklad@email.com", "1234", 0, 0);
         //help = test.dodajZgloszenie(1, new PGpoint(51.094703, 17.021475), "opis", "email");
 
