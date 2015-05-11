@@ -82,7 +82,7 @@ public class ServiceUzytkownicy
     @Consumes(MediaType.APPLICATION_JSON)
     public Response register (String incomingData) {
         Uzytkownicy uzytkownicy = new Uzytkownicy();
-        
+
         String email;
         String haslo;
         
@@ -179,7 +179,7 @@ public class ServiceUzytkownicy
     @Produces(MediaType.APPLICATION_JSON)
     public Response login (String incomingData) {
         Uzytkownicy uzytkownicy = new Uzytkownicy();
-        
+
         String email;
         String haslo;
         

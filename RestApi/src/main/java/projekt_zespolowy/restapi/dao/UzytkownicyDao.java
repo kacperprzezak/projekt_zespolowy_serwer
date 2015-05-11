@@ -229,7 +229,7 @@ public class UzytkownicyDao
             connection.establishConnection();
             statement = connection.getConnection().createStatement();
             resultSet = statement.executeQuery("SELECT login('" + uzytkownicy.getEmail()
-                    + "', " + uzytkownicy.getHaslo() + ")");
+                    + "', '" + uzytkownicy.getHaslo() + "')");
             
             while (resultSet.next()) {
                 uzytkownicy.setToken(resultSet.getString(1));
@@ -259,7 +259,7 @@ public class UzytkownicyDao
             connection.establishConnection();
             statement = connection.getConnection().createStatement();
             resultSet = statement.executeQuery("SELECT loginWithFacebook('" + uzytkownicy.getEmail()
-                    + "', " + uzytkownicy.getFacebook() + ")");
+                    + "', '" + uzytkownicy.getFacebook() + "')");
             
             while (resultSet.next()) {
                 uzytkownicy.setToken(resultSet.getString(1));
@@ -289,7 +289,7 @@ public class UzytkownicyDao
             connection.establishConnection();
             statement = connection.getConnection().createStatement();
             resultSet = statement.executeQuery("SELECT loginWithFacebook('" + uzytkownicy.getEmail()
-                    + "', " + uzytkownicy.getGoogle() + ")");
+                    + "', '" + uzytkownicy.getGoogle() + "')");
             
             while (resultSet.next()) {
                 uzytkownicy.setToken(resultSet.getString(1));
