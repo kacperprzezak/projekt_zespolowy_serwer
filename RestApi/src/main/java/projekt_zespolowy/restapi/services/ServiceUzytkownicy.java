@@ -41,43 +41,6 @@ public class ServiceUzytkownicy
     }
 
     @POST
-    @Path("/post")
-    @Consumes(MediaType.APPLICATION_JSON)
-    public Response add(String incomingData) {
-        Uzytkownicy uzytkownicy = new Uzytkownicy();
-
-        String email;
-        String haslo;
-        long facebook;
-        long google;
-        String typ;
-
-        try {
-            JSONObject json = new JSONObject(incomingData);
-
-            // Wyciagniecie danych o zgloszeniu
-            json = json.getJSONObject("uzytkownicy");
-
-            // Sprawdzenie czy JSON zgloszenia zawiera wszystkie potrzebne pola
-            email = json.getString("email");
-            haslo = json.getString("haslo");
-            facebook = json.getLong("facebook");
-            google = json.getLong("google");
-            typ = json.getString("typ");
-        } catch (JSONException ex) {
-            return Response.ok("Niepoprawny format JSONa").build();
-        }
-
-        uzytkownicy.setEmail(email);
-        uzytkownicy.setHaslo(haslo);
-        uzytkownicy.setFacebook(facebook);
-        uzytkownicy.setGoogle(google);
-        uzytkownicy.setTyp(typ);
-
-        return uzytkownicyDao.postUzytkownicy(uzytkownicy);
-    }
-
-    @POST
     @Path("/register")
     @Consumes(MediaType.APPLICATION_JSON)
     public Response register (String incomingData) {

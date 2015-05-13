@@ -16,22 +16,57 @@ import org.postgresql.geometric.PGpoint;
 
 public class ClientTest
 {
-    private String dodajUzytkownika(String email, String haslo, long facebook, long google, String typ) {
+    private String register(String email, String haslo) {
         JSONObject json = null;
         try {
             json = new JSONObject()
                 .put("uzytkownicy", new JSONObject()
                     .put("email", email)
                     .put("haslo", haslo)
-                    .put("facebook", facebook)
-                    .put("google", google)
-                    .put("typ", typ)
             );
         } catch (JSONException ex) {
             return "Klient: Blad przy tworzeniu JSONa";
         }
 
         String url_address = "http://localhost:8080/RestApi/service/uzytkownicy/register";
+
+        String help;
+        help = dataTransfer(json, url_address);
+        return help;
+    }
+
+    private String registerWithFacebook(String email, long facebook) {
+        JSONObject json = null;
+        try {
+            json = new JSONObject()
+                .put("uzytkownicy", new JSONObject()
+                    .put("email", email)
+                    .put("facebook", facebook)
+            );
+        } catch (JSONException ex) {
+            return "Klient: Blad przy tworzeniu JSONa";
+        }
+
+        String url_address = "http://localhost:8080/RestApi/service/uzytkownicy/registerWithFacebook";
+
+        String help;
+        help = dataTransfer(json, url_address);
+        return help;
+    }
+
+    private String registerWithGoogle(String email, long google) {
+        JSONObject json = null;
+        try {
+            json = new JSONObject()
+                .put("uzytkownicy", new JSONObject()
+                    .put("email", email)
+                    .put("google", google)
+            );
+        } catch (JSONException ex) {
+            return "Klient: Blad przy tworzeniu JSONa";
+        }
+
+        String url_address = "http://localhost:8080/RestApi/service/uzytkownicy/registerWithGoogle";
 
         String help;
         help = dataTransfer(json, url_address);
@@ -221,7 +256,7 @@ public class ClientTest
         return help;
     }
 
-     private String updateAdminRights(String haslo, String email,String uprawnienia) {
+    private String updateAdminRights(String haslo, String email,String uprawnienia) {
         JSONObject json = null;
         try {
             json = new JSONObject()
@@ -240,16 +275,18 @@ public class ClientTest
         return help;
     }
 
-     public static void main(String[] args) {
+    public static void main(String[] args) {
         ClientTest test = new ClientTest();
 
         String help = "";
 
         // TESTY - dokladniejsze informacje o bledach sa wypisywane w oknie serwera
-        //help = test.dodajUzytkownika("przyfkldad@email.com", "1d2f34", 0, 0, "restapi");
+        //help = test.register("przyklad", "1234");
+        //help = test.registerWithFacebook("przyklad_facebook", 5);
+        //help = test.registerWithGoogle("przyklad_google", 5);
         //help = test.login("email", "haslo");
         //help = test.loginWithFacebook("email2", 1);
-        help = test.loginWithGoogle("email3", 2);
+        //help = test.loginWithGoogle("email3", 2);
         //help = test.dodajZgloszenie(1, new PGpoint(51.094703, 17.021475), "opis", "email");
         //help = test.updatePassword("haselko", "email3");
         //help = test.updateAdminRights("haselko", "email3","admin");
