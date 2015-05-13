@@ -38,21 +38,58 @@ public class ClientTest
         return help;
     }
 
-    private String login(String email, String haslo, long facebook, long google) {
+    private String login(String email, String haslo) {
         JSONObject json = null;
         try {
             json = new JSONObject()
                 .put("uzytkownicy", new JSONObject()
                     .put("email", email)
                     .put("haslo", haslo)
-                    .put("facebook", facebook)
-                    .put("google", google)
             );
         } catch (JSONException ex) {
             return "Klient: Blad przy tworzeniu JSONa";
         }
 
         String url_address = "http://localhost:8080/RestApi/service/uzytkownicy/login";
+
+        String help;
+        help = dataTransfer(json, url_address);
+        return help;
+    }
+
+    private String loginWithFacebook(String email, long facebook) {
+        JSONObject json = null;
+        try {
+            json = new JSONObject()
+                .put("uzytkownicy", new JSONObject()
+                    .put("email", email)
+                    .put("facebook", facebook)
+            );
+        } catch (JSONException ex) {
+            return "Klient: Blad przy tworzeniu JSONa";
+        }
+
+        String url_address = "http://localhost:8080/RestApi/service/uzytkownicy/loginWithFacebook";
+
+        String help;
+        help = dataTransfer(json, url_address);
+        return help;
+    }
+
+    private String loginWithGoogle(String email, long google) {
+        JSONObject json = null;
+
+        try {
+            json = new JSONObject()
+                .put("uzytkownicy", new JSONObject()
+                    .put("email", email)
+                    .put("google", google)
+            );
+        } catch (JSONException ex) {
+            return "Klient: Blad przy tworzeniu JSONa";
+        }
+
+        String url_address = "http://localhost:8080/RestApi/service/uzytkownicy/loginWithGoogle";
 
         String help;
         help = dataTransfer(json, url_address);
@@ -210,7 +247,9 @@ public class ClientTest
 
         // TESTY - dokladniejsze informacje o bledach sa wypisywane w oknie serwera
         //help = test.dodajUzytkownika("przyfkldad@email.com", "1d2f34", 0, 0, "restapi");
-        //help = test.login("email", "haslo", 0, 0);
+        //help = test.login("email", "haslo");
+        //help = test.loginWithFacebook("email2", 1);
+        help = test.loginWithGoogle("email3", 2);
         //help = test.dodajZgloszenie(1, new PGpoint(51.094703, 17.021475), "opis", "email");
         //help = test.updatePassword("haselko", "email3");
         //help = test.updateAdminRights("haselko", "email3","admin");

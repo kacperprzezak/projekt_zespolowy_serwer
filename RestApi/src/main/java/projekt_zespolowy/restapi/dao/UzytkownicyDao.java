@@ -142,7 +142,7 @@ public class UzytkownicyDao
         connection.closeConnection();
         return Response.ok("OK").build();
     }
-    
+
     public Response register(Uzytkownicy uzytkownicy) {
         Statement statement;
 
@@ -166,7 +166,7 @@ public class UzytkownicyDao
         connection.closeConnection();
         return Response.ok("OK").build();
     }
-    
+
     public Response registerWithFacebook(Uzytkownicy uzytkownicy) {
         Statement statement;
 
@@ -193,7 +193,7 @@ public class UzytkownicyDao
         connection.closeConnection();
         return Response.ok("OK").build();
     }
-    
+
     public Response registerWithGoogle(Uzytkownicy uzytkownicy) {
         Statement statement;
 
@@ -220,7 +220,7 @@ public class UzytkownicyDao
         connection.closeConnection();
         return Response.ok("OK").build();
     }
-    
+
     public Response login(Uzytkownicy uzytkownicy) {
         Statement statement;
         ResultSet resultSet;
@@ -230,7 +230,7 @@ public class UzytkownicyDao
             statement = connection.getConnection().createStatement();
             resultSet = statement.executeQuery("SELECT login('" + uzytkownicy.getEmail()
                     + "', '" + uzytkownicy.getHaslo() + "')");
-            
+
             while (resultSet.next()) {
                 uzytkownicy.setToken(resultSet.getString(1));
             }
@@ -245,12 +245,12 @@ public class UzytkownicyDao
 
         connection.closeConnection();
         if (uzytkownicy.getToken() == null) {
-            return Response.status(404).entity("Nie ma takieg uzytkownika").build();
+            return Response.status(404).entity("Nie ma takiego uzytkownika").build();
         } else {
             return Response.ok("{\"token\":\"" + uzytkownicy.getToken() + "\"}").build();
         }
     }
-    
+
     public Response loginWithFacebook(Uzytkownicy uzytkownicy) {
         Statement statement;
         ResultSet resultSet;
@@ -260,7 +260,7 @@ public class UzytkownicyDao
             statement = connection.getConnection().createStatement();
             resultSet = statement.executeQuery("SELECT loginWithFacebook('" + uzytkownicy.getEmail()
                     + "', '" + uzytkownicy.getFacebook() + "')");
-            
+
             while (resultSet.next()) {
                 uzytkownicy.setToken(resultSet.getString(1));
             }
@@ -275,12 +275,12 @@ public class UzytkownicyDao
 
         connection.closeConnection();
         if (uzytkownicy.getToken() == null) {
-            return Response.status(404).entity("Nie ma takieg uzytkownika").build();
+            return Response.status(404).entity("Nie ma takiego uzytkownika").build();
         } else {
             return Response.ok("{\"token\":\"" + uzytkownicy.getToken() + "\"}").build();
         }
     }
-    
+
     public Response loginWithGoogle(Uzytkownicy uzytkownicy) {
         Statement statement;
         ResultSet resultSet;
@@ -288,9 +288,9 @@ public class UzytkownicyDao
         try {
             connection.establishConnection();
             statement = connection.getConnection().createStatement();
-            resultSet = statement.executeQuery("SELECT loginWithFacebook('" + uzytkownicy.getEmail()
+            resultSet = statement.executeQuery("SELECT loginWithGoogle('" + uzytkownicy.getEmail()
                     + "', '" + uzytkownicy.getGoogle() + "')");
-            
+
             while (resultSet.next()) {
                 uzytkownicy.setToken(resultSet.getString(1));
             }
@@ -305,12 +305,12 @@ public class UzytkownicyDao
 
         connection.closeConnection();
         if (uzytkownicy.getToken() == null) {
-            return Response.status(404).entity("Nie ma takieg uzytkownika").build();
+            return Response.status(404).entity("Nie ma takiego uzytkownika").build();
         } else {
             return Response.ok("{\"token\":\"" + uzytkownicy.getToken() + "\"}").build();
         }
     }
-    
+
     public Response updatePassword(Uzytkownicy uzytkownicy) throws Exception
     {
         Statement statement = null;
@@ -319,10 +319,10 @@ public class UzytkownicyDao
             connection.establishConnection();
             statement = connection.getConnection().createStatement();
             resultSet=statement.executeQuery("UPDATE uzytkownicy set haslo='"+uzytkownicy.getHaslo()+"' WHERE email='"+
-                    uzytkownicy.getEmail()+"'");         
-      
+                    uzytkownicy.getEmail()+"'");
+
             while (resultSet.next()) {
-                
+
             }
         } catch (Exception ex) {
             if (!ex.toString().contains("Zapytanie nie zwróciło żadnych wyników.")) {
@@ -333,9 +333,10 @@ public class UzytkownicyDao
         }
         connection.closeConnection();
         System.out.println("Zapytanie wykonane pomyslenie");
-        
+
         return Response.ok("ok").build();
     }
+
     public Response updateAdminRights(Uzytkownicy uzytkownicy) throws Exception
     {
         Statement statement = null;
@@ -344,10 +345,10 @@ public class UzytkownicyDao
             connection.establishConnection();
             statement = connection.getConnection().createStatement();
             resultSet=statement.executeQuery("UPDATE uzytkownicy set uprawnienia='"+uzytkownicy.getUprawnienia()+"' WHERE email='"+
-                    uzytkownicy.getEmail()+"'AND haslo='"+uzytkownicy.getHaslo()+"'");         
-      
+                    uzytkownicy.getEmail()+"'AND haslo='"+uzytkownicy.getHaslo()+"'");
+
             while (resultSet.next()) {
-                
+
             }
         } catch (Exception ex) {
             if (!ex.toString().contains("Zapytanie nie zwróciło żadnych wyników.")) {
@@ -358,7 +359,7 @@ public class UzytkownicyDao
         }
         connection.closeConnection();
         System.out.println("Zapytanie wykonane pomyslenie");
-        
+
         return Response.ok("ok").build();
     }
 }
