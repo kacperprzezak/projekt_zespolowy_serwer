@@ -270,15 +270,16 @@ public class ClientTest
 
             );
         } catch (JSONException ex) {
-            return "Klient: Blad przy tworzeniu JSONa";        }
+            return "Klient: Blad przy tworzeniu JSONa";
+        }
 
-         String url_address = "http://localhost:8080/RestApi/service/uzytkownicy/postPassword";
+        String url_address = "http://localhost:8080/RestApi/service/uzytkownicy/postPassword";
         String help;
         help = dataTransfer(json, url_address);
         return help;
     }
 
-    private String updateAdminRights(String haslo, String email,String uprawnienia) {
+    private String updateAdminRights(String haslo, String email, String uprawnienia) {
         JSONObject json = null;
         try {
             json = new JSONObject()
@@ -289,9 +290,10 @@ public class ClientTest
 
             );
         } catch (JSONException ex) {
-            return "Klient: Blad przy tworzeniu JSONa";        }
+            return "Klient: Blad przy tworzeniu JSONa";
+        }
 
-         String url_address = "http://localhost:8080/RestApi/service/uzytkownicy/postAdminRights";
+        String url_address = "http://localhost:8080/RestApi/service/uzytkownicy/postAdminRights";
         String help;
         help = dataTransfer(json, url_address);
         return help;
@@ -311,8 +313,8 @@ public class ClientTest
         //help = test.loginWithFacebook("email2", 1);
         //help = test.loginWithGoogle("email3", 2);
         //help = test.dodajZgloszenie(1, new PGpoint(51.094703, 17.021475), "opis", "email");
-        //help = test.updatePassword("haselko", "email3");
-        //help = test.updateAdminRights("haselko", "email3","admin");
+        //help = test.updatePassword("1234", "email");
+        //help = test.updateAdminRights("1234", "email", "admin");
         //help = test.updateStatusZgloszenia(15, 2);
 
         System.out.println(help);

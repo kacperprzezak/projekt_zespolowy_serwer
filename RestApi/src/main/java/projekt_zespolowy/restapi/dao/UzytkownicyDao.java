@@ -325,7 +325,8 @@ public class UzytkownicyDao
 
             }
         } catch (Exception ex) {
-            if (!ex.toString().contains("Zapytanie nie zwróciło żadnych wyników.")) {
+            if (!ex.toString().contains("Zapytanie nie zwróciło żadnych wyników.")
+                    && !ex.toString().contains("No results were returned")) {
                 System.out.println("Zapytanie nie zostalo wykonane: " + ex.toString());
                 connection.closeConnection();
                 return Response.status(500).entity("wystapil nieznany blad").build();
@@ -351,7 +352,8 @@ public class UzytkownicyDao
 
             }
         } catch (Exception ex) {
-            if (!ex.toString().contains("Zapytanie nie zwróciło żadnych wyników.")) {
+            if (!ex.toString().contains("Zapytanie nie zwróciło żadnych wyników.")
+                    && !ex.toString().contains("No results were returned")) {
                 System.out.println("Zapytanie nie zostalo wykonane: " + ex.toString());
                 connection.closeConnection();
                 return Response.status(500).entity("wystapil nieznany blad").build();
