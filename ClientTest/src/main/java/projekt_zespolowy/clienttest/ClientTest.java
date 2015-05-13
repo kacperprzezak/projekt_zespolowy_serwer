@@ -16,7 +16,6 @@ import org.postgresql.geometric.PGpoint;
 
 public class ClientTest
 {
-    
     private String dodajUzytkownika(String email, String haslo, long facebook, long google, String typ) {
         JSONObject json = null;
         try {
@@ -32,14 +31,13 @@ public class ClientTest
             return "Klient: Blad przy tworzeniu JSONa";
         }
 
-        //String url_address = "http://virt2.iiar.pwr.edu.pl:8080/RestApi/service/uzytkownicy/register";
-        String url_address = "http://localhost:8084/RestApi/service/uzytkownicy/register";
+        String url_address = "http://localhost:8080/RestApi/service/uzytkownicy/register";
 
         String help;
         help = dataTransfer(json, url_address);
         return help;
     }
-    
+
     private String login(String email, String haslo, long facebook, long google) {
         JSONObject json = null;
         try {
@@ -54,7 +52,7 @@ public class ClientTest
             return "Klient: Blad przy tworzeniu JSONa";
         }
 
-        String url_address = "http://localhost:8084/RestApi/service/uzytkownicy/login";
+        String url_address = "http://localhost:8080/RestApi/service/uzytkownicy/login";
 
         String help;
         help = dataTransfer(json, url_address);
@@ -76,6 +74,26 @@ public class ClientTest
         }
 
         String url_address = "http://localhost:8080/RestApi/service/zgloszenia/post";
+
+        String help;
+        help = dataTransfer(json, url_address);
+        return help;
+    }
+
+    private String updateStatusZgloszenia(int id_zgloszenia,int id_statusu ) {
+        JSONObject json = null;
+        try {
+            json = new JSONObject()
+                .put("zgloszenia", new JSONObject()
+                    .put("id_zgloszenia", id_zgloszenia)
+                    .put("id_statusu", id_statusu)
+
+            );
+        } catch (JSONException ex) {
+            return "Klient: Blad przy tworzeniu JSONa";
+        }
+
+        String url_address = "http://localhost:8080/RestApi/service/zgloszenia/postStatusZgloszenia";
 
         String help;
         help = dataTransfer(json, url_address);
@@ -117,7 +135,7 @@ public class ClientTest
 
         return print_returned;
     }
-    
+
     public static void addZdjecie() {
         try {
             URL url = new URL("http://localhost:8084/RestApi/service/zdjecia/post");
@@ -126,7 +144,7 @@ public class ClientTest
             connection.setRequestProperty("Content-Type", "multipart/form-data");
             connection.setConnectTimeout(5000);
             connection.setReadTimeout(5000);
-            
+
             File file = new File("C:\\Users\\Sebastian\\Desktop\\Nowy folder\\studia\\aa.jpg");
             byte[] bytes = new byte[(int)file.length()];
             BufferedInputStream bis = new BufferedInputStream(new FileInputStream(file));
@@ -135,7 +153,7 @@ public class ClientTest
 
             os.write(bytes, 0, bytes.length);
             os.flush();
-            
+
             BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
 
             while (in.readLine() != null) {
@@ -148,15 +166,55 @@ public class ClientTest
         }
     }
 
-    public static void main(String[] args) {
+    private String updatePassword(String haslo, String email) {
+        JSONObject json = null;
+        try {
+            json = new JSONObject()
+                .put("uzytkownicy", new JSONObject()
+                    .put("haslo", haslo)
+                    .put("email", email)
+
+            );
+        } catch (JSONException ex) {
+            return "Klient: Blad przy tworzeniu JSONa";        }
+
+         String url_address = "http://localhost:8080/RestApi/service/uzytkownicy/postPassword";
+        String help;
+        help = dataTransfer(json, url_address);
+        return help;
+    }
+
+     private String updateAdminRights(String haslo, String email,String uprawnienia) {
+        JSONObject json = null;
+        try {
+            json = new JSONObject()
+                .put("uzytkownicy", new JSONObject()
+                    .put("haslo", haslo)
+                    .put("email", email)
+                    .put("uprawnienia",uprawnienia )
+
+            );
+        } catch (JSONException ex) {
+            return "Klient: Blad przy tworzeniu JSONa";        }
+
+         String url_address = "http://localhost:8080/RestApi/service/uzytkownicy/postAdminRights";
+        String help;
+        help = dataTransfer(json, url_address);
+        return help;
+    }
+
+     public static void main(String[] args) {
         ClientTest test = new ClientTest();
 
-        String help;
+        String help = "";
 
         // TESTY - dokladniejsze informacje o bledach sa wypisywane w oknie serwera
-        //help = test.dodajUzytkownika("przyklad@email.com", "1234", 0, 0, "restapi");
-        help = test.login("przyklad@email.com", "1234", 0, 0);
+        //help = test.dodajUzytkownika("przyfkldad@email.com", "1d2f34", 0, 0, "restapi");
+        //help = test.login("email", "haslo", 0, 0);
         //help = test.dodajZgloszenie(1, new PGpoint(51.094703, 17.021475), "opis", "email");
+        //help = test.updatePassword("haselko", "email3");
+        //help = test.updateAdminRights("haselko", "email3","admin");
+        //help = test.updateStatusZgloszenia(15, 2);
 
         System.out.println(help);
         //addZdjecie();

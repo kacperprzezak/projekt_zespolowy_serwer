@@ -133,4 +133,28 @@ public class ZgloszeniaDao
         connection.closeConnection();
         return Response.ok("OK").build();
     }
+    
+    public Response updateStatusZgloszenia(Zgloszenia zgloszenia)
+    {              
+         Statement statement;
+
+        try {
+            connection.establishConnection();
+            statement = connection.getConnection().createStatement();
+            statement.executeQuery("UPDATE zgloszenia set id_statusu=3 WHERE id_zgloszenia=14");
+        } catch (Exception ex) {
+            // Wypisanie bledu na serwer
+            System.err.println(ex);
+            
+            connection.closeConnection();
+            return Response.ok("Wystapil  blad").build();
+        }
+
+        connection.closeConnection();
+        return Response.ok("OK").build();
+        
+        
+        
+        
+    }
 }

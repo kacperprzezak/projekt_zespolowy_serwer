@@ -272,4 +272,65 @@ public class ServiceUzytkownicy
         return uzytkownicyDao.loginWithGoogle(uzytkownicy);
     }
     
+    @POST
+    @Path("/postPassword")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response updatePassword(String incomingData) throws Exception
+    {
+        Uzytkownicy uzytkownicy = new Uzytkownicy();
+        String haslo=null;
+        String email=null;
+       
+        try {
+            JSONObject json = new JSONObject(incomingData);
+            json = json.getJSONObject("uzytkownicy");
+            email = json.getString("email");
+            haslo=json.getString("haslo");
+            
+        } catch (JSONException ex) {
+            System.err.println(ex.toString());
+            return Response.status(500).entity("Niepoprawny format JSONa").build();
+        }catch (Exception ex) {
+            System.err.println(ex.toString());
+            return Response.serverError().build();
+        }
+        uzytkownicy.setHaslo(haslo);
+        uzytkownicy.setEmail(email);
+       
+        return uzytkownicyDao.updatePassword(uzytkownicy);
+        //return null;
+    }
+    
+    @POST
+    @Path("/postAdminRights")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response updateAdminRights(String incomingData) throws Exception
+    {
+        Uzytkownicy uzytkownicy = new Uzytkownicy();
+        String haslo=null;
+        String email=null;
+        String uprawnienia=null;
+       
+        try {
+            JSONObject json = new JSONObject(incomingData);
+            json = json.getJSONObject("uzytkownicy");
+            email = json.getString("email");
+            haslo=json.getString("haslo");
+            uprawnienia=json.getString("uprawnienia");
+            
+        } catch (JSONException ex) {
+            System.err.println(ex.toString());
+            return Response.status(500).entity("Niepoprawny format JSONa").build();
+        }catch (Exception ex) {
+            System.err.println(ex.toString());
+            return Response.serverError().build();
+        }
+        uzytkownicy.setHaslo(haslo);
+        uzytkownicy.setEmail(email);
+        uzytkownicy.setUprawnienia(uprawnienia);
+       
+        return uzytkownicyDao.updateAdminRights(uzytkownicy);
+        //return null;
+    }
+    
 }

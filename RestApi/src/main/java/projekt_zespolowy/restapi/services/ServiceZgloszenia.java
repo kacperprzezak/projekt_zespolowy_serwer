@@ -75,4 +75,33 @@ public class ServiceZgloszenia
 
         return zgloszeniaDao.postZgloszenia(zgloszenia);
     }
+
+
+    @POST
+    @Path("/postStatusZgloszenia")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response updateStatusZgloszenia(String incomingData) {
+        Zgloszenia zgloszenia = new Zgloszenia();
+
+        int id_zgloszenia;
+        int id_statusu;
+
+        try {
+            JSONObject json = new JSONObject(incomingData);
+
+            // Wyciagniecie danych o zgloszeniu
+            json = json.getJSONObject("zgloszenia");
+
+            // Sprawdzenie czy JSON zgloszenia zawiera wszystkie potrzebne pola
+            id_zgloszenia=json.getInt("id_zgloszenia");
+            id_statusu=json.getInt("id_statusu");
+
+        } catch (JSONException ex) {
+            return Response.ok("Niepoprawny format JSONa").build();
+        }
+        zgloszenia.setId_zgloszenia(id_zgloszenia);
+        zgloszenia.setId_statusu(id_statusu);
+
+        return zgloszeniaDao.updateStatusZgloszenia(zgloszenia);
+    }
 }

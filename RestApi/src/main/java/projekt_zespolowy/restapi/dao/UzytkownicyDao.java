@@ -311,4 +311,54 @@ public class UzytkownicyDao
         }
     }
     
+    public Response updatePassword(Uzytkownicy uzytkownicy) throws Exception
+    {
+        Statement statement = null;
+        ResultSet resultSet = null;
+        try {
+            connection.establishConnection();
+            statement = connection.getConnection().createStatement();
+            resultSet=statement.executeQuery("UPDATE uzytkownicy set haslo='"+uzytkownicy.getHaslo()+"' WHERE email='"+
+                    uzytkownicy.getEmail()+"'");         
+      
+            while (resultSet.next()) {
+                
+            }
+        } catch (Exception ex) {
+            if (!ex.toString().contains("Zapytanie nie zwróciło żadnych wyników.")) {
+                System.out.println("Zapytanie nie zostalo wykonane: " + ex.toString());
+                connection.closeConnection();
+                return Response.status(500).entity("wystapil nieznany blad").build();
+            }
+        }
+        connection.closeConnection();
+        System.out.println("Zapytanie wykonane pomyslenie");
+        
+        return Response.ok("ok").build();
+    }
+    public Response updateAdminRights(Uzytkownicy uzytkownicy) throws Exception
+    {
+        Statement statement = null;
+        ResultSet resultSet = null;
+        try {
+            connection.establishConnection();
+            statement = connection.getConnection().createStatement();
+            resultSet=statement.executeQuery("UPDATE uzytkownicy set uprawnienia='"+uzytkownicy.getUprawnienia()+"' WHERE email='"+
+                    uzytkownicy.getEmail()+"'AND haslo='"+uzytkownicy.getHaslo()+"'");         
+      
+            while (resultSet.next()) {
+                
+            }
+        } catch (Exception ex) {
+            if (!ex.toString().contains("Zapytanie nie zwróciło żadnych wyników.")) {
+                System.out.println("Zapytanie nie zostalo wykonane: " + ex.toString());
+                connection.closeConnection();
+                return Response.status(500).entity("wystapil nieznany blad").build();
+            }
+        }
+        connection.closeConnection();
+        System.out.println("Zapytanie wykonane pomyslenie");
+        
+        return Response.ok("ok").build();
+    }
 }
