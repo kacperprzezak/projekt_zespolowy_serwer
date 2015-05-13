@@ -111,6 +111,38 @@ public class UzytkownicyDao
         return list;
     }
 
+    public Response postUzytkownicy(Uzytkownicy uzytkownicy) {
+        Statement statement;
+
+        try {
+            connection.establishConnection();
+            statement = connection.getConnection().createStatement();
+            statement.executeQuery("SELECT adduzytkownik('" + uzytkownicy.getEmail()
+                    + "', '" + uzytkownicy.getHaslo() + "', " + uzytkownicy.getFacebook()
+                    + ", " + uzytkownicy.getGoogle() + ", '" + uzytkownicy.getTyp() + "'" + ")");
+        } catch (Exception ex) {
+            // Wypisanie bledu na serwer
+            System.err.println(ex);
+
+            // Zwrocenie informacji o bledzie uzytkownikowi
+            if (ex.toString().contains("(email)=") && ex.toString().contains("już istnieje")) {
+                return Response.ok("Podany email jest juz zajety").build();
+            }
+            else if (ex.toString().contains("(facebook)=") && ex.toString().contains("już istnieje")) {
+                return Response.ok("Podane id facebooka jest juz zajete").build();
+            }
+            else if (ex.toString().contains("(google)=") && ex.toString().contains("już istnieje")) {
+                return Response.ok("Podane if google jest juz zajete").build();
+            }
+
+            connection.closeConnection();
+            return Response.ok("Wystapil nieznany blad").build();
+        }
+
+        connection.closeConnection();
+        return Response.ok("OK").build();
+    }
+
     public Response register(Uzytkownicy uzytkownicy) {
         Statement statement;
 

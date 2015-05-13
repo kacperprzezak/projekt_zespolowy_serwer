@@ -16,6 +16,28 @@ import org.postgresql.geometric.PGpoint;
 
 public class ClientTest
 {
+    private String dodajUzytkownika(String email, String haslo, long facebook, long google, String typ) {
+        JSONObject json = null;
+        try {
+            json = new JSONObject()
+                .put("uzytkownicy", new JSONObject()
+                    .put("email", email)
+                    .put("haslo", haslo)
+                    .put("facebook", facebook)
+                    .put("google", google)
+                    .put("typ", typ)
+            );
+        } catch (JSONException ex) {
+            return "Klient: Blad przy tworzeniu JSONa";
+        }
+
+        String url_address = "http://localhost:8080/RestApi/service/uzytkownicy/post";
+
+        String help;
+        help = dataTransfer(json, url_address);
+        return help;
+    }
+
     private String register(String email, String haslo) {
         JSONObject json = null;
         try {
@@ -281,6 +303,7 @@ public class ClientTest
         String help = "";
 
         // TESTY - dokladniejsze informacje o bledach sa wypisywane w oknie serwera
+        //help = test.dodajUzytkownika("email5", "1234", 0, 0, "restapi");
         //help = test.register("przyklad", "1234");
         //help = test.registerWithFacebook("przyklad_facebook", 5);
         //help = test.registerWithGoogle("przyklad_google", 5);

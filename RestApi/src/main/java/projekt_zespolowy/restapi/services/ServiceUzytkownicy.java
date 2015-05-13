@@ -41,6 +41,43 @@ public class ServiceUzytkownicy
     }
 
     @POST
+    @Path("/post")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response add(String incomingData) {
+        Uzytkownicy uzytkownicy = new Uzytkownicy();
+
+        String email;
+        String haslo;
+        long facebook;
+        long google;
+        String typ;
+
+        try {
+            JSONObject json = new JSONObject(incomingData);
+
+            // Wyciagniecie danych o zgloszeniu
+            json = json.getJSONObject("uzytkownicy");
+
+            // Sprawdzenie czy JSON zgloszenia zawiera wszystkie potrzebne pola
+            email = json.getString("email");
+            haslo = json.getString("haslo");
+            facebook = json.getLong("facebook");
+            google = json.getLong("google");
+            typ = json.getString("typ");
+        } catch (JSONException ex) {
+            return Response.ok("Niepoprawny format JSONa").build();
+        }
+
+        uzytkownicy.setEmail(email);
+        uzytkownicy.setHaslo(haslo);
+        uzytkownicy.setFacebook(facebook);
+        uzytkownicy.setGoogle(google);
+        uzytkownicy.setTyp(typ);
+
+        return uzytkownicyDao.postUzytkownicy(uzytkownicy);
+    }
+
+    @POST
     @Path("/register")
     @Consumes(MediaType.APPLICATION_JSON)
     public Response register (String incomingData) {
@@ -202,7 +239,6 @@ public class ServiceUzytkownicy
         return uzytkownicyDao.loginWithFacebook(uzytkownicy);
     }
 
-
     @POST
     @Path("/loginWithGoogle")
     @Consumes(MediaType.APPLICATION_JSON)
@@ -242,14 +278,14 @@ public class ServiceUzytkownicy
     public Response updatePassword(String incomingData) throws Exception
     {
         Uzytkownicy uzytkownicy = new Uzytkownicy();
-        String haslo=null;
-        String email=null;
+        String haslo = null;
+        String email = null;
 
         try {
             JSONObject json = new JSONObject(incomingData);
             json = json.getJSONObject("uzytkownicy");
             email = json.getString("email");
-            haslo=json.getString("haslo");
+            haslo = json.getString("haslo");
 
         } catch (JSONException ex) {
             System.err.println(ex.toString());
@@ -262,7 +298,6 @@ public class ServiceUzytkownicy
         uzytkownicy.setEmail(email);
 
         return uzytkownicyDao.updatePassword(uzytkownicy);
-        //return null;
     }
 
     @POST
@@ -271,16 +306,16 @@ public class ServiceUzytkownicy
     public Response updateAdminRights(String incomingData) throws Exception
     {
         Uzytkownicy uzytkownicy = new Uzytkownicy();
-        String haslo=null;
-        String email=null;
-        String uprawnienia=null;
+        String haslo = null;
+        String email = null;
+        String uprawnienia = null;
 
         try {
             JSONObject json = new JSONObject(incomingData);
             json = json.getJSONObject("uzytkownicy");
             email = json.getString("email");
-            haslo=json.getString("haslo");
-            uprawnienia=json.getString("uprawnienia");
+            haslo = json.getString("haslo");
+            uprawnienia = json.getString("uprawnienia");
 
         } catch (JSONException ex) {
             System.err.println(ex.toString());
@@ -294,7 +329,5 @@ public class ServiceUzytkownicy
         uzytkownicy.setUprawnienia(uprawnienia);
 
         return uzytkownicyDao.updateAdminRights(uzytkownicy);
-        //return null;
     }
-
 }
