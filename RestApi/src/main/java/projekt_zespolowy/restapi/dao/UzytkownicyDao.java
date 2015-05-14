@@ -1,5 +1,6 @@
 package projekt_zespolowy.restapi.dao;
 
+import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
@@ -173,7 +174,7 @@ public class UzytkownicyDao
         try {
             connection.establishConnection();
             statement = connection.getConnection().createStatement();
-            statement.executeQuery("SELECT register('" + uzytkownicy.getEmail()
+            statement.executeQuery("SELECT registerWithFacebook('" + uzytkownicy.getEmail()
                     + "', " + uzytkownicy.getFacebook() + ")");
         } catch (Exception ex) {
             // Wypisanie bledu na serwer
@@ -196,11 +197,11 @@ public class UzytkownicyDao
     
     public Response registerWithGoogle(Uzytkownicy uzytkownicy) {
         Statement statement;
-
+        
         try {
             connection.establishConnection();
             statement = connection.getConnection().createStatement();
-            statement.executeQuery("SELECT register('" + uzytkownicy.getEmail()
+            statement.executeQuery("SELECT registerWithGoogle('" + uzytkownicy.getEmail()
                     + "', " + uzytkownicy.getGoogle() + ")");
         } catch (Exception ex) {
             // Wypisanie bledu na serwer
@@ -240,12 +241,12 @@ public class UzytkownicyDao
 
             // Zwrocenie informacji o bledzie uzytkownikowi
             connection.closeConnection();
-            return Response.status(500).entity("Wystapil nieznany blad").build();
+            return Response.ok("Wystapil nieznany blad\n").build();
         }
 
         connection.closeConnection();
         if (uzytkownicy.getToken() == null) {
-            return Response.status(404).entity("Nie ma takieg uzytkownika").build();
+            return Response.ok("Nie ma takieg uzytkownika\n").build();
         } else {
             return Response.ok("{\"token\":\"" + uzytkownicy.getToken() + "\"}").build();
         }
@@ -254,12 +255,12 @@ public class UzytkownicyDao
     public Response loginWithFacebook(Uzytkownicy uzytkownicy) {
         Statement statement;
         ResultSet resultSet;
-
+        int raport = 0;
         try {
             connection.establishConnection();
             statement = connection.getConnection().createStatement();
             resultSet = statement.executeQuery("SELECT loginWithFacebook('" + uzytkownicy.getEmail()
-                    + "', '" + uzytkownicy.getFacebook() + "')");
+                    + "', " + uzytkownicy.getFacebook() + ")");
             
             while (resultSet.next()) {
                 uzytkownicy.setToken(resultSet.getString(1));
@@ -284,23 +285,25 @@ public class UzytkownicyDao
     public Response loginWithGoogle(Uzytkownicy uzytkownicy) {
         Statement statement;
         ResultSet resultSet;
-
+        System.out.println(uzytkownicy.getGoogle());
         try {
             connection.establishConnection();
             statement = connection.getConnection().createStatement();
-            resultSet = statement.executeQuery("SELECT loginWithFacebook('" + uzytkownicy.getEmail()
-                    + "', '" + uzytkownicy.getGoogle() + "')");
+            resultSet = statement.executeQuery("SELECT loginWithGoogle('" + uzytkownicy.getEmail()
+                    + "', " + uzytkownicy.getGoogle() + ")");
             
             while (resultSet.next()) {
                 uzytkownicy.setToken(resultSet.getString(1));
+                System.out.println(uzytkownicy.getToken());
             }
+            
         } catch (Exception ex) {
             // Wypisanie bledu na serwer
             System.err.println(ex);
 
             // Zwrocenie informacji o bledzie uzytkownikowi
             connection.closeConnection();
-            return Response.status(500).entity("Wystapil nieznany blad").build();
+            return Response.ok("Wystapil nieznany blad\n").build();
         }
 
         connection.closeConnection();

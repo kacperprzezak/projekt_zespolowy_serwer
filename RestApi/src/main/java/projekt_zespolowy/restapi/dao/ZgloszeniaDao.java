@@ -105,32 +105,42 @@ public class ZgloszeniaDao
         return list;
     }
 
-    public Response postZgloszenia(Zgloszenia zgloszenia) {
+    public Response postZgloszenia(Zgloszenia zgloszenia, String token) {
         Statement statement;
+        ResultSet resultSet;
 
         try {
             connection.establishConnection();
             statement = connection.getConnection().createStatement();
-            statement.executeQuery("SELECT addZgloszenie(" + zgloszenia.getId_typu()
+            resultSet = statement.executeQuery("SELECT addZgloszenie(" + zgloszenia.getId_typu()
                     + ", POINT(" + zgloszenia.getWspolrzedne().x + ", " + zgloszenia.getWspolrzedne().y
-                    + "), '" + zgloszenia.getOpis() + "', '" + zgloszenia.getEmail_uzytkownika() + "'" + ")");
+                    + "), '" + zgloszenia.getOpis() + "', '" + zgloszenia.getEmail_uzytkownika()
+                    + "', '" + token + "')");
+            
+            while (resultSet.next()) {
+                zgloszenia.setId_zgloszenia(resultSet.getInt(1));
+                System.out.println(zgloszenia.getId_zgloszenia());
+            }
         } catch (Exception ex) {
             // Wypisanie bledu na serwer
             System.err.println(ex);
 
             // Zwrocenie informacji o bledzie użytkownikowi
             if (ex.toString().contains("(email_uzytkownika)=") && ex.toString().contains("nie występuje")) {
-                return Response.ok("Podany email_uzytkownika nie wystepuje w bazie danych").build();
+                return Response.status(500).entity("Podany email_uzytkownika nie wystepuje w bazie danych").build();
             }
             else if (ex.toString().contains("(id_typu)=") && ex.toString().contains("nie występuje")) {
-                return Response.ok("Podane id_typu nie wystepuje w bazie danych").build();
+                return Response.status(500).entity("Podane id_typu nie wystepuje w bazie danych").build();
             }
 
             connection.closeConnection();
-            return Response.ok("Wystapil nieznany blad").build();
+            return Response.serverError().entity("Wystapil nieznany blad").build();
         }
 
         connection.closeConnection();
-        return Response.ok("OK").build();
+        if (zgloszenia.getId_zgloszenia() == 0) {
+            return Response.status(404).entity("Bład autoryzacji: niezgodny token").build();
+        }
+        return Response.ok("{\"id_zgloszenia\":" + zgloszenia.getId_zgloszenia() + "}").build();
     }
 }

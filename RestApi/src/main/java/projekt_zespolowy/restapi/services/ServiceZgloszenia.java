@@ -45,6 +45,7 @@ public class ServiceZgloszenia
     @POST
     @Path("/post")
     @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
     public Response add(String incomingData) {
         Zgloszenia zgloszenia = new Zgloszenia();
 
@@ -52,6 +53,7 @@ public class ServiceZgloszenia
         PGpoint point;
         String opis;
         String email_uzytkownika;
+        String token;
 
         try {
             JSONObject json = new JSONObject(incomingData);
@@ -61,11 +63,17 @@ public class ServiceZgloszenia
 
             // Sprawdzenie czy JSON zgloszenia zawiera wszystkie potrzebne pola
             id_typu = json.getInt("id_typu");
-            point = new PGpoint((String)json.get("wspolrzedne"));
+            //point = new PGpoint((String)json.get("wspolrzedne"));
+            point = new PGpoint(json.getDouble("x"), json.getDouble("y"));
             opis = json.getString("opis");
             email_uzytkownika = json.getString("email_uzytkownika");
-        } catch (JSONException | SQLException ex) {
+            token = json.getString("token");
+            
+        } catch (JSONException ex) {
             return Response.ok("Niepoprawny format JSONa").build();
+        } catch (Exception ex) {
+            System.err.println(ex.toString());
+            return Response.serverError().build();
         }
 
         zgloszenia.setId_typu(id_typu);
@@ -73,6 +81,6 @@ public class ServiceZgloszenia
         zgloszenia.setOpis(opis);
         zgloszenia.setEmail_uzytkownika(email_uzytkownika);
 
-        return zgloszeniaDao.postZgloszenia(zgloszenia);
+        return zgloszeniaDao.postZgloszenia(zgloszenia, token);
     }
 }

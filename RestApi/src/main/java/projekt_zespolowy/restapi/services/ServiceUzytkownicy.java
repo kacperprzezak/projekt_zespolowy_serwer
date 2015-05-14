@@ -1,5 +1,6 @@
 package projekt_zespolowy.restapi.services;
 
+import java.io.IOException;
 import java.util.List;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -174,6 +175,14 @@ public class ServiceUzytkownicy
     }
     
     @POST
+    @Path("/test")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response test (String incomingData) {
+        return Response.ok("Test").build();
+    }
+    
+    @POST
     @Path("/login")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
@@ -194,12 +203,13 @@ public class ServiceUzytkownicy
             haslo = json.getString("haslo");
         } catch (JSONException ex) {
             System.err.println(ex.toString());
-            return Response.status(500).entity("Niepoprawny format JSONa").build();
+            return Response.ok("Niepoprawny format JSONa").build();
         } catch (Exception ex) {
             System.err.println(ex.toString());
-            return Response.serverError().build();
+            //return Response.serverError().build();
+            return Response.ok("Blad w sevvice").build();
         }
-        
+
         uzytkownicy.setEmail(email);
         uzytkownicy.setHaslo(haslo);
         
@@ -245,7 +255,7 @@ public class ServiceUzytkownicy
     @Produces(MediaType.APPLICATION_JSON)
     public Response loginWithGoogle (String incomingData) {
         Uzytkownicy uzytkownicy = new Uzytkownicy();
-        
+
         String email;
         long google;
         
@@ -258,16 +268,18 @@ public class ServiceUzytkownicy
             // Sprawdzenie czy JSON zgloszenia zawiera wszystkie potrzebne pola
             email = json.getString("email");
             google = json.getLong("google");
+            System.out.println(email);
+            System.out.println(google);
         } catch (JSONException ex) {
             System.err.println(ex.toString());
-            return Response.status(500).entity("Niepoprawny format JSONa").build();
+            return Response.ok("Niepoprawny format JSONa\n").build();
         } catch (Exception ex) {
             System.err.println(ex.toString());
             return Response.serverError().build();
         }
         
         uzytkownicy.setEmail(email);
-        uzytkownicy.setFacebook(google);
+        uzytkownicy.setGoogle(google);
         
         return uzytkownicyDao.loginWithGoogle(uzytkownicy);
     }
