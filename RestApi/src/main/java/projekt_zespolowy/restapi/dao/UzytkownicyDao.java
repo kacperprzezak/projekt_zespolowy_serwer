@@ -1,6 +1,5 @@
 package projekt_zespolowy.restapi.dao;
 
-import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
@@ -197,7 +196,7 @@ public class UzytkownicyDao
 
     public Response registerWithGoogle(Uzytkownicy uzytkownicy) {
         Statement statement;
-        
+
         try {
             connection.establishConnection();
             statement = connection.getConnection().createStatement();
@@ -241,16 +240,12 @@ public class UzytkownicyDao
 
             // Zwrocenie informacji o bledzie uzytkownikowi
             connection.closeConnection();
-            return Response.ok("Wystapil nieznany blad\n").build();
+            return Response.status(500).entity("Wystapil nieznany blad").build();
         }
 
         connection.closeConnection();
         if (uzytkownicy.getToken() == null) {
-<<<<<<< HEAD
             return Response.status(404).entity("Nie ma takiego uzytkownika").build();
-=======
-            return Response.ok("Nie ma takieg uzytkownika\n").build();
->>>>>>> pelne zmiany
         } else {
             return Response.ok("{\"token\":\"" + uzytkownicy.getToken() + "\"}").build();
         }
@@ -259,18 +254,13 @@ public class UzytkownicyDao
     public Response loginWithFacebook(Uzytkownicy uzytkownicy) {
         Statement statement;
         ResultSet resultSet;
-        int raport = 0;
+
         try {
             connection.establishConnection();
             statement = connection.getConnection().createStatement();
             resultSet = statement.executeQuery("SELECT loginWithFacebook('" + uzytkownicy.getEmail()
-<<<<<<< HEAD
                     + "', '" + uzytkownicy.getFacebook() + "')");
 
-=======
-                    + "', " + uzytkownicy.getFacebook() + ")");
-            
->>>>>>> pelne zmiany
             while (resultSet.next()) {
                 uzytkownicy.setToken(resultSet.getString(1));
             }
@@ -294,30 +284,23 @@ public class UzytkownicyDao
     public Response loginWithGoogle(Uzytkownicy uzytkownicy) {
         Statement statement;
         ResultSet resultSet;
-        System.out.println(uzytkownicy.getGoogle());
+
         try {
             connection.establishConnection();
             statement = connection.getConnection().createStatement();
             resultSet = statement.executeQuery("SELECT loginWithGoogle('" + uzytkownicy.getEmail()
-<<<<<<< HEAD
                     + "', '" + uzytkownicy.getGoogle() + "')");
 
-=======
-                    + "', " + uzytkownicy.getGoogle() + ")");
-            
->>>>>>> pelne zmiany
             while (resultSet.next()) {
                 uzytkownicy.setToken(resultSet.getString(1));
-                System.out.println(uzytkownicy.getToken());
             }
-            
         } catch (Exception ex) {
             // Wypisanie bledu na serwer
             System.err.println(ex);
 
             // Zwrocenie informacji o bledzie uzytkownikowi
             connection.closeConnection();
-            return Response.ok("Wystapil nieznany blad\n").build();
+            return Response.status(500).entity("Wystapil nieznany blad").build();
         }
 
         connection.closeConnection();

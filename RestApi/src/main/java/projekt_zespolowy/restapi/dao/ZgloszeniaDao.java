@@ -117,7 +117,6 @@ public class ZgloszeniaDao
             statement = connection.getConnection().createStatement();
             resultSet = statement.executeQuery("SELECT addZgloszenie(" + zgloszenia.getId_typu()
                     + ", POINT(" + zgloszenia.getWspolrzedne().x + ", " + zgloszenia.getWspolrzedne().y
-<<<<<<< HEAD
                     + "), '" + zgloszenia.getOpis() + "', '" + zgloszenia.getAdres()
                     + "', '" + zgloszenia.getEmail_uzytkownika() + "', '" + token + "'" + ")");
 
@@ -126,14 +125,6 @@ public class ZgloszeniaDao
                     System.out.println("Funkcja z bazy zwrocila false :(");
                     return Response.serverError().entity("Funkcja z bazy zwrocila false :(").build();
                 }
-=======
-                    + "), '" + zgloszenia.getOpis() + "', '" + zgloszenia.getEmail_uzytkownika()
-                    + "', '" + token + "')");
-            
-            while (resultSet.next()) {
-                zgloszenia.setId_zgloszenia(resultSet.getInt(1));
-                System.out.println(zgloszenia.getId_zgloszenia());
->>>>>>> pelne zmiany
             }
         } catch (Exception ex) {
             // Wypisanie bledu na serwer
@@ -141,28 +132,18 @@ public class ZgloszeniaDao
 
             // Zwrocenie informacji o bledzie użytkownikowi
             if (ex.toString().contains("(email_uzytkownika)=") && ex.toString().contains("nie występuje")) {
-<<<<<<< HEAD
                 return Response.serverError().entity("Podany email_uzytkownika nie wystepuje w bazie danych").build();
             }
             else if (ex.toString().contains("(id_typu)=") && ex.toString().contains("nie występuje")) {
                 return Response.serverError().entity("Podane id_typu nie wystepuje w bazie danych").build();
-=======
-                return Response.status(500).entity("Podany email_uzytkownika nie wystepuje w bazie danych").build();
-            }
-            else if (ex.toString().contains("(id_typu)=") && ex.toString().contains("nie występuje")) {
-                return Response.status(500).entity("Podane id_typu nie wystepuje w bazie danych").build();
->>>>>>> pelne zmiany
             }
 
             connection.closeConnection();
-            return Response.serverError().entity("Wystapil nieznany blad").build();
+            return Response.ok("Wystapil nieznany blad").build();
         }
 
         connection.closeConnection();
-        if (zgloszenia.getId_zgloszenia() == 0) {
-            return Response.status(404).entity("Bład autoryzacji: niezgodny token").build();
-        }
-        return Response.ok("{\"id_zgloszenia\":" + zgloszenia.getId_zgloszenia() + "}").build();
+        return Response.ok("OK").build();
     }
 
     public Response updateStatusZgloszenia(Zgloszenia zgloszenia)
