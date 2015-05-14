@@ -50,9 +50,13 @@ public class ServiceZgloszenia
         Zgloszenia zgloszenia = new Zgloszenia();
 
         int id_typu;
-        PGpoint point;
+        PGpoint wspolrzedne = new PGpoint();
         String opis;
         String email_uzytkownika;
+<<<<<<< HEAD
+=======
+        String adres;
+>>>>>>> 6facd8ab5b16846d8bc64ddf438cd5d6752e721c
         String token;
 
         try {
@@ -63,12 +67,21 @@ public class ServiceZgloszenia
 
             // Sprawdzenie czy JSON zgloszenia zawiera wszystkie potrzebne pola
             id_typu = json.getInt("id_typu");
+<<<<<<< HEAD
             //point = new PGpoint((String)json.get("wspolrzedne"));
             point = new PGpoint(json.getDouble("x"), json.getDouble("y"));
+=======
+            wspolrzedne.x = json.getDouble("x");
+            wspolrzedne.y = json.getDouble("y");
+>>>>>>> 6facd8ab5b16846d8bc64ddf438cd5d6752e721c
             opis = json.getString("opis");
+            adres = json.getString("adres");
             email_uzytkownika = json.getString("email_uzytkownika");
             token = json.getString("token");
+<<<<<<< HEAD
             
+=======
+>>>>>>> 6facd8ab5b16846d8bc64ddf438cd5d6752e721c
         } catch (JSONException ex) {
             return Response.ok("Niepoprawny format JSONa").build();
         } catch (Exception ex) {
@@ -77,10 +90,42 @@ public class ServiceZgloszenia
         }
 
         zgloszenia.setId_typu(id_typu);
-        zgloszenia.setWspolrzedne(point);
+        zgloszenia.setWspolrzedne(wspolrzedne);
         zgloszenia.setOpis(opis);
+        zgloszenia.setAdres(adres);
         zgloszenia.setEmail_uzytkownika(email_uzytkownika);
 
         return zgloszeniaDao.postZgloszenia(zgloszenia, token);
+<<<<<<< HEAD
+=======
+    }
+
+    @POST
+    @Path("/postStatusZgloszenia")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response updateStatusZgloszenia(String incomingData) {
+        Zgloszenia zgloszenia = new Zgloszenia();
+
+        int id_zgloszenia;
+        int id_statusu;
+
+        try {
+            JSONObject json = new JSONObject(incomingData);
+
+            // Wyciagniecie danych o zgloszeniu
+            json = json.getJSONObject("zgloszenia");
+
+            // Sprawdzenie czy JSON zgloszenia zawiera wszystkie potrzebne pola
+            id_zgloszenia=json.getInt("id_zgloszenia");
+            id_statusu=json.getInt("id_statusu");
+
+        } catch (JSONException ex) {
+            return Response.ok("Niepoprawny format JSONa").build();
+        }
+        zgloszenia.setId_zgloszenia(id_zgloszenia);
+        zgloszenia.setId_statusu(id_statusu);
+
+        return zgloszeniaDao.updateStatusZgloszenia(zgloszenia);
+>>>>>>> 6facd8ab5b16846d8bc64ddf438cd5d6752e721c
     }
 }

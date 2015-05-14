@@ -14,7 +14,7 @@ import org.postgresql.geometric.PGpoint;
 @Entity
 @Table(name="zgloszenia")
 @XmlRootElement(name="zgloszenia")
-@XmlType(propOrder={"id_zgloszenia", "id_typu", "id_statusu", "kalendarz", "wspolrzedne", "opis", "email_uzytkownika"})
+@XmlType(propOrder={"id_zgloszenia", "id_typu", "id_statusu", "kalendarz", "wspolrzedne", "opis", "email_uzytkownika", "adres"})
 public class Zgloszenia
 {
     @Id
@@ -33,6 +33,8 @@ public class Zgloszenia
     private String opis;
     @Column(name="email_uzytkownika")
     private String email_uzytkownika;
+    @Column(name="adres")
+    private String adres;
 
     @XmlElement
     public int getId_zgloszenia() {
@@ -95,5 +97,14 @@ public class Zgloszenia
 
     public void setEmail_uzytkownika(String email_uzytkownika) {
         this.email_uzytkownika = email_uzytkownika;
+    }
+
+    @XmlElement
+    public String getAdres() {
+        return adres;
+    }
+
+    public void setAdres(String adres) {
+        this.adres = adres;
     }
 }

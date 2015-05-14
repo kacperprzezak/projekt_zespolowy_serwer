@@ -20,7 +20,6 @@ import org.jboss.resteasy.client.ClientResponse;
 
 public class ClientTest
 {
-    
     private String dodajUzytkownika(String email, String haslo, long facebook, long google, String typ) {
         JSONObject json = null;
         try {
@@ -36,37 +35,143 @@ public class ClientTest
             return "Klient: Blad przy tworzeniu JSONa";
         }
 
+<<<<<<< HEAD
         String url_address = "http://virt2.iiar.pwr.edu.pl:8080/RestApi/service/uzytkownicy/registerWithGoogle";
        //String url_address = "http://localhost:8084/RestApi/service/uzytkownicy/registerWithGoogle";
+=======
+        String url_address = "http://localhost:8080/RestApi/service/uzytkownicy/post";
+>>>>>>> 6facd8ab5b16846d8bc64ddf438cd5d6752e721c
 
         String help;
         help = dataTransfer(json, url_address);
         return help;
     }
-    
-    private String login(String email, String haslo, long facebook, long google) {
+
+    private String register(String email, String haslo) {
         JSONObject json = null;
         try {
             json = new JSONObject()
                 .put("uzytkownicy", new JSONObject()
                     .put("email", email)
                     .put("haslo", haslo)
-                    .put("facebook", facebook)
-                    .put("google", google)
             );
         } catch (JSONException ex) {
             return "Klient: Blad przy tworzeniu JSONa";
         }
 
-       //String url_address = "http://virt2.iiar.pwr.edu.pl:8080/RestApi/service/uzytkownicy/login";
-       String url_address = "http://localhost:8084/RestApi/service/uzytkownicy/loginWithGoogle";
+        String url_address = "http://localhost:8080/RestApi/service/uzytkownicy/register";
 
         String help;
         help = dataTransfer(json, url_address);
         return help;
     }
 
+    private String registerWithFacebook(String email, long facebook) {
+        JSONObject json = null;
+        try {
+            json = new JSONObject()
+                .put("uzytkownicy", new JSONObject()
+                    .put("email", email)
+                    .put("facebook", facebook)
+            );
+        } catch (JSONException ex) {
+            return "Klient: Blad przy tworzeniu JSONa";
+        }
+
+        String url_address = "http://localhost:8080/RestApi/service/uzytkownicy/registerWithFacebook";
+
+        String help;
+        help = dataTransfer(json, url_address);
+        return help;
+    }
+
+    private String registerWithGoogle(String email, long google) {
+        JSONObject json = null;
+        try {
+            json = new JSONObject()
+                .put("uzytkownicy", new JSONObject()
+                    .put("email", email)
+                    .put("google", google)
+            );
+        } catch (JSONException ex) {
+            return "Klient: Blad przy tworzeniu JSONa";
+        }
+
+        String url_address = "http://localhost:8080/RestApi/service/uzytkownicy/registerWithGoogle";
+
+        String help;
+        help = dataTransfer(json, url_address);
+        return help;
+    }
+
+    private String login(String email, String haslo) {
+        JSONObject json = null;
+        try {
+            json = new JSONObject()
+                .put("uzytkownicy", new JSONObject()
+                    .put("email", email)
+                    .put("haslo", haslo)
+            );
+        } catch (JSONException ex) {
+            return "Klient: Blad przy tworzeniu JSONa";
+        }
+
+        String url_address = "http://localhost:8080/RestApi/service/uzytkownicy/login";
+
+        String help;
+        help = dataTransfer(json, url_address);
+        return help;
+    }
+
+    private String loginWithFacebook(String email, long facebook) {
+        JSONObject json = null;
+        try {
+            json = new JSONObject()
+                .put("uzytkownicy", new JSONObject()
+                    .put("email", email)
+                    .put("facebook", facebook)
+            );
+        } catch (JSONException ex) {
+            return "Klient: Blad przy tworzeniu JSONa";
+        }
+
+        String url_address = "http://localhost:8080/RestApi/service/uzytkownicy/loginWithFacebook";
+
+        String help;
+        help = dataTransfer(json, url_address);
+        return help;
+    }
+
+    private String loginWithGoogle(String email, long google) {
+        JSONObject json = null;
+
+        try {
+            json = new JSONObject()
+                .put("uzytkownicy", new JSONObject()
+                    .put("email", email)
+                    .put("google", google)
+            );
+        } catch (JSONException ex) {
+            return "Klient: Blad przy tworzeniu JSONa";
+        }
+
+<<<<<<< HEAD
+       //String url_address = "http://virt2.iiar.pwr.edu.pl:8080/RestApi/service/uzytkownicy/login";
+       String url_address = "http://localhost:8084/RestApi/service/uzytkownicy/loginWithGoogle";
+=======
+        String url_address = "http://localhost:8080/RestApi/service/uzytkownicy/loginWithGoogle";
+>>>>>>> 6facd8ab5b16846d8bc64ddf438cd5d6752e721c
+
+        String help;
+        help = dataTransfer(json, url_address);
+        return help;
+    }
+
+<<<<<<< HEAD
     private String dodajZgloszenie(int id_typu, double x, double y, String opis, String email_uzytkownika, String token) {
+=======
+    private String dodajZgloszenie(int id_typu, double x, double y, String opis, String adres, String email_uzytkownika, String token) {
+>>>>>>> 6facd8ab5b16846d8bc64ddf438cd5d6752e721c
         JSONObject json = null;
         try {
             json = new JSONObject()
@@ -75,6 +180,7 @@ public class ClientTest
                     .put("x", x)
                     .put("y", y)
                     .put("opis", opis)
+                    .put("adres", adres)
                     .put("email_uzytkownika", email_uzytkownika)
                     .put("token", token)
             );
@@ -84,6 +190,26 @@ public class ClientTest
 
         //String url_address = "http://localhost:8084/RestApi/service/zgloszenia/post";
         String url_address = "http://virt2.iiar.pwr.edu.pl:8080/RestApi/service/zgloszenia/post";
+
+        String help;
+        help = dataTransfer(json, url_address);
+        return help;
+    }
+
+    private String updateStatusZgloszenia(int id_zgloszenia,int id_statusu ) {
+        JSONObject json = null;
+        try {
+            json = new JSONObject()
+                .put("zgloszenia", new JSONObject()
+                    .put("id_zgloszenia", id_zgloszenia)
+                    .put("id_statusu", id_statusu)
+
+            );
+        } catch (JSONException ex) {
+            return "Klient: Blad przy tworzeniu JSONa";
+        }
+
+        String url_address = "http://localhost:8080/RestApi/service/zgloszenia/postStatusZgloszenia";
 
         String help;
         help = dataTransfer(json, url_address);
@@ -125,6 +251,7 @@ public class ClientTest
 
         return print_returned;
     }
+<<<<<<< HEAD
     
     public static void addZdjecie(int id, String directory) {
         try {
@@ -170,6 +297,9 @@ public class ClientTest
         }
     }
     
+=======
+
+>>>>>>> 6facd8ab5b16846d8bc64ddf438cd5d6752e721c
     public static void addZdjecie() {
         try {
             //URL url = new URL("http://localhost:8084/RestApi/service/zdjecia/post");
@@ -179,9 +309,14 @@ public class ClientTest
             connection.setRequestProperty("Content-Type", "multipart/form-data");
             connection.setConnectTimeout(5000);
             connection.setReadTimeout(5000);
+<<<<<<< HEAD
             
             File file = new File("C:\\Users\\Sebastian\\Desktop\\test.jpg");
             //int length = (int)file.length();
+=======
+
+            File file = new File("C:\\Users\\Sebastian\\Desktop\\Nowy folder\\studia\\aa.jpg");
+>>>>>>> 6facd8ab5b16846d8bc64ddf438cd5d6752e721c
             byte[] bytes = new byte[(int)file.length()];
             BufferedInputStream bis = new BufferedInputStream(new FileInputStream(file));
             bis.read(bytes, 0, bytes.length);
@@ -189,7 +324,7 @@ public class ClientTest
             OutputStream os = connection.getOutputStream();
             os.write(bytes, 0, bytes.length);
             os.flush();
-            
+
             BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
 
             while (in.readLine() != null) {
@@ -202,12 +337,70 @@ public class ClientTest
         }
     }
 
+    private String updatePassword(String haslo, String email) {
+        JSONObject json = null;
+        try {
+            json = new JSONObject()
+                .put("uzytkownicy", new JSONObject()
+                    .put("haslo", haslo)
+                    .put("email", email)
+
+            );
+        } catch (JSONException ex) {
+            return "Klient: Blad przy tworzeniu JSONa";
+        }
+
+        String url_address = "http://localhost:8080/RestApi/service/uzytkownicy/postPassword";
+        String help;
+        help = dataTransfer(json, url_address);
+        return help;
+    }
+
+    private String updateAdminRights(String haslo, String email, String uprawnienia) {
+        JSONObject json = null;
+        try {
+            json = new JSONObject()
+                .put("uzytkownicy", new JSONObject()
+                    .put("haslo", haslo)
+                    .put("email", email)
+                    .put("uprawnienia",uprawnienia )
+
+            );
+        } catch (JSONException ex) {
+            return "Klient: Blad przy tworzeniu JSONa";
+        }
+
+        String url_address = "http://localhost:8080/RestApi/service/uzytkownicy/postAdminRights";
+        String help;
+        help = dataTransfer(json, url_address);
+        return help;
+    }
+
+    private String logout(String email, String token) {
+        JSONObject json = null;
+        try {
+            json = new JSONObject()
+                .put("uzytkownicy", new JSONObject()
+                    .put("email", email)
+                    .put("token", token)
+            );
+        } catch (JSONException ex) {
+            return "Klient: Blad przy tworzeniu JSONa";
+        }
+
+        String url_address = "http://localhost:8080/RestApi/service/uzytkownicy/logout";
+        String help;
+        help = dataTransfer(json, url_address);
+        return help;
+    }
+
     public static void main(String[] args) {
         ClientTest test = new ClientTest();
 
-        String help;
+        String help = "";
 
         // TESTY - dokladniejsze informacje o bledach sa wypisywane w oknie serwera
+<<<<<<< HEAD
         //help = test.dodajUzytkownika("przyklad3@email.com", "1234", 1, 2, "facebook");
         //help = test.login("przyklad@email.com", "1234", 1, 2);
         //help = test.dodajZgloszenie(0, 51.15687078830179, 17.17881314456463, "opis", "194217@student.pwr.wroc.pl", "a8f591be9b5c19808bd116cc83eda419");
@@ -216,5 +409,22 @@ public class ClientTest
         //addZdjecie(13, "C:\\Users\\Sebastian\\Desktop\\Nowy folder\\studia\\aa.jpg");
         addZdjecie();
         //test();
+=======
+        //help = test.dodajUzytkownika("email5", "1234", 0, 0, "restapi");
+        //help = test.register("przyklad", "1234");
+        //help = test.registerWithFacebook("przyklad_facebook", 5);
+        //help = test.registerWithGoogle("przyklad_google", 5);
+        //help = test.login("email", "haslo");
+        //help = test.loginWithFacebook("email2", 1);
+        //help = test.loginWithGoogle("email3", 2);
+        //help = test.dodajZgloszenie(1, 100.094703, 127.021475, "opis", "adres", "email", "853babe4628d53896fa08402a43d9d4a");
+        //help = test.updatePassword("1234", "email");
+        //help = test.updateAdminRights("1234", "email", "admin");
+        //help = test.updateStatusZgloszenia(15, 2);
+        //help = test.logout("email3", "fa6d70d545f979afc65799effba534aa");
+
+        System.out.println(help);
+        //addZdjecie();
+>>>>>>> 6facd8ab5b16846d8bc64ddf438cd5d6752e721c
     }
 }

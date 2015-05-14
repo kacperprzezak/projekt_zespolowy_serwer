@@ -33,6 +33,7 @@ public class ZgloszeniaDao
                 zgloszenia.setWspolrzedne((PGpoint)resultSet.getObject("wspolrzedne"));
                 zgloszenia.setOpis(resultSet.getString("opis"));
                 zgloszenia.setEmail_uzytkownika(resultSet.getString("email_uzytkownika"));
+                zgloszenia.setAdres(resultSet.getString("adres"));
 
                 list.add(zgloszenia);
             }
@@ -64,6 +65,7 @@ public class ZgloszeniaDao
                 zgloszenia.setWspolrzedne((PGpoint)resultSet.getObject("wspolrzedne"));
                 zgloszenia.setOpis(resultSet.getString("opis"));
                 zgloszenia.setEmail_uzytkownika(resultSet.getString("email_uzytkownika"));
+                zgloszenia.setAdres(resultSet.getString("adres"));
             }
         }
         catch(Exception ex) {
@@ -94,6 +96,7 @@ public class ZgloszeniaDao
                 zgloszenia.setWspolrzedne((PGpoint)resultSet.getObject("wspolrzedne"));
                 zgloszenia.setOpis(resultSet.getString("opis"));
                 zgloszenia.setEmail_uzytkownika(resultSet.getString("email_uzytkownika"));
+                zgloszenia.setAdres(resultSet.getString("adres"));
 
                 list.add(zgloszenia);
             }
@@ -114,12 +117,23 @@ public class ZgloszeniaDao
             statement = connection.getConnection().createStatement();
             resultSet = statement.executeQuery("SELECT addZgloszenie(" + zgloszenia.getId_typu()
                     + ", POINT(" + zgloszenia.getWspolrzedne().x + ", " + zgloszenia.getWspolrzedne().y
+<<<<<<< HEAD
                     + "), '" + zgloszenia.getOpis() + "', '" + zgloszenia.getEmail_uzytkownika()
                     + "', '" + token + "')");
             
             while (resultSet.next()) {
                 zgloszenia.setId_zgloszenia(resultSet.getInt(1));
                 System.out.println(zgloszenia.getId_zgloszenia());
+=======
+                    + "), '" + zgloszenia.getOpis() + "', '" + zgloszenia.getAdres()
+                    + "', '" + zgloszenia.getEmail_uzytkownika() + "', '" + token + "'" + ")");
+
+            while (resultSet.next()) {
+                if (resultSet.getInt(1) == 0) {
+                    System.out.println("Funkcja z bazy zwrocila false :(");
+                    return Response.serverError().entity("Funkcja z bazy zwrocila false :(").build();
+                }
+>>>>>>> 6facd8ab5b16846d8bc64ddf438cd5d6752e721c
             }
         } catch (Exception ex) {
             // Wypisanie bledu na serwer
@@ -127,10 +141,17 @@ public class ZgloszeniaDao
 
             // Zwrocenie informacji o bledzie użytkownikowi
             if (ex.toString().contains("(email_uzytkownika)=") && ex.toString().contains("nie występuje")) {
+<<<<<<< HEAD
                 return Response.status(500).entity("Podany email_uzytkownika nie wystepuje w bazie danych").build();
             }
             else if (ex.toString().contains("(id_typu)=") && ex.toString().contains("nie występuje")) {
                 return Response.status(500).entity("Podane id_typu nie wystepuje w bazie danych").build();
+=======
+                return Response.serverError().entity("Podany email_uzytkownika nie wystepuje w bazie danych").build();
+            }
+            else if (ex.toString().contains("(id_typu)=") && ex.toString().contains("nie występuje")) {
+                return Response.serverError().entity("Podane id_typu nie wystepuje w bazie danych").build();
+>>>>>>> 6facd8ab5b16846d8bc64ddf438cd5d6752e721c
             }
 
             connection.closeConnection();
@@ -142,5 +163,29 @@ public class ZgloszeniaDao
             return Response.status(404).entity("Bład autoryzacji: niezgodny token").build();
         }
         return Response.ok("{\"id_zgloszenia\":" + zgloszenia.getId_zgloszenia() + "}").build();
+    }
+
+    public Response updateStatusZgloszenia(Zgloszenia zgloszenia)
+    {
+         Statement statement;
+
+        try {
+            connection.establishConnection();
+            statement = connection.getConnection().createStatement();
+            statement.executeQuery("UPDATE zgloszenia set id_statusu=3 WHERE id_zgloszenia=14");
+        } catch (Exception ex) {
+            // Wypisanie bledu na serwer
+            System.err.println(ex);
+
+            connection.closeConnection();
+            return Response.ok("Wystapil  blad").build();
+        }
+
+        connection.closeConnection();
+        return Response.ok("OK").build();
+
+
+
+
     }
 }

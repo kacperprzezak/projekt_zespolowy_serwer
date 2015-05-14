@@ -143,7 +143,7 @@ public class UzytkownicyDao
         connection.closeConnection();
         return Response.ok("OK").build();
     }
-    
+
     public Response register(Uzytkownicy uzytkownicy) {
         Statement statement;
 
@@ -167,7 +167,7 @@ public class UzytkownicyDao
         connection.closeConnection();
         return Response.ok("OK").build();
     }
-    
+
     public Response registerWithFacebook(Uzytkownicy uzytkownicy) {
         Statement statement;
 
@@ -194,7 +194,7 @@ public class UzytkownicyDao
         connection.closeConnection();
         return Response.ok("OK").build();
     }
-    
+
     public Response registerWithGoogle(Uzytkownicy uzytkownicy) {
         Statement statement;
         
@@ -221,7 +221,7 @@ public class UzytkownicyDao
         connection.closeConnection();
         return Response.ok("OK").build();
     }
-    
+
     public Response login(Uzytkownicy uzytkownicy) {
         Statement statement;
         ResultSet resultSet;
@@ -231,7 +231,7 @@ public class UzytkownicyDao
             statement = connection.getConnection().createStatement();
             resultSet = statement.executeQuery("SELECT login('" + uzytkownicy.getEmail()
                     + "', '" + uzytkownicy.getHaslo() + "')");
-            
+
             while (resultSet.next()) {
                 uzytkownicy.setToken(resultSet.getString(1));
             }
@@ -246,12 +246,16 @@ public class UzytkownicyDao
 
         connection.closeConnection();
         if (uzytkownicy.getToken() == null) {
+<<<<<<< HEAD
             return Response.ok("Nie ma takieg uzytkownika\n").build();
+=======
+            return Response.status(404).entity("Nie ma takiego uzytkownika").build();
+>>>>>>> 6facd8ab5b16846d8bc64ddf438cd5d6752e721c
         } else {
             return Response.ok("{\"token\":\"" + uzytkownicy.getToken() + "\"}").build();
         }
     }
-    
+
     public Response loginWithFacebook(Uzytkownicy uzytkownicy) {
         Statement statement;
         ResultSet resultSet;
@@ -260,8 +264,13 @@ public class UzytkownicyDao
             connection.establishConnection();
             statement = connection.getConnection().createStatement();
             resultSet = statement.executeQuery("SELECT loginWithFacebook('" + uzytkownicy.getEmail()
+<<<<<<< HEAD
                     + "', " + uzytkownicy.getFacebook() + ")");
             
+=======
+                    + "', '" + uzytkownicy.getFacebook() + "')");
+
+>>>>>>> 6facd8ab5b16846d8bc64ddf438cd5d6752e721c
             while (resultSet.next()) {
                 uzytkownicy.setToken(resultSet.getString(1));
             }
@@ -276,12 +285,12 @@ public class UzytkownicyDao
 
         connection.closeConnection();
         if (uzytkownicy.getToken() == null) {
-            return Response.status(404).entity("Nie ma takieg uzytkownika").build();
+            return Response.status(404).entity("Nie ma takiego uzytkownika").build();
         } else {
             return Response.ok("{\"token\":\"" + uzytkownicy.getToken() + "\"}").build();
         }
     }
-    
+
     public Response loginWithGoogle(Uzytkownicy uzytkownicy) {
         Statement statement;
         ResultSet resultSet;
@@ -290,8 +299,13 @@ public class UzytkownicyDao
             connection.establishConnection();
             statement = connection.getConnection().createStatement();
             resultSet = statement.executeQuery("SELECT loginWithGoogle('" + uzytkownicy.getEmail()
+<<<<<<< HEAD
                     + "', " + uzytkownicy.getGoogle() + ")");
             
+=======
+                    + "', '" + uzytkownicy.getGoogle() + "')");
+
+>>>>>>> 6facd8ab5b16846d8bc64ddf438cd5d6752e721c
             while (resultSet.next()) {
                 uzytkownicy.setToken(resultSet.getString(1));
                 System.out.println(uzytkownicy.getToken());
@@ -308,10 +322,94 @@ public class UzytkownicyDao
 
         connection.closeConnection();
         if (uzytkownicy.getToken() == null) {
-            return Response.status(404).entity("Nie ma takieg uzytkownika").build();
+            return Response.status(404).entity("Nie ma takiego uzytkownika").build();
         } else {
             return Response.ok("{\"token\":\"" + uzytkownicy.getToken() + "\"}").build();
         }
     }
-    
+
+    public Response updatePassword(Uzytkownicy uzytkownicy) throws Exception
+    {
+        Statement statement = null;
+        ResultSet resultSet = null;
+        try {
+            connection.establishConnection();
+            statement = connection.getConnection().createStatement();
+            resultSet=statement.executeQuery("UPDATE uzytkownicy set haslo='"+uzytkownicy.getHaslo()+"' WHERE email='"+
+                    uzytkownicy.getEmail()+"'");
+
+            while (resultSet.next()) {
+
+            }
+        } catch (Exception ex) {
+            if (!ex.toString().contains("Zapytanie nie zwróciło żadnych wyników.")
+                    && !ex.toString().contains("No results were returned")) {
+                System.out.println("Zapytanie nie zostalo wykonane: " + ex.toString());
+                connection.closeConnection();
+                return Response.status(500).entity("wystapil nieznany blad").build();
+            }
+        }
+        connection.closeConnection();
+        System.out.println("Zapytanie wykonane pomyslenie");
+
+        return Response.ok("ok").build();
+    }
+
+    public Response updateAdminRights(Uzytkownicy uzytkownicy) throws Exception
+    {
+        Statement statement = null;
+        ResultSet resultSet = null;
+        try {
+            connection.establishConnection();
+            statement = connection.getConnection().createStatement();
+            resultSet=statement.executeQuery("UPDATE uzytkownicy set uprawnienia='"+uzytkownicy.getUprawnienia()+"' WHERE email='"+
+                    uzytkownicy.getEmail()+"'AND haslo='"+uzytkownicy.getHaslo()+"'");
+
+            while (resultSet.next()) {
+
+            }
+        } catch (Exception ex) {
+            if (!ex.toString().contains("Zapytanie nie zwróciło żadnych wyników.")
+                    && !ex.toString().contains("No results were returned")) {
+                System.out.println("Zapytanie nie zostalo wykonane: " + ex.toString());
+                connection.closeConnection();
+                return Response.status(500).entity("wystapil nieznany blad").build();
+            }
+        }
+        connection.closeConnection();
+        System.out.println("Zapytanie wykonane pomyslenie");
+
+        return Response.ok("ok").build();
+    }
+
+    public Response logout(Uzytkownicy uzytkownicy) {
+        Statement statement;
+        ResultSet resultSet;
+
+        try {
+            connection.establishConnection();
+            statement = connection.getConnection().createStatement();
+            resultSet = statement.executeQuery("SELECT logout(" + "'" + uzytkownicy.getEmail() + "','"
+                    + uzytkownicy.getToken() + "'" + ");");
+
+            while (resultSet.next()) {
+                if (resultSet.getBoolean(1) == false) {
+                    System.out.println("Nieprawidlowy email lub token, albo uzytkownik nie jest zalogowany :(.");
+                    return Response.serverError().entity("Nieprawidlowy email lub token, albo uzytkownik nie jest zalogowany :(.").build();
+                }
+            }
+
+        } catch (Exception ex) {
+            if (!ex.toString().contains("Zapytanie nie zwróciło żadnych wyników.")
+                    && !ex.toString().contains("No results were returned")) {
+                System.out.println("Zapytanie nie zostalo wykonane: " + ex.toString());
+                connection.closeConnection();
+                return Response.serverError().entity("wystapil nieznany blad").build();
+            }
+        }
+        connection.closeConnection();
+        System.out.println("Zapytanie wykonane pomyslenie");
+
+        return Response.ok("ok").build();
+    }
 }
