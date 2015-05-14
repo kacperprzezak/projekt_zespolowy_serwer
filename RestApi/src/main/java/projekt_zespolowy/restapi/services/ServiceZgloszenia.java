@@ -49,7 +49,7 @@ public class ServiceZgloszenia
         Zgloszenia zgloszenia = new Zgloszenia();
 
         int id_typu;
-        PGpoint point;
+        PGpoint wspolrzedne = new PGpoint();
         String opis;
         String email_uzytkownika;
         String adres;
@@ -63,24 +63,24 @@ public class ServiceZgloszenia
 
             // Sprawdzenie czy JSON zgloszenia zawiera wszystkie potrzebne pola
             id_typu = json.getInt("id_typu");
-            point = new PGpoint((String)json.get("wspolrzedne"));
+            wspolrzedne.x = json.getDouble("x");
+            wspolrzedne.y = json.getDouble("y");
             opis = json.getString("opis");
             adres = json.getString("adres");
             email_uzytkownika = json.getString("email_uzytkownika");
             token = json.getString("token");
-        } catch (JSONException | SQLException ex) {
+        } catch (JSONException ex) {
             return Response.ok("Niepoprawny format JSONa").build();
         }
 
         zgloszenia.setId_typu(id_typu);
-        zgloszenia.setWspolrzedne(point);
+        zgloszenia.setWspolrzedne(wspolrzedne);
         zgloszenia.setOpis(opis);
         zgloszenia.setAdres(adres);
         zgloszenia.setEmail_uzytkownika(email_uzytkownika);
 
         return zgloszeniaDao.postZgloszenia(zgloszenia, token);
     }
-
 
     @POST
     @Path("/postStatusZgloszenia")
