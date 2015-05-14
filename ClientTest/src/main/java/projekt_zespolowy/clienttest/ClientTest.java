@@ -302,6 +302,24 @@ public class ClientTest
         return help;
     }
 
+    private String logout(String email, String token) {
+        JSONObject json = null;
+        try {
+            json = new JSONObject()
+                .put("uzytkownicy", new JSONObject()
+                    .put("email", email)
+                    .put("token", token)
+            );
+        } catch (JSONException ex) {
+            return "Klient: Blad przy tworzeniu JSONa";
+        }
+
+        String url_address = "http://localhost:8080/RestApi/service/uzytkownicy/logout";
+        String help;
+        help = dataTransfer(json, url_address);
+        return help;
+    }
+
     public static void main(String[] args) {
         ClientTest test = new ClientTest();
 
@@ -319,6 +337,7 @@ public class ClientTest
         //help = test.updatePassword("1234", "email");
         //help = test.updateAdminRights("1234", "email", "admin");
         //help = test.updateStatusZgloszenia(15, 2);
+        //help = test.logout("email3", "fa6d70d545f979afc65799effba534aa");
 
         System.out.println(help);
         //addZdjecie();

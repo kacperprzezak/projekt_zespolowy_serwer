@@ -122,8 +122,8 @@ public class ZgloszeniaDao
 
             while (resultSet.next()) {
                 if (resultSet.getInt(1) == 0) {
-                    System.out.println("Podany uzytkownik nie jest zalogowany lub token jest nieprawidlowy");
-                    return Response.serverError().entity("Podany uzytkownik nie jest zalogowany lub token jest nieprawidlowy").build();
+                    System.out.println("Funkcja z bazy zwrocila false :(");
+                    return Response.serverError().entity("Funkcja z bazy zwrocila false :(").build();
                 }
             }
         } catch (Exception ex) {

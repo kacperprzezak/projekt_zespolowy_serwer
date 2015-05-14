@@ -364,4 +364,35 @@ public class UzytkownicyDao
 
         return Response.ok("ok").build();
     }
+
+    public Response logout(Uzytkownicy uzytkownicy) {
+        Statement statement;
+        ResultSet resultSet;
+
+        try {
+            connection.establishConnection();
+            statement = connection.getConnection().createStatement();
+            resultSet = statement.executeQuery("SELECT logout(" + "'" + uzytkownicy.getEmail() + "','"
+                    + uzytkownicy.getToken() + "'" + ");");
+
+            while (resultSet.next()) {
+                if (resultSet.getBoolean(1) == false) {
+                    System.out.println("Nieprawidlowy email lub token, albo uzytkownik nie jest zalogowany :(.");
+                    return Response.serverError().entity("Nieprawidlowy email lub token, albo uzytkownik nie jest zalogowany :(.").build();
+                }
+            }
+
+        } catch (Exception ex) {
+            if (!ex.toString().contains("Zapytanie nie zwróciło żadnych wyników.")
+                    && !ex.toString().contains("No results were returned")) {
+                System.out.println("Zapytanie nie zostalo wykonane: " + ex.toString());
+                connection.closeConnection();
+                return Response.serverError().entity("wystapil nieznany blad").build();
+            }
+        }
+        connection.closeConnection();
+        System.out.println("Zapytanie wykonane pomyslenie");
+
+        return Response.ok("ok").build();
+    }
 }
