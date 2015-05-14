@@ -42,11 +42,11 @@ public class ZdjeciaDao {
 
         try {
             connection.establishConnection();
-            FileInputStream fis = new FileInputStream(file);
-            PreparedStatement ps = connection.getConnection().prepareStatement("INSERT INTO zdjecia (id_zgloszenia, zdjecie) VALUES (?, ?)");
+            FileInputStream fis = new FileInputStream(file);System.out.println("Weszlem");
+            PreparedStatement ps = connection.getConnection().prepareStatement("INSERT INTO zdjecia (id_zgloszenia, zdjecie) VALUES (?, ?)");System.out.println("Weszlem");
             ps.setInt(1, id);
             ps.setBinaryStream(2, fis, (int) file.length());
-            //ps.setBytes(2, zdjecia.getZdjecie());
+
             ps.executeUpdate();
             ps.close();
             fis.close();
