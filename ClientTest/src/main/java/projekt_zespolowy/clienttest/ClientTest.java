@@ -337,7 +337,7 @@ public class ClientTest
         //help = test.updatePassword("1234", "email");
         //help = test.updateAdminRights("1234", "email", "admin");
         //help = test.updateStatusZgloszenia(15, 2);
-        //help = test.logout("email3", "fa6d70d545f979afc65799effba534aa");
+        //help = test.logout("email3", "fa6d70d545f979afc65799effba534ab");
 
         System.out.println(help);
         //addZdjecie();
