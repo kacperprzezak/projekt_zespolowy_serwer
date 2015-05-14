@@ -13,26 +13,15 @@ import javax.xml.bind.annotation.XmlType;
 @Entity
 @Table(name="zdjecia")
 @XmlRootElement(name="zdjecia")
-@XmlType(propOrder={"id_zdjecia", "id_zgloszenia", "zdjecie"})
+@XmlType(propOrder={"id_zgloszenia", "zdjecie"})
 public class Zdjecia {
     
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
-    @Column(name="id_zdjecia")
-    private int id_zdjecia;
     @Column(name="id_zgloszenia")
     private int id_zgloszenia;
     @Column(name="zdjecie")
     private byte[] zdjecie;
-
-    @XmlElement
-    public int getId_zdjecia() {
-        return id_zdjecia;
-    }
-
-    public void setId_zdjecia(int id_zdjecia) {
-        this.id_zdjecia = id_zdjecia;
-    }
 
     @XmlElement
     public int getId_zgloszenia() {
