@@ -33,6 +33,7 @@ public class ZgloszeniaDao
                 zgloszenia.setWspolrzedne((PGpoint)resultSet.getObject("wspolrzedne"));
                 zgloszenia.setOpis(resultSet.getString("opis"));
                 zgloszenia.setEmail_uzytkownika(resultSet.getString("email_uzytkownika"));
+                zgloszenia.setAdres(resultSet.getString("adres"));
 
                 list.add(zgloszenia);
             }
@@ -64,6 +65,7 @@ public class ZgloszeniaDao
                 zgloszenia.setWspolrzedne((PGpoint)resultSet.getObject("wspolrzedne"));
                 zgloszenia.setOpis(resultSet.getString("opis"));
                 zgloszenia.setEmail_uzytkownika(resultSet.getString("email_uzytkownika"));
+                zgloszenia.setAdres(resultSet.getString("adres"));
             }
         }
         catch(Exception ex) {
@@ -94,6 +96,7 @@ public class ZgloszeniaDao
                 zgloszenia.setWspolrzedne((PGpoint)resultSet.getObject("wspolrzedne"));
                 zgloszenia.setOpis(resultSet.getString("opis"));
                 zgloszenia.setEmail_uzytkownika(resultSet.getString("email_uzytkownika"));
+                zgloszenia.setAdres(resultSet.getString("adres"));
 
                 list.add(zgloszenia);
             }
@@ -105,25 +108,34 @@ public class ZgloszeniaDao
         return list;
     }
 
-    public Response postZgloszenia(Zgloszenia zgloszenia) {
+    public Response postZgloszenia(Zgloszenia zgloszenia, String token) {
         Statement statement;
+        ResultSet resultSet;
 
         try {
             connection.establishConnection();
             statement = connection.getConnection().createStatement();
-            statement.executeQuery("SELECT addZgloszenie(" + zgloszenia.getId_typu()
+            resultSet = statement.executeQuery("SELECT addZgloszenie(" + zgloszenia.getId_typu()
                     + ", POINT(" + zgloszenia.getWspolrzedne().x + ", " + zgloszenia.getWspolrzedne().y
-                    + "), '" + zgloszenia.getOpis() + "', '" + zgloszenia.getEmail_uzytkownika() + "'" + ")");
+                    + "), '" + zgloszenia.getOpis() + "', '" + zgloszenia.getAdres()
+                    + "', '" + zgloszenia.getEmail_uzytkownika() + "', '" + token + "'" + ")");
+
+            while (resultSet.next()) {
+                if (resultSet.getInt(1) == 0) {
+                    System.out.println("Podany uzytkownik nie jest zalogowany lub token jest nieprawidlowy");
+                    return Response.serverError().entity("Podany uzytkownik nie jest zalogowany lub token jest nieprawidlowy").build();
+                }
+            }
         } catch (Exception ex) {
             // Wypisanie bledu na serwer
             System.err.println(ex);
 
             // Zwrocenie informacji o bledzie użytkownikowi
             if (ex.toString().contains("(email_uzytkownika)=") && ex.toString().contains("nie występuje")) {
-                return Response.ok("Podany email_uzytkownika nie wystepuje w bazie danych").build();
+                return Response.serverError().entity("Podany email_uzytkownika nie wystepuje w bazie danych").build();
             }
             else if (ex.toString().contains("(id_typu)=") && ex.toString().contains("nie występuje")) {
-                return Response.ok("Podane id_typu nie wystepuje w bazie danych").build();
+                return Response.serverError().entity("Podane id_typu nie wystepuje w bazie danych").build();
             }
 
             connection.closeConnection();
@@ -133,9 +145,9 @@ public class ZgloszeniaDao
         connection.closeConnection();
         return Response.ok("OK").build();
     }
-    
+
     public Response updateStatusZgloszenia(Zgloszenia zgloszenia)
-    {              
+    {
          Statement statement;
 
         try {
@@ -145,16 +157,16 @@ public class ZgloszeniaDao
         } catch (Exception ex) {
             // Wypisanie bledu na serwer
             System.err.println(ex);
-            
+
             connection.closeConnection();
             return Response.ok("Wystapil  blad").build();
         }
 
         connection.closeConnection();
         return Response.ok("OK").build();
-        
-        
-        
-        
+
+
+
+
     }
 }

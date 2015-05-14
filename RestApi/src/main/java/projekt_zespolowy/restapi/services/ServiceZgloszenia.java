@@ -52,6 +52,8 @@ public class ServiceZgloszenia
         PGpoint point;
         String opis;
         String email_uzytkownika;
+        String adres;
+        String token;
 
         try {
             JSONObject json = new JSONObject(incomingData);
@@ -63,7 +65,9 @@ public class ServiceZgloszenia
             id_typu = json.getInt("id_typu");
             point = new PGpoint((String)json.get("wspolrzedne"));
             opis = json.getString("opis");
+            adres = json.getString("adres");
             email_uzytkownika = json.getString("email_uzytkownika");
+            token = json.getString("token");
         } catch (JSONException | SQLException ex) {
             return Response.ok("Niepoprawny format JSONa").build();
         }
@@ -71,9 +75,10 @@ public class ServiceZgloszenia
         zgloszenia.setId_typu(id_typu);
         zgloszenia.setWspolrzedne(point);
         zgloszenia.setOpis(opis);
+        zgloszenia.setAdres(adres);
         zgloszenia.setEmail_uzytkownika(email_uzytkownika);
 
-        return zgloszeniaDao.postZgloszenia(zgloszenia);
+        return zgloszeniaDao.postZgloszenia(zgloszenia, token);
     }
 
 

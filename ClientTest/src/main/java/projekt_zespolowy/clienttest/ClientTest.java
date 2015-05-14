@@ -153,7 +153,7 @@ public class ClientTest
         return help;
     }
 
-    private String dodajZgloszenie(int id_typu, PGpoint punkt, String opis, String email_uzytkownika) {
+    private String dodajZgloszenie(int id_typu, PGpoint punkt, String opis, String adres, String email_uzytkownika, String token) {
         JSONObject json = null;
         try {
             json = new JSONObject()
@@ -161,7 +161,9 @@ public class ClientTest
                     .put("id_typu", id_typu)
                     .put("wspolrzedne", punkt)
                     .put("opis", opis)
+                    .put("adres", adres)
                     .put("email_uzytkownika", email_uzytkownika)
+                    .put("token", token)
             );
         } catch (JSONException ex) {
             return "Klient: Blad przy tworzeniu JSONa";
@@ -312,7 +314,7 @@ public class ClientTest
         //help = test.login("email", "haslo");
         //help = test.loginWithFacebook("email2", 1);
         //help = test.loginWithGoogle("email3", 2);
-        //help = test.dodajZgloszenie(1, new PGpoint(51.094703, 17.021475), "opis", "email");
+        //help = test.dodajZgloszenie(1, new PGpoint(51.094703, 17.021475), "opis", "adres", "email", "853babe4628d53896fa08402a43d9d4a");
         //help = test.updatePassword("1234", "email");
         //help = test.updateAdminRights("1234", "email", "admin");
         //help = test.updateStatusZgloszenia(15, 2);
