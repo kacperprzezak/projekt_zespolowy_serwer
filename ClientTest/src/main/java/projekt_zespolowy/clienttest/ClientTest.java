@@ -182,20 +182,21 @@ public class ClientTest
         return help;
     }
 
-    private String updateStatusZgloszenia(int id_zgloszenia,int id_statusu ) {
+    private String updateStatusZgloszenia(String email, String token, int id_zgloszenia, int id_statusu) {
         JSONObject json = null;
         try {
             json = new JSONObject()
                 .put("zgloszenia", new JSONObject()
+                    .put("email", email)
+                    .put("token", token)
                     .put("id_zgloszenia", id_zgloszenia)
                     .put("id_statusu", id_statusu)
-
             );
         } catch (JSONException ex) {
             return "Klient: Blad przy tworzeniu JSONa";
         }
 
-        String url_address = "http://localhost:8080/RestApi/service/zgloszenia/postStatusZgloszenia";
+        String url_address = "http://localhost:8080/RestApi/service/zgloszenia/updateStatusZgloszenia";
 
         String help;
         help = dataTransfer(json, url_address);
@@ -237,36 +238,6 @@ public class ClientTest
 
         return print_returned;
     }
-
-    /*public static void addZdjecie() {
-        try {
-            URL url = new URL("http://localhost:8084/RestApi/service/zdjecia/post");
-            URLConnection connection = url.openConnection();
-            connection.setDoOutput(true);
-            connection.setRequestProperty("Content-Type", "multipart/form-data");
-            connection.setConnectTimeout(5000);
-            connection.setReadTimeout(5000);
-
-            File file = new File("C:\\Users\\Sebastian\\Desktop\\Nowy folder\\studia\\aa.jpg");
-            byte[] bytes = new byte[(int)file.length()];
-            BufferedInputStream bis = new BufferedInputStream(new FileInputStream(file));
-            bis.read(bytes, 0, bytes.length);
-            OutputStream os = connection.getOutputStream();
-
-            os.write(bytes, 0, bytes.length);
-            os.flush();
-
-            BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-
-            while (in.readLine() != null) {
-            }
-            System.out.println("\nSukces");
-            in.close();
-        } catch (Exception e) {
-            System.out.println("\nNie przeszlo");
-            System.out.println(e);
-        }
-    }*/
 
     public static void addZdjecie() {
         try {
@@ -411,7 +382,7 @@ public class ClientTest
         //help = test.dodajZgloszenie(1, 100.094703, 127.021475, "opis", "adres", "194217@student.pwr.wroc.pl", "f2f0997fd69cda2407a2506216a6daf0");
         //help = test.updatePassword("1234", "email");
         //help = test.updateUprawnienia("email", "853babe4628d53896fa08402a43d9d4a", "email2", "moderator");
-        //help = test.updateStatusZgloszenia(15, 2);
+        //help = test.updateStatusZgloszenia("email", "6c132f4f9897a335baf8140e37c8e65c", 120, 1);
         //help = test.logout("email3", "fa6d70d545f979afc65799effba534ab");
         //help = test.changeGoogle("przyklad2@email.com", 123456, "ac54e17ef970bb7acd7ecf247653f942");
         //help = test.activate("email2");

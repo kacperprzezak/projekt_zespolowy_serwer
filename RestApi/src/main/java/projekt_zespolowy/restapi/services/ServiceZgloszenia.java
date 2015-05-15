@@ -82,11 +82,13 @@ public class ServiceZgloszenia
     }
 
     @POST
-    @Path("/postStatusZgloszenia")
+    @Path("/updateStatusZgloszenia")
     @Consumes(MediaType.APPLICATION_JSON)
     public Response updateStatusZgloszenia(String incomingData) {
         Zgloszenia zgloszenia = new Zgloszenia();
 
+        String email;
+        String token;
         int id_zgloszenia;
         int id_statusu;
 
@@ -97,8 +99,10 @@ public class ServiceZgloszenia
             json = json.getJSONObject("zgloszenia");
 
             // Sprawdzenie czy JSON zgloszenia zawiera wszystkie potrzebne pola
-            id_zgloszenia=json.getInt("id_zgloszenia");
-            id_statusu=json.getInt("id_statusu");
+            email = json.getString("email");
+            token = json.getString("token");
+            id_zgloszenia = json.getInt("id_zgloszenia");
+            id_statusu = json.getInt("id_statusu");
 
         } catch (JSONException ex) {
             return Response.ok("Niepoprawny format JSONa").build();
@@ -106,6 +110,6 @@ public class ServiceZgloszenia
         zgloszenia.setId_zgloszenia(id_zgloszenia);
         zgloszenia.setId_statusu(id_statusu);
 
-        return zgloszeniaDao.updateStatusZgloszenia(zgloszenia);
+        return zgloszeniaDao.updateStatusZgloszenia(zgloszenia, email, token);
     }
 }

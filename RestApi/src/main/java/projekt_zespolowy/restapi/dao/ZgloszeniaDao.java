@@ -148,32 +148,32 @@ public class ZgloszeniaDao
         return Response.ok("{\"id_zgloszenia\":" + zgloszenia.getId_zgloszenia() + "}").build();
     }
 
-
-     public Response updateStatusZgloszenia(Zgloszenia zgloszenia)
+     public Response updateStatusZgloszenia(Zgloszenia zgloszenia, String email, String token)
     {
-         Statement statement;
+        Statement statement;
+        ResultSet resultSet;
 
         try {
             connection.establishConnection();
             statement = connection.getConnection().createStatement();
-            statement.executeQuery("UPDATE zgloszenia set id_statusu='"+zgloszenia.getId_statusu()+
-                    "'WHERE id_zgloszenia='"+zgloszenia.getId_zgloszenia()+"'");
+            resultSet = statement.executeQuery("SELECT updatestatuszgloszenia(" + "'" + email
+                    + "','" + token + "'," + zgloszenia.getId_zgloszenia() + "," + zgloszenia.getId_statusu() + ");");
+
+            while (resultSet.next()) {
+                if (resultSet.getInt(1) == 1) {
+                    System.out.println("Funkcja z bazy zwrocila blad :(");
+                    return Response.serverError().entity("Funkcja z bazy zwrocila blad :(").build();
+                }
+            }
         } catch (Exception ex) {
             // Wypisanie bledu na serwer
             System.err.println(ex);
 
             connection.closeConnection();
-            return Response.ok("Wystapil  blad").build();
+            return Response.serverError().entity("Wystapil nieznany blad").build();
         }
 
         connection.closeConnection();
         return Response.ok("OK").build();
-
-
-
-
     }
-
-
-
 }
