@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.ws.rs.core.Response;
 import org.postgresql.geometric.PGpoint;
+import org.postgresql.util.PSQLException;
 import projekt_zespolowy.restapi.model.Zgloszenia;
 import projekt_zespolowy.restapi.util.DatabaseConnection;
 
@@ -153,11 +154,13 @@ public class ZgloszeniaDao
     {
          Statement statement;
 
-        try {
-            connection.establishConnection();
-            statement = connection.getConnection().createStatement();
+        try {System.out.println("tu");
+            connection.establishConnection();System.out.println("tu");
+            statement = connection.getConnection().createStatement();System.out.println("tu");
             statement.executeQuery("UPDATE zgloszenia set id_statusu='"+zgloszenia.getId_statusu()+
-                    "'WHERE id_zgloszenia='"+zgloszenia.getId_zgloszenia()+"'");
+                    "'WHERE id_zgloszenia='"+zgloszenia.getId_zgloszenia()+"'");System.out.println("tu");
+        } catch (PSQLException ex) {
+            return Response.ok("OK").build();
         } catch (Exception ex) {
             // Wypisanie bledu na serwer
             System.err.println(ex);

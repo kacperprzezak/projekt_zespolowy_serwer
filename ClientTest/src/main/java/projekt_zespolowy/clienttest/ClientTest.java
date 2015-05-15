@@ -195,7 +195,8 @@ public class ClientTest
             return "Klient: Blad przy tworzeniu JSONa";
         }
 
-        String url_address = "http://localhost:8080/RestApi/service/zgloszenia/postStatusZgloszenia";
+        //String url_address = "http://localhost:8084/RestApi/service/zgloszenia/postStatusZgloszenia";
+        String url_address = "http://virt2.iiar.pwr.edu.pl:8080/RestApi/service/zgloszenia/postStatusZgloszenia";
 
         String help;
         help = dataTransfer(json, url_address);
@@ -411,7 +412,7 @@ public class ClientTest
         //help = test.dodajZgloszenie(1, 100.094703, 127.021475, "opis", "adres", "194217@student.pwr.wroc.pl", "f2f0997fd69cda2407a2506216a6daf0");
         //help = test.updatePassword("1234", "email");
         //help = test.updateUprawnienia("email", "853babe4628d53896fa08402a43d9d4a", "email2", "moderator");
-        //help = test.updateStatusZgloszenia(15, 2);
+        help = test.updateStatusZgloszenia(31, 3);
         //help = test.logout("email3", "fa6d70d545f979afc65799effba534ab");
         //help = test.changeGoogle("przyklad2@email.com", 123456, "ac54e17ef970bb7acd7ecf247653f942");
         //help = test.activate("email2");
