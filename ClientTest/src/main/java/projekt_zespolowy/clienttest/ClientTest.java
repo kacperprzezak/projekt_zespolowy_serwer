@@ -321,21 +321,21 @@ public class ClientTest
         return help;
     }
 
-    private String updateAdminRights(String haslo, String email, String uprawnienia) {
+    private String updateUprawnienia(String admin_email, String token, String user_email, String uprawnienia) {
         JSONObject json = null;
         try {
             json = new JSONObject()
                 .put("uzytkownicy", new JSONObject()
-                    .put("haslo", haslo)
-                    .put("email", email)
-                    .put("uprawnienia",uprawnienia )
-
+                    .put("admin_email", admin_email)
+                    .put("token", token)
+                    .put("user_email", user_email)
+                    .put("uprawnienia", uprawnienia)
             );
         } catch (JSONException ex) {
             return "Klient: Blad przy tworzeniu JSONa";
         }
 
-        String url_address = "http://localhost:8080/RestApi/service/uzytkownicy/postAdminRights";
+        String url_address = "http://localhost:8080/RestApi/service/uzytkownicy/updateUprawnienia";
         String help;
         help = dataTransfer(json, url_address);
         return help;
@@ -410,13 +410,14 @@ public class ClientTest
         //help = test.loginWithGoogle("email3", 2);
         //help = test.dodajZgloszenie(1, 100.094703, 127.021475, "opis", "adres", "194217@student.pwr.wroc.pl", "f2f0997fd69cda2407a2506216a6daf0");
         //help = test.updatePassword("1234", "email");
-        //help = test.updateAdminRights("1234", "email", "admin");
+        //help = test.updateUprawnienia("email", "853babe4628d53896fa08402a43d9d4a", "email2", "moderator");
         //help = test.updateStatusZgloszenia(15, 2);
         //help = test.logout("email3", "fa6d70d545f979afc65799effba534ab");
         //help = test.changeGoogle("przyklad2@email.com", 123456, "ac54e17ef970bb7acd7ecf247653f942");
         //help = test.activate("email2");
 
-        //System.out.println(help);
-        addZdjecie();
+        //addZdjecie();
+
+        System.out.println(help);
     }
 }

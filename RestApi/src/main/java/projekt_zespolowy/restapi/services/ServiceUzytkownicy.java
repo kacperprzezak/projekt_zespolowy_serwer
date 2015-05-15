@@ -337,20 +337,21 @@ public class ServiceUzytkownicy
     }
 
     @POST
-    @Path("/postAdminRights")
+    @Path("/updateUprawnienia")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response updateAdminRights(String incomingData) throws Exception
-    {
+    public Response updateUprawnienia(String incomingData) {
         Uzytkownicy uzytkownicy = new Uzytkownicy();
-        String haslo = null;
-        String email = null;
-        String uprawnienia = null;
+        String admin_email;
+        String token;
+        String user_email;
+        String uprawnienia;
 
         try {
             JSONObject json = new JSONObject(incomingData);
             json = json.getJSONObject("uzytkownicy");
-            email = json.getString("email");
-            haslo = json.getString("haslo");
+            admin_email = json.getString("admin_email");
+            token = json.getString("token");
+            user_email = json.getString("user_email");
             uprawnienia = json.getString("uprawnienia");
 
         } catch (JSONException ex) {
@@ -360,11 +361,12 @@ public class ServiceUzytkownicy
             System.err.println(ex.toString());
             return Response.serverError().build();
         }
-        uzytkownicy.setHaslo(haslo);
-        uzytkownicy.setEmail(email);
+
+        uzytkownicy.setEmail(admin_email);
+        uzytkownicy.setToken(token);
         uzytkownicy.setUprawnienia(uprawnienia);
 
-        return uzytkownicyDao.updateAdminRights(uzytkownicy);
+        return uzytkownicyDao.updateUprawnienia(uzytkownicy, user_email);
     }
 
     @POST

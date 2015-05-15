@@ -370,18 +370,21 @@ public class UzytkownicyDao
         return Response.ok("ok").build();
     }
 
-    public Response updateAdminRights(Uzytkownicy uzytkownicy) throws Exception
-    {
+    public Response updateUprawnienia(Uzytkownicy uzytkownicy, String user_email) {
         Statement statement = null;
         ResultSet resultSet = null;
         try {
             connection.establishConnection();
             statement = connection.getConnection().createStatement();
-            resultSet=statement.executeQuery("UPDATE uzytkownicy set uprawnienia='"+uzytkownicy.getUprawnienia()+"' WHERE email='"+
-                    uzytkownicy.getEmail()+"'AND haslo='"+uzytkownicy.getHaslo()+"'");
+            resultSet=statement.executeQuery("SELECT updateuprawnienia(" + "'" + uzytkownicy.getEmail()
+                    + "','" + uzytkownicy.getToken() + "','" + user_email + "', '"
+                    + uzytkownicy.getUprawnienia() + "');");
 
             while (resultSet.next()) {
-
+                if (resultSet.getInt(1) == 1) {
+                    System.out.println("Funkcja z bazy zwrocila blad :(.");
+                    return Response.serverError().entity("Funkcja z bazy zwrocila blad :(.").build();
+                }
             }
         } catch (Exception ex) {
             if (!ex.toString().contains("Zapytanie nie zwróciło żadnych wyników.")
