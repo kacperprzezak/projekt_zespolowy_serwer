@@ -89,6 +89,17 @@ public class Zgloszenia
     public void setOpis(String opis) {
         this.opis = opis;
     }
+    
+    public void cutOpis(int length) {
+        if (opis.length() < length) {
+            return;
+        }
+        opis = opis.substring(0, length);
+        
+        while (opis.charAt(--length) != ' ') {
+        }
+        opis = opis.substring(0, length) + "...";
+    }
 
     @XmlElement
     public String getEmail_uzytkownika() {

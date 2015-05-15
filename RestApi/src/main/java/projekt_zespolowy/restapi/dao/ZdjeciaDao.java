@@ -37,12 +37,9 @@ public class ZdjeciaDao {
     }
     
     public int postZdjecia(int id, File file) throws Exception {
-        Statement statement = null;
-        ResultSet resultSet = null;
-
         try {
             connection.establishConnection();
-            FileInputStream fis = new FileInputStream(file);System.out.println("Weszlem");
+            FileInputStream fis = new FileInputStream(file);
             PreparedStatement ps = connection.getConnection().prepareStatement("INSERT INTO zdjecia (id_zgloszenia, zdjecie) VALUES (?, ?)");System.out.println("Weszlem");
             ps.setInt(1, id);
             ps.setBinaryStream(2, fis, (int) file.length());

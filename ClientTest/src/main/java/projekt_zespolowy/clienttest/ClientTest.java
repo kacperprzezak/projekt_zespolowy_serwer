@@ -1,5 +1,8 @@
 package projekt_zespolowy.clienttest;
 
+import com.sun.jersey.api.client.Client;
+import com.sun.jersey.api.client.ClientHandlerException;
+import com.sun.jersey.api.client.WebResource;
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.File;
@@ -12,6 +15,7 @@ import java.net.URL;
 import java.net.URLConnection;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
+import org.jboss.resteasy.client.ClientResponse;
 import org.postgresql.geometric.PGpoint;
 
 public class ClientTest
@@ -88,7 +92,8 @@ public class ClientTest
             return "Klient: Blad przy tworzeniu JSONa";
         }
 
-        String url_address = "http://localhost:8080/RestApi/service/uzytkownicy/registerWithGoogle";
+        //String url_address = "http://localhost:8084/RestApi/service/uzytkownicy/registerWithGoogle";
+        String url_address = "http://virt2.iiar.pwr.edu.pl:8080/RestApi/service/uzytkownicy/registerWithGoogle";
 
         String help;
         help = dataTransfer(json, url_address);
@@ -126,7 +131,8 @@ public class ClientTest
             return "Klient: Blad przy tworzeniu JSONa";
         }
 
-        String url_address = "http://localhost:8080/RestApi/service/uzytkownicy/loginWithFacebook";
+        //String url_address = "http://localhost:8080/RestApi/service/uzytkownicy/loginWithFacebook";
+        String url_address = "http://virt2.iiar.pwr.edu.pl:8080/RestApi/service/uzytkownicy/loginWithFacebook";
 
         String help;
         help = dataTransfer(json, url_address);
@@ -170,7 +176,8 @@ public class ClientTest
             return "Klient: Blad przy tworzeniu JSONa";
         }
 
-        String url_address = "http://localhost:8080/RestApi/service/zgloszenia/post";
+        //String url_address = "http://localhost:8084/RestApi/service/zgloszenia/post";
+        String url_address = ("http://virt2.iiar.pwr.edu.pl:8080/RestApi/service/zgloszenia/post");
 
         String help;
         help = dataTransfer(json, url_address);
@@ -233,7 +240,7 @@ public class ClientTest
         return print_returned;
     }
 
-    public static void addZdjecie() {
+    /*public static void addZdjecie() {
         try {
             URL url = new URL("http://localhost:8084/RestApi/service/zdjecia/post");
             URLConnection connection = url.openConnection();
@@ -260,6 +267,40 @@ public class ClientTest
         } catch (Exception e) {
             System.out.println("\nNie przeszlo");
             System.out.println(e);
+        }
+    }*/
+    
+    public static void addZdjecie() {
+        try {
+            //URL url = new URL("http://localhost:8084/RestApi/service/zdjecia/post");
+            URL url = new URL("http://virt2.iiar.pwr.edu.pl:8080/RestApi/service/zdjecia/post");
+            File file = new File("C:\\Users\\Sebastian\\Desktop\\bomba.jpg");
+            int id = 34;
+            
+            //przygotowanie pliku do wysłania - konerwsja na ciąg bajtów
+            byte[] bytes = new byte[(int)file.length()];
+            BufferedInputStream bis = new BufferedInputStream(new FileInputStream(file));
+            bis.read(bytes, 0, bytes.length);
+
+            //wysyłanie pliku
+            Client client = Client.create();
+            WebResource webResource  = client.resource(url.toString());
+            ClientResponse response = webResource
+                    .type("multipart/form-data")    //bardzo ważne, musi być podany ten format wymiany danych
+                    .header("id", id)               //również ważne, nagłówek z polem "id"
+                    .post(ClientResponse.class, bytes);
+
+            //dotąd już nie dojdzie, więc nie odbierzemy  odpowiedzi serwera, trzeba to naprawić
+            //a na razie, zakładamy ze odpowiedz jest pozytywna
+            URLConnection connection = url.openConnection();
+            BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+
+            while (in.readLine() != null) {
+            }
+            in.close();
+        } catch (ClientHandlerException e) {
+            System.out.println(e.toString() + "\nWywalilo blad ale zdjecie zostalo dodane :)");
+        } catch (Exception e) {
         }
     }
 
@@ -319,6 +360,25 @@ public class ClientTest
         help = dataTransfer(json, url_address);
         return help;
     }
+    
+    private String changeGoogle(String email, long google, String token) {
+        JSONObject json = null;
+        try {
+            json = new JSONObject()
+                .put("uzytkownicy", new JSONObject()
+                    .put("email", email)
+                    .put("google", google)
+                    .put("token", token)
+            );
+        } catch (JSONException ex) {
+            return "Klient: Blad przy tworzeniu JSONa";
+        }
+
+        String url_address = "http://localhost:8084/RestApi/service/uzytkownicy/changeGoogle";
+        String help;
+        help = dataTransfer(json, url_address);
+        return help;
+    }
 
     public static void main(String[] args) {
         ClientTest test = new ClientTest();
@@ -329,17 +389,18 @@ public class ClientTest
         //help = test.dodajUzytkownika("email5", "1234", 0, 0, "restapi");
         //help = test.register("przyklad", "1234");
         //help = test.registerWithFacebook("przyklad_facebook", 5);
-        //help = test.registerWithGoogle("przyklad_google", 5);
+        //help = test.registerWithGoogle("przykladEmail@email.com", 123456);
         //help = test.login("email", "haslo");
-        //help = test.loginWithFacebook("email2", 1);
+        //help = test.loginWithFacebook("194217@student.pwr.wroc.pl", 817901084963190l);
         //help = test.loginWithGoogle("email3", 2);
-        //help = test.dodajZgloszenie(1, 100.094703, 127.021475, "opis", "adres", "email", "853babe4628d53896fa08402a43d9d4a");
+        //help = test.dodajZgloszenie(1, 100.094703, 127.021475, "opis", "adres", "194217@student.pwr.wroc.pl", "f2f0997fd69cda2407a2506216a6daf0");
         //help = test.updatePassword("1234", "email");
         //help = test.updateAdminRights("1234", "email", "admin");
         //help = test.updateStatusZgloszenia(15, 2);
         //help = test.logout("email3", "fa6d70d545f979afc65799effba534ab");
-
-        System.out.println(help);
-        //addZdjecie();
+        //help = test.changeGoogle("przyklad2@email.com", 123456, "ac54e17ef970bb7acd7ecf247653f942");
+        
+        //System.out.println(help);
+        addZdjecie();
     }
 }

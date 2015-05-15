@@ -32,6 +32,7 @@ public class ZgloszeniaDao
                 zgloszenia.setKalendarz(resultSet.getString("data"));
                 zgloszenia.setWspolrzedne((PGpoint)resultSet.getObject("wspolrzedne"));
                 zgloszenia.setOpis(resultSet.getString("opis"));
+                zgloszenia.cutOpis(128);
                 zgloszenia.setEmail_uzytkownika(resultSet.getString("email_uzytkownika"));
                 zgloszenia.setAdres(resultSet.getString("adres"));
 
@@ -121,7 +122,8 @@ public class ZgloszeniaDao
                     + "', '" + zgloszenia.getEmail_uzytkownika() + "', '" + token + "'" + ")");
 
             while (resultSet.next()) {
-                if (resultSet.getInt(1) == 0) {
+                zgloszenia.setId_zgloszenia(resultSet.getInt(1));
+                if (zgloszenia.getId_zgloszenia() == 0) {
                     System.out.println("Funkcja z bazy zwrocila false :(");
                     return Response.serverError().entity("Funkcja z bazy zwrocila false :(").build();
                 }
@@ -143,7 +145,7 @@ public class ZgloszeniaDao
         }
 
         connection.closeConnection();
-        return Response.ok("OK").build();
+        return Response.ok("{\"id_zgloszenia\":" + zgloszenia.getId_zgloszenia() + "}").build();
     }
 
     public Response updateStatusZgloszenia(Zgloszenia zgloszenia)

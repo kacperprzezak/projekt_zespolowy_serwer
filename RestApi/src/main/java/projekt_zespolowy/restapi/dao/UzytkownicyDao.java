@@ -196,6 +196,7 @@ public class UzytkownicyDao
 
     public Response registerWithGoogle(Uzytkownicy uzytkownicy) {
         Statement statement;
+        ResultSet resultSet;
 
         try {
             connection.establishConnection();
@@ -218,7 +219,7 @@ public class UzytkownicyDao
         }
 
         connection.closeConnection();
-        return Response.ok("OK").build();
+        return loginWithGoogle(uzytkownicy);
     }
 
     public Response login(Uzytkownicy uzytkownicy) {
@@ -309,6 +310,37 @@ public class UzytkownicyDao
         } else {
             return Response.ok("{\"token\":\"" + uzytkownicy.getToken() + "\"}").build();
         }
+    }
+    
+    public Response changeGoogle(Uzytkownicy uzytkownicy) {
+        Statement statement;
+        ResultSet resultSet;
+
+        try {
+            connection.establishConnection();
+            statement = connection.getConnection().createStatement();
+            resultSet = statement.executeQuery("SELECT changeGoogle('" + uzytkownicy.getEmail()
+                    + "', " + uzytkownicy.getGoogle() + ", '" + uzytkownicy.getToken() + "')");
+
+            while (resultSet.next()) {
+                connection.closeConnection();
+                if (resultSet.getBoolean(1)) System.out.println("tak");
+                if (resultSet.getBoolean(1) == true) {
+                    return Response.ok("Zmieniono id google").build();
+                }
+                else {
+                    return Response.status(404).entity("Nie znaleziono takiego uzytkownika zalogowanego").build();
+                }
+            }
+        } catch (Exception ex) {
+            // Wypisanie bledu na serwer
+            System.err.println(ex);
+
+            // Zwrocenie informacji o bledzie uzytkownikowi
+            connection.closeConnection();
+            return Response.status(500).entity("Wystapil nieznany blad").build();
+        }
+        return Response.ok().build();
     }
 
     public Response updatePassword(Uzytkownicy uzytkownicy) throws Exception
