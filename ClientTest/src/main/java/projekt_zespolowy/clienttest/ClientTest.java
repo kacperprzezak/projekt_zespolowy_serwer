@@ -1,22 +1,20 @@
 package projekt_zespolowy.clienttest;
 
-import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientHandlerException;
 import com.sun.jersey.api.client.WebResource;
+import com.sun.security.ntlm.Client;
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.URL;
 import java.net.URLConnection;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 import org.jboss.resteasy.client.ClientResponse;
-import org.postgresql.geometric.PGpoint;
 
 public class ClientTest
 {
@@ -269,14 +267,14 @@ public class ClientTest
             System.out.println(e);
         }
     }*/
-    
+
     public static void addZdjecie() {
         try {
             //URL url = new URL("http://localhost:8084/RestApi/service/zdjecia/post");
             URL url = new URL("http://virt2.iiar.pwr.edu.pl:8080/RestApi/service/zdjecia/post");
             File file = new File("C:\\Users\\Sebastian\\Desktop\\bomba.jpg");
             int id = 34;
-            
+
             //przygotowanie pliku do wysłania - konerwsja na ciąg bajtów
             byte[] bytes = new byte[(int)file.length()];
             BufferedInputStream bis = new BufferedInputStream(new FileInputStream(file));
@@ -360,7 +358,7 @@ public class ClientTest
         help = dataTransfer(json, url_address);
         return help;
     }
-    
+
     private String changeGoogle(String email, long google, String token) {
         JSONObject json = null;
         try {
@@ -399,7 +397,7 @@ public class ClientTest
         //help = test.updateStatusZgloszenia(15, 2);
         //help = test.logout("email3", "fa6d70d545f979afc65799effba534ab");
         //help = test.changeGoogle("przyklad2@email.com", 123456, "ac54e17ef970bb7acd7ecf247653f942");
-        
+
         //System.out.println(help);
         addZdjecie();
     }

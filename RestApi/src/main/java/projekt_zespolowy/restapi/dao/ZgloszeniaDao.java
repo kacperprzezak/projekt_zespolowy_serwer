@@ -148,14 +148,16 @@ public class ZgloszeniaDao
         return Response.ok("{\"id_zgloszenia\":" + zgloszenia.getId_zgloszenia() + "}").build();
     }
 
-    public Response updateStatusZgloszenia(Zgloszenia zgloszenia)
+
+     public Response updateStatusZgloszenia(Zgloszenia zgloszenia)
     {
          Statement statement;
 
         try {
             connection.establishConnection();
             statement = connection.getConnection().createStatement();
-            statement.executeQuery("UPDATE zgloszenia set id_statusu=3 WHERE id_zgloszenia=14");
+            statement.executeQuery("UPDATE zgloszenia set id_statusu='"+zgloszenia.getId_statusu()+
+                    "'WHERE id_zgloszenia='"+zgloszenia.getId_zgloszenia()+"'");
         } catch (Exception ex) {
             // Wypisanie bledu na serwer
             System.err.println(ex);
@@ -171,4 +173,7 @@ public class ZgloszeniaDao
 
 
     }
+
+
+
 }
