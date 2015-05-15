@@ -271,7 +271,7 @@ public class ServiceUzytkownicy
 
         return uzytkownicyDao.loginWithGoogle(uzytkownicy);
     }
-    
+
     @POST
     @Path("/changeGoogle")
     @Consumes(MediaType.APPLICATION_JSON)
@@ -394,5 +394,31 @@ public class ServiceUzytkownicy
         uzytkownicy.setToken(token);
 
         return uzytkownicyDao.logout(uzytkownicy);
+    }
+
+    @POST
+    @Path("/activate")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response activate(String incomingData) {
+        Uzytkownicy uzytkownicy = new Uzytkownicy();
+        String email;
+
+        try {
+            JSONObject json = new JSONObject(incomingData);
+
+            json = json.getJSONObject("uzytkownicy");
+
+            email = json.getString("email");
+        } catch (JSONException ex) {
+            System.err.println(ex.toString());
+            return Response.status(500).entity("Niepoprawny format JSONa").build();
+        }catch (Exception ex) {
+            System.err.println(ex.toString());
+            return Response.serverError().build();
+        }
+
+        uzytkownicy.setEmail(email);
+
+        return uzytkownicyDao.activate(uzytkownicy);
     }
 }

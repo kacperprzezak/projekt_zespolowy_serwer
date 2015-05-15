@@ -1,8 +1,8 @@
 package projekt_zespolowy.clienttest;
 
+import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientHandlerException;
 import com.sun.jersey.api.client.WebResource;
-import com.sun.security.ntlm.Client;
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.File;
@@ -372,7 +372,24 @@ public class ClientTest
             return "Klient: Blad przy tworzeniu JSONa";
         }
 
-        String url_address = "http://localhost:8084/RestApi/service/uzytkownicy/changeGoogle";
+        String url_address = "http://localhost:8080/RestApi/service/uzytkownicy/changeGoogle";
+        String help;
+        help = dataTransfer(json, url_address);
+        return help;
+    }
+
+    private String activate(String email) {
+        JSONObject json = null;
+        try {
+            json = new JSONObject()
+                .put("uzytkownicy", new JSONObject()
+                    .put("email", email)
+            );
+        } catch (JSONException ex) {
+            return "Klient: Blad przy tworzeniu JSONa";
+        }
+
+        String url_address = "http://localhost:8080/RestApi/service/uzytkownicy/activate";
         String help;
         help = dataTransfer(json, url_address);
         return help;
@@ -397,6 +414,7 @@ public class ClientTest
         //help = test.updateStatusZgloszenia(15, 2);
         //help = test.logout("email3", "fa6d70d545f979afc65799effba534ab");
         //help = test.changeGoogle("przyklad2@email.com", 123456, "ac54e17ef970bb7acd7ecf247653f942");
+        //help = test.activate("email2");
 
         //System.out.println(help);
         addZdjecie();

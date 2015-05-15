@@ -311,7 +311,7 @@ public class UzytkownicyDao
             return Response.ok("{\"token\":\"" + uzytkownicy.getToken() + "\"}").build();
         }
     }
-    
+
     public Response changeGoogle(Uzytkownicy uzytkownicy) {
         Statement statement;
         ResultSet resultSet;
@@ -414,6 +414,27 @@ public class UzytkownicyDao
                 }
             }
 
+        } catch (Exception ex) {
+            if (!ex.toString().contains("Zapytanie nie zwróciło żadnych wyników.")
+                    && !ex.toString().contains("No results were returned")) {
+                System.out.println("Zapytanie nie zostalo wykonane: " + ex.toString());
+                connection.closeConnection();
+                return Response.serverError().entity("wystapil nieznany blad").build();
+            }
+        }
+        connection.closeConnection();
+        System.out.println("Zapytanie wykonane pomyslenie");
+
+        return Response.ok("ok").build();
+    }
+
+    public Response activate(Uzytkownicy uzytkownicy) {
+        Statement statement;
+
+        try {
+            connection.establishConnection();
+            statement = connection.getConnection().createStatement();
+            statement.executeQuery("SELECT activate(" + "'" + uzytkownicy.getEmail() + "'" + ");");
         } catch (Exception ex) {
             if (!ex.toString().contains("Zapytanie nie zwróciło żadnych wyników.")
                     && !ex.toString().contains("No results were returned")) {

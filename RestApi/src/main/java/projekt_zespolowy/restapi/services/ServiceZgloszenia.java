@@ -1,6 +1,5 @@
 package projekt_zespolowy.restapi.services;
 
-import java.sql.SQLException;
 import java.util.List;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
