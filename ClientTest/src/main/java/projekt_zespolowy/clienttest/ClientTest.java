@@ -59,44 +59,7 @@ public class ClientTest
         return help;
     }
 
-    private String registerWithFacebook(String email, long facebook) {
-        JSONObject json = null;
-        try {
-            json = new JSONObject()
-                .put("uzytkownicy", new JSONObject()
-                    .put("email", email)
-                    .put("facebook", facebook)
-            );
-        } catch (JSONException ex) {
-            return "Klient: Blad przy tworzeniu JSONa";
-        }
 
-        String url_address = "http://localhost:8080/RestApi/service/uzytkownicy/registerWithFacebook";
-
-        String help;
-        help = dataTransfer(json, url_address);
-        return help;
-    }
-
-    private String registerWithGoogle(String email, long google) {
-        JSONObject json = null;
-        try {
-            json = new JSONObject()
-                .put("uzytkownicy", new JSONObject()
-                    .put("email", email)
-                    .put("google", google)
-            );
-        } catch (JSONException ex) {
-            return "Klient: Blad przy tworzeniu JSONa";
-        }
-
-        //String url_address = "http://localhost:8084/RestApi/service/uzytkownicy/registerWithGoogle";
-        String url_address = "http://virt2.iiar.pwr.edu.pl:8080/RestApi/service/uzytkownicy/registerWithGoogle";
-
-        String help;
-        help = dataTransfer(json, url_address);
-        return help;
-    }
 
     private String login(String email, String haslo) {
         JSONObject json = null;
@@ -374,11 +337,10 @@ public class ClientTest
         // TESTY - dokladniejsze informacje o bledach sa wypisywane w oknie serwera
         //help = test.dodajUzytkownika("emaijl5", "12934", 324312413, 1576657, "restapi");
         //help = test.register("przyklad", "1234");
-        //help = test.registerWithFacebook("przyklad_facebook", 5);
-       // help = test.registerWithGoogle("przykladEmail@email.com", 123456);
+
         //help = test.login("email", "haslo");
-        //help = test.loginWithFacebook("194217@student.pwr.wroc.pl", 817901084963190l);
-        help = test.loginWithGoogle("masa", 8123);
+        help = test.loginWithFacebook("194217@student.pwr.wroc.pl", 817901084963190l);
+         //  help = test.loginWithGoogle("masa", 8123);
         //help = test.dodajZgloszenie(1, 100.094703, 127.021475, "opis", "adres", "194217@student.pwr.wroc.pl", "f2f0997fd69cda2407a2506216a6daf0");
         //help = test.updatePassword("1234", "email");
         //help = test.updateUprawnienia("email", "853babe4628d53896fa08402a43d9d4a", "email2", "moderator");
