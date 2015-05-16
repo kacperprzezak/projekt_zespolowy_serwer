@@ -372,13 +372,13 @@ public class ClientTest
         String help = "";
 
         // TESTY - dokladniejsze informacje o bledach sa wypisywane w oknie serwera
-        //help = test.dodajUzytkownika("email5", "1234", 0, 0, "restapi");
+        //help = test.dodajUzytkownika("emaijl5", "12934", 324312413, 1576657, "restapi");
         //help = test.register("przyklad", "1234");
         //help = test.registerWithFacebook("przyklad_facebook", 5);
-        //help = test.registerWithGoogle("przykladEmail@email.com", 123456);
+       // help = test.registerWithGoogle("przykladEmail@email.com", 123456);
         //help = test.login("email", "haslo");
         //help = test.loginWithFacebook("194217@student.pwr.wroc.pl", 817901084963190l);
-        //help = test.loginWithGoogle("email3", 2);
+        help = test.loginWithGoogle("masa", 8123);
         //help = test.dodajZgloszenie(1, 100.094703, 127.021475, "opis", "adres", "194217@student.pwr.wroc.pl", "f2f0997fd69cda2407a2506216a6daf0");
         //help = test.updatePassword("1234", "email");
         //help = test.updateUprawnienia("email", "853babe4628d53896fa08402a43d9d4a", "email2", "moderator");

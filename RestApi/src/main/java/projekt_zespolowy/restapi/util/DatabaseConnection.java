@@ -8,8 +8,8 @@ public class DatabaseConnection
     private static Connection databaseConnection = null;
 
     public void establishConnection() {
-       
-       String url = "jdbc:postgresql://localhost:5432/postgres";
+
+       String url = "jdbc:postgresql://localhost:1234/baza_kopia";
 
         try {
             Class.forName("org.postgresql.Driver");

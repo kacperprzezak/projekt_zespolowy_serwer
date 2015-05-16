@@ -283,6 +283,38 @@ public class UzytkownicyDao
     }
 
     public Response loginWithGoogle(Uzytkownicy uzytkownicy) {
+        Statement statement0;
+        ResultSet resultSet0;
+        boolean pom_log=false;
+        try
+        {
+           connection.establishConnection();
+            statement0 = connection.getConnection().createStatement();
+            resultSet0 = statement0.executeQuery("SELECT checkgoogle("+uzytkownicy.getGoogle()+",'"+uzytkownicy.getEmail()+"')");
+            while(resultSet0.next())
+            {
+            if(resultSet0.getString(1).equals("t"))
+            {
+                System.out.println("podany uzytkownik znajduje sie w bazie wiec zostanie zalogowany");
+                pom_log=true;
+            }
+            else
+            {
+                System.out.println("podany uzytkownik nie znajduje sie w bazie wiec zostanie zarejestrowany");
+                pom_log=false;
+            }
+            }
+
+        }
+        catch(Exception ex){
+            System.err.println(ex);
+            // Zwrocenie informacji o bledzie uzytkownikowi
+            connection.closeConnection();
+            return Response.status(500).entity("Wystapil nieznany blad").build();
+        }
+
+        if(pom_log==true)
+        {
         Statement statement;
         ResultSet resultSet;
 
@@ -309,6 +341,34 @@ public class UzytkownicyDao
             return Response.status(404).entity("Nie ma takiego uzytkownika").build();
         } else {
             return Response.ok("{\"token\":\"" + uzytkownicy.getToken() + "\"}").build();
+        }
+        }
+        else
+        {
+        Statement statement1;
+
+        try {
+            connection.establishConnection();
+            statement1 = connection.getConnection().createStatement();
+            statement1.executeQuery("SELECT registerWithGoogle('" + uzytkownicy.getEmail()
+                    + "', " + uzytkownicy.getGoogle() + ")");
+        } catch (Exception ex) {
+            // Wypisanie bledu na serwer
+            System.err.println(ex);
+
+            // Zwrocenie informacji o bledzie uzytkownikowi
+            if (ex.toString().contains("(email)=") && ex.toString().contains("już istnieje")) {
+                return Response.status(500).entity("Podany email jest juz zajety").build();
+            }
+            else if (ex.toString().contains("(google)=") && ex.toString().contains("już istnieje")) {
+                return Response.ok("Podane if google jest juz zajete").build();
+            }
+            connection.closeConnection();
+            return Response.status(500).entity("Wystapil nieznany blad").build();
+        }
+
+        connection.closeConnection();
+        return loginWithGoogle(uzytkownicy);
         }
     }
 
