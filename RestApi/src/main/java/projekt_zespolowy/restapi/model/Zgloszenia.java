@@ -1,5 +1,6 @@
 package projekt_zespolowy.restapi.model;
 
+import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -14,7 +15,7 @@ import org.postgresql.geometric.PGpoint;
 @Entity
 @Table(name="zgloszenia")
 @XmlRootElement(name="zgloszenia")
-@XmlType(propOrder={"id_zgloszenia", "id_typu", "id_statusu", "kalendarz", "wspolrzedne", "opis", "email_uzytkownika", "adres"})
+@XmlType(propOrder={"id_zgloszenia", "id_typu", "id_statusu", "kalendarz", "wspolrzedne", "opis", "email_uzytkownika", "adres", "komentarze"})
 public class Zgloszenia
 {
     @Id
@@ -35,6 +36,8 @@ public class Zgloszenia
     private String email_uzytkownika;
     @Column(name="adres")
     private String adres;
+    @Column(name="komentarze")
+    private List<Komentarze> komentarze;
 
     @XmlElement
     public int getId_zgloszenia() {
@@ -117,5 +120,14 @@ public class Zgloszenia
 
     public void setAdres(String adres) {
         this.adres = adres;
+    }
+    
+    @XmlElement
+    public List<Komentarze> getKomentarze() {
+        return komentarze;
+    }
+
+    public void setKomentarze(List<Komentarze> komentarze) {
+        this.komentarze = komentarze;
     }
 }

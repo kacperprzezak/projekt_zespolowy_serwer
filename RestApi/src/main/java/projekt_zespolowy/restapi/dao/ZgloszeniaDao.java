@@ -50,6 +50,7 @@ public class ZgloszeniaDao
         Zgloszenia zgloszenia = null;
         Statement statement;
         ResultSet resultSet;
+        KomentarzeDao komentarzeDao = new KomentarzeDao();
 
         try {
             connection.establishConnection();
@@ -67,6 +68,7 @@ public class ZgloszeniaDao
                 zgloszenia.setOpis(resultSet.getString("opis"));
                 zgloszenia.setEmail_uzytkownika(resultSet.getString("email_uzytkownika"));
                 zgloszenia.setAdres(resultSet.getString("adres"));
+                zgloszenia.setKomentarze(komentarzeDao.getById(id));
             }
         }
         catch(Exception ex) {

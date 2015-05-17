@@ -328,6 +328,28 @@ public class ClientTest
         help = dataTransfer(json, url_address);
         return help;
     }
+    
+    private String dodajKomentarz(int id_zgloszenia, String email, String komentarz, String token) {
+        JSONObject json = null;
+        try {
+            json = new JSONObject()
+                .put("komentarze", new JSONObject()
+                    .put("id_zgloszenia", id_zgloszenia)
+                    .put("email", email)
+                    .put("komentarz", komentarz)
+                    .put("token", token)
+            );
+        } catch (JSONException ex) {
+            return "Klient: Blad przy tworzeniu JSONa";
+        }
+
+        //String url_address = "http://localhost:8084/RestApi/service/komentarze/post";
+        String url_address = ("http://virt2.iiar.pwr.edu.pl:8080/RestApi/service/komentarze/post");
+
+        String help;
+        help = dataTransfer(json, url_address);
+        return help;
+    }
 
     public static void main(String[] args) {
         ClientTest test = new ClientTest();
@@ -339,7 +361,7 @@ public class ClientTest
         //help = test.register("przyklad", "1234");
 
         //help = test.login("email", "haslo");
-        help = test.loginWithFacebook("194217@student.pwr.wroc.pl", 817901084963190l);
+        //help = test.loginWithFacebook("194217@student.pwr.wroc.pl", 817901084963190l);
          //  help = test.loginWithGoogle("masa", 8123);
         //help = test.dodajZgloszenie(1, 100.094703, 127.021475, "opis", "adres", "194217@student.pwr.wroc.pl", "f2f0997fd69cda2407a2506216a6daf0");
         //help = test.updatePassword("1234", "email");
@@ -348,6 +370,7 @@ public class ClientTest
         //help = test.logout("email3", "fa6d70d545f979afc65799effba534ab");
         //help = test.changeGoogle("przyklad2@email.com", 123456, "ac54e17ef970bb7acd7ecf247653f942");
         //help = test.activate("email2");
+        help = test.dodajKomentarz(1, "194217@student.pwr.wroc.pl", "inny komentarz", "a0fd49ae6d460aa0bd3b2be143e413ac");
 
         //addZdjecie();
 
