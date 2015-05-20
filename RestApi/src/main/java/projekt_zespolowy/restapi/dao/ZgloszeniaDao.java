@@ -35,7 +35,6 @@ public class ZgloszeniaDao
                 zgloszenia.cutOpis(128);
                 zgloszenia.setEmail_uzytkownika(resultSet.getString("email_uzytkownika"));
                 zgloszenia.setAdres(resultSet.getString("adres"));
-                zgloszenia.setPolubienie(resultSet.getInt("polubienia"));
 
                 list.add(zgloszenia);
             }
@@ -69,7 +68,6 @@ public class ZgloszeniaDao
                 zgloszenia.setOpis(resultSet.getString("opis"));
                 zgloszenia.setEmail_uzytkownika(resultSet.getString("email_uzytkownika"));
                 zgloszenia.setAdres(resultSet.getString("adres"));
-                zgloszenia.setPolubienie(resultSet.getInt("polubienia"));
                 zgloszenia.setKomentarze(komentarzeDao.getById(id));
             }
         }
@@ -102,7 +100,6 @@ public class ZgloszeniaDao
                 zgloszenia.setOpis(resultSet.getString("opis"));
                 zgloszenia.setEmail_uzytkownika(resultSet.getString("email_uzytkownika"));
                 zgloszenia.setAdres(resultSet.getString("adres"));
-                zgloszenia.setPolubienie(resultSet.getInt("polubienia"));
 
                 list.add(zgloszenia);
             }
@@ -180,41 +177,6 @@ public class ZgloszeniaDao
 
         connection.closeConnection();
         return Response.ok("OK").build();
-    }
-     
-     public Response addLike(Zgloszenia zgloszenia, String token) {
-        Statement statement;
-        ResultSet resultSet;
-
-        try {
-            connection.establishConnection();
-            statement = connection.getConnection().createStatement();
-            resultSet = statement.executeQuery("SELECT checkLogin('" + zgloszenia.getEmail_uzytkownika()
-                    + "', '" + token + "')");
-
-            while (resultSet.next()) {
-                if (resultSet.getBoolean(1)) {
-                    statement.executeQuery("UPDATE zgloszenia"
-                            + "SET polubienia = polubienia + 1"
-                            + "WHERE id_zgloszenia=" + zgloszenia.getId_zgloszenia());
-                }
-                else return Response.serverError().entity("Bledny email/login").build();
-            }
-        } catch (Exception ex) {
-            // Wypisanie bledu na serwer
-            System.err.println(ex);
-
-            // Zwrocenie informacji o bledzie użytkownikowi
-            if (ex.toString().contains("(id_zgloszenia)=") && ex.toString().contains("nie występuje")) {
-                return Response.status(404).entity("W BD nie ma takiego id_zgloszenia").build();
-            }
-
-            connection.closeConnection();
-            return Response.serverError().entity("Wystapil nieznany blad").build();
-        }
-
-        connection.closeConnection();
-        return Response.ok("Pomyslnie dodano like'a").build();
     }
      
 }
