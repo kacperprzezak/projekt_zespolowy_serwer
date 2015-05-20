@@ -40,10 +40,10 @@
             <version>9.2-1002-jdbc4</version>
         </dependency>
         <dependency>
-		<groupId>com.sun.jersey</groupId>
-		<artifactId>jersey-client</artifactId>
-		<version>1.8</version>
-	</dependency>
+            <groupId>com.sun.jersey</groupId>
+            <artifactId>jersey-client</artifactId>
+            <version>1.8</version>
+        </dependency>
     </dependencies>
 
 </project>

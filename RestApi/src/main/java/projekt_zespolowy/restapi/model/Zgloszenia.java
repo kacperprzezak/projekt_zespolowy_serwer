@@ -15,7 +15,7 @@ import org.postgresql.geometric.PGpoint;
 @Entity
 @Table(name="zgloszenia")
 @XmlRootElement(name="zgloszenia")
-@XmlType(propOrder={"id_zgloszenia", "id_typu", "id_statusu", "kalendarz", "wspolrzedne", "opis", "email_uzytkownika", "adres", "komentarze"})
+@XmlType(propOrder={"id_zgloszenia", "id_typu", "id_statusu", "kalendarz", "wspolrzedne", "opis", "email_uzytkownika", "adres", "like", "komentarze"})
 public class Zgloszenia
 {
     @Id
@@ -36,6 +36,8 @@ public class Zgloszenia
     private String email_uzytkownika;
     @Column(name="adres")
     private String adres;
+    @Column(name="like")
+    private int polubienie;
     @Column(name="komentarze")
     private List<Komentarze> komentarze;
 
@@ -129,5 +131,14 @@ public class Zgloszenia
 
     public void setKomentarze(List<Komentarze> komentarze) {
         this.komentarze = komentarze;
+    }
+
+    @XmlElement
+    public int getPolubienie() {
+        return polubienie;
+    }
+
+    public void setPolubienie(int polubienie) {
+        this.polubienie = polubienie;
     }
 }

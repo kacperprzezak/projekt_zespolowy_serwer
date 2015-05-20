@@ -360,4 +360,33 @@ public class ServiceUzytkownicy
 
         return uzytkownicyDao.activate(uzytkownicy);
     }
+    
+    @POST
+    @Path("/valid")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response valid(String incomingData) {
+        Uzytkownicy uzytkownicy = new Uzytkownicy();
+        String email;
+        String token;
+
+        try {
+            JSONObject json = new JSONObject(incomingData);
+
+            json = json.getJSONObject("uzytkownicy");
+
+            email = json.getString("email");
+            token = json.getString("token");
+        } catch (JSONException ex) {
+            System.err.println(ex.toString());
+            return Response.status(500).entity("Niepoprawny format JSONa").build();
+        }catch (Exception ex) {
+            System.err.println(ex.toString());
+            return Response.serverError().build();
+        }
+
+        uzytkownicy.setEmail(email);
+        uzytkownicy.setToken(token);
+
+        return uzytkownicyDao.valid(uzytkownicy);
+    }
 }

@@ -112,4 +112,34 @@ public class ServiceZgloszenia
 
         return zgloszeniaDao.updateStatusZgloszenia(zgloszenia, email, token);
     }
+    
+    @POST
+    @Path("/addLike")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response addLike(String incomingData) {
+        Zgloszenia zgloszenia = new Zgloszenia();
+
+        int id_zgloszenia;
+        String email_uzytkownika;
+        String token;
+
+        try {
+            JSONObject json = new JSONObject(incomingData);
+
+            // Wyciagniecie danych o zgloszeniu
+            json = json.getJSONObject("zgloszenia");
+
+            // Sprawdzenie czy JSON zgloszenia zawiera wszystkie potrzebne pola
+            id_zgloszenia = json.getInt("id_typu");
+            email_uzytkownika = json.getString("email_uzytkownika");
+            token = json.getString("token");
+        } catch (JSONException ex) {
+            return Response.ok("Niepoprawny format JSONa").build();
+        }
+
+        zgloszenia.setId_zgloszenia(id_zgloszenia);
+        zgloszenia.setEmail_uzytkownika(email_uzytkownika);
+
+        return zgloszeniaDao.postZgloszenia(zgloszenia, token);
+    }
 }
