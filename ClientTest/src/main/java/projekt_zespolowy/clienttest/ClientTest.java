@@ -52,8 +52,8 @@ public class ClientTest
             return "Klient: Blad przy tworzeniu JSONa";
         }
 
-        //String url_address = "http://localhost:8084/RestApi/service/uzytkownicy/register";
-        String url_address = "http://virt2.iiar.pwr.edu.pl:8080/RestApi/service/uzytkownicy/register";
+        String url_address = "http://localhost:8084/RestApi/service/uzytkownicy/register";
+        //String url_address = "http://virt2.iiar.pwr.edu.pl:8080/RestApi/service/uzytkownicy/register";
 
         String help;
         help = dataTransfer(json, url_address);
@@ -206,10 +206,10 @@ public class ClientTest
 
     public static void addZdjecie() {
         try {
-            URL url = new URL("http://localhost:8084/RestApi/service/zdjecia/post");
-            //URL url = new URL("http://virt2.iiar.pwr.edu.pl:8080/RestApi/service/zdjecia/post");
-            File file = new File("C:\\Users\\Sebastian\\Desktop\\bomba.jpg");
-            int id = 1;
+            //URL url = new URL("http://localhost:8084/RestApi/service/zdjecia/post");
+            URL url = new URL("http://virt2.iiar.pwr.edu.pl:8080/RestApi/service/zdjecia/post");
+            File file = new File("C:\\Users\\Sebastian\\Desktop\\test.jpg");
+            int id = 34;
 
             //przygotowanie pliku do wysłania - konerwsja na ciąg bajtów
             byte[] bytes = new byte[(int)file.length()];
@@ -381,7 +381,7 @@ public class ClientTest
 
         // TESTY - dokladniejsze informacje o bledach sa wypisywane w oknie serwera
         //help = test.dodajUzytkownika("emaijl5", "12934", 324312413, 1576657, "restapi");
-        help = test.register("kluski@makaron.pl", "1234");
+        //help = test.register("kluski@makaron.pl", "1234");
 
         //help = test.login("superuser@a.pl", "202cb962ac59075b964b07152d234b70");
         //help = test.loginWithFacebook("194217@student.pwr.wroc.pl", 817901084963190l);
@@ -396,7 +396,7 @@ public class ClientTest
         //help = test.dodajKomentarz(35, "194217@student.pwr.wroc.pl", "testowy komentarz", "e117ef3f1092812688e5d2fa2bbbb002");
         //help = test.valid("superuser@a.pl", "b9fc4dfcc91ce43fe20a82c42b1bb722");
         
-        //addZdjecie();
+        addZdjecie();
 
         System.out.println(help);
     }

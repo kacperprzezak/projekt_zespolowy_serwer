@@ -37,10 +37,17 @@ public class ZdjeciaDao {
     }
     
     public int postZdjecia(int id, File file) throws Exception {
+        Statement statement = null;
+        ResultSet resultSet = null;
+        
         try {
             connection.establishConnection();
+            
+            statement = connection.getConnection().createStatement();
+            resultSet = statement.executeQuery("SELECT deleteZdjecie(" + id + ");");
+
             FileInputStream fis = new FileInputStream(file);
-            PreparedStatement ps = connection.getConnection().prepareStatement("INSERT INTO zdjecia (id_zgloszenia, zdjecie) VALUES (?, ?)");System.out.println("Weszlem");
+            PreparedStatement ps = connection.getConnection().prepareStatement("INSERT INTO zdjecia (id_zgloszenia, zdjecie) VALUES (?, ?)");
             ps.setInt(1, id);
             ps.setBinaryStream(2, fis, (int) file.length());
 
@@ -53,6 +60,7 @@ public class ZdjeciaDao {
                 connection.closeConnection();
                 return 500;
             }
+            System.out.println(ex);
         }
         connection.closeConnection();
         System.out.println("Zapytanie wykonane pomyslenie");
