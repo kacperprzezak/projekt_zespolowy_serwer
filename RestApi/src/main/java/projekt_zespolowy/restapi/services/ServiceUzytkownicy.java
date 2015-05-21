@@ -80,6 +80,7 @@ public class ServiceUzytkownicy
     @POST
     @Path("/register")
     @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
     public Response register (String incomingData) {
         Uzytkownicy uzytkownicy = new Uzytkownicy();
 

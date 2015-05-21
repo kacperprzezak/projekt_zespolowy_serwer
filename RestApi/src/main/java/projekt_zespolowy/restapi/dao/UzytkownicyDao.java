@@ -144,22 +144,23 @@ public class UzytkownicyDao
     }
 
     public Response register(Uzytkownicy uzytkownicy) {
-        Statement statement;
 
-        try {
-            connection.establishConnection();
-            statement = connection.getConnection().createStatement();
-            statement.executeQuery("SELECT register('" + uzytkownicy.getEmail()
-                    + "', '" + uzytkownicy.getHaslo() + "')");
-        } catch (Exception ex) {
-            // Wypisanie bledu na serwer
+        Statement statement0;
+        ResultSet resultSet0;
+        boolean pom_log=false;
+        try
+        {
+           connection.establishConnection();
+            statement0 = connection.getConnection().createStatement();
+            resultSet0 = statement0.executeQuery("SELECT register('"+uzytkownicy.getEmail()+"','"+uzytkownicy.getHaslo()+"')");
+        }
+        catch(Exception ex){
             System.err.println(ex);
-
-            // Zwrocenie informacji o bledzie uzytkownikowi
+            connection.closeConnection();
+            
             if (ex.toString().contains("(email)=") && ex.toString().contains("już istnieje")) {
                 return Response.status(500).entity("Podany email jest juz zajety").build();
             }
-            connection.closeConnection();
             return Response.status(500).entity("Wystapil nieznany blad").build();
         }
 
