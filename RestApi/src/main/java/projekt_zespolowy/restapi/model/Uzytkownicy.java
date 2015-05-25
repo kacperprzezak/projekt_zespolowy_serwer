@@ -23,9 +23,9 @@ public class Uzytkownicy
     @Column(name="haslo")
     private String haslo;
     @Column(name="facebook")
-    private long facebook;
+    private String facebook;
     @Column(name="google")
-    private long google;
+    private String google;
     @Column(name="typ")
     private String typ;
     @Column(name="token")
@@ -56,20 +56,20 @@ public class Uzytkownicy
     }
 
     @XmlElement
-    public long getFacebook() {
+    public String getFacebook() {
         return facebook;
     }
 
-    public void setFacebook(long facebook) {
+    public void setFacebook(String facebook) {
         this.facebook = facebook;
     }
 
     @XmlElement
-    public long getGoogle() {
+    public String getGoogle() {
         return google;
     }
 
-    public void setGoogle(long google) {
+    public void setGoogle(String google) {
         this.google = google;
     }
 

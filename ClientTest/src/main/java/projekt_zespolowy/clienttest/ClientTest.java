@@ -18,7 +18,7 @@ import org.jboss.resteasy.client.ClientResponse;
 
 public class ClientTest
 {
-    private String dodajUzytkownika(String email, String haslo, long facebook, long google, String typ) {
+    private String dodajUzytkownika(String email, String haslo, String facebook, String google, String typ) {
         JSONObject json = null;
         try {
             json = new JSONObject()
@@ -33,7 +33,8 @@ public class ClientTest
             return "Klient: Blad przy tworzeniu JSONa";
         }
 
-        String url_address = "http://localhost:8080/RestApi/service/uzytkownicy/post";
+        //String url_address = "http://localhost:8084/RestApi/service/uzytkownicy/post";
+        String url_address = "http://virt2.iiar.pwr.edu.pl:8080/RestApi/service/uzytkownicy/post";
 
         String help;
         help = dataTransfer(json, url_address);
@@ -52,8 +53,8 @@ public class ClientTest
             return "Klient: Blad przy tworzeniu JSONa";
         }
 
-        String url_address = "http://localhost:8084/RestApi/service/uzytkownicy/register";
-        //String url_address = "http://virt2.iiar.pwr.edu.pl:8080/RestApi/service/uzytkownicy/register";
+        //String url_address = "http://localhost:8084/RestApi/service/uzytkownicy/register";
+        String url_address = "http://virt2.iiar.pwr.edu.pl:8080/RestApi/service/uzytkownicy/register";
 
         String help;
         help = dataTransfer(json, url_address);
@@ -74,7 +75,7 @@ public class ClientTest
             return "Klient: Blad przy tworzeniu JSONa";
         }
 
-        //String url_address = "http://localhost:8080/RestApi/service/uzytkownicy/login";
+        //String url_address = "http://localhost:8084/RestApi/service/uzytkownicy/login";
         String url_address = "http://virt2.iiar.pwr.edu.pl:8080/RestApi/service/uzytkownicy/login";
 
         String help;
@@ -82,7 +83,7 @@ public class ClientTest
         return help;
     }
 
-    private String loginWithFacebook(String email, long facebook) {
+    private String loginWithFacebook(String email, String facebook) {
         JSONObject json = null;
         try {
             json = new JSONObject()
@@ -94,7 +95,7 @@ public class ClientTest
             return "Klient: Blad przy tworzeniu JSONa";
         }
 
-        //String url_address = "http://localhost:8080/RestApi/service/uzytkownicy/loginWithFacebook";
+        //String url_address = "http://localhost:8084/RestApi/service/uzytkownicy/loginWithFacebook";
         String url_address = "http://virt2.iiar.pwr.edu.pl:8080/RestApi/service/uzytkownicy/loginWithFacebook";
 
         String help;
@@ -102,7 +103,7 @@ public class ClientTest
         return help;
     }
 
-    private String loginWithGoogle(String email, long google) {
+    private String loginWithGoogle(String email, String google) {
         JSONObject json = null;
 
         try {
@@ -115,7 +116,8 @@ public class ClientTest
             return "Klient: Blad przy tworzeniu JSONa";
         }
 
-        String url_address = "http://localhost:8080/RestApi/service/uzytkownicy/loginWithGoogle";
+        //String url_address = "http://localhost:8084/RestApi/service/uzytkownicy/loginWithGoogle";
+        String url_address = "http://virt2.iiar.pwr.edu.pl:8080/RestApi/service/uzytkownicy/loginWithGoogle";
 
         String help;
         help = dataTransfer(json, url_address);
@@ -139,8 +141,8 @@ public class ClientTest
             return "Klient: Blad przy tworzeniu JSONa";
         }
 
-        String url_address = "http://localhost:8084/RestApi/service/zgloszenia/post";
-        //String url_address = ("http://virt2.iiar.pwr.edu.pl:8080/RestApi/service/zgloszenia/post");
+        //String url_address = "http://localhost:8084/RestApi/service/zgloszenia/post";
+        String url_address = ("http://virt2.iiar.pwr.edu.pl:8080/RestApi/service/zgloszenia/post");
 
         String help;
         help = dataTransfer(json, url_address);
@@ -161,7 +163,8 @@ public class ClientTest
             return "Klient: Blad przy tworzeniu JSONa";
         }
 
-        String url_address = "http://localhost:8080/RestApi/service/zgloszenia/updateStatusZgloszenia";
+        //String url_address = "http://localhost:8084/RestApi/service/zgloszenia/updateStatusZgloszenia";
+        String url_address = "http://virt2.iiar.pwr.edu.pl:8080/RestApi/service/zgloszenia/updateStatusZgloszenia";
 
         String help;
         help = dataTransfer(json, url_address);
@@ -209,7 +212,7 @@ public class ClientTest
             //URL url = new URL("http://localhost:8084/RestApi/service/zdjecia/post");
             URL url = new URL("http://virt2.iiar.pwr.edu.pl:8080/RestApi/service/zdjecia/post");
             File file = new File("C:\\Users\\Sebastian\\Desktop\\test.jpg");
-            int id = 34;
+            int id = 15;
 
             //przygotowanie pliku do wysłania - konerwsja na ciąg bajtów
             byte[] bytes = new byte[(int)file.length()];
@@ -252,7 +255,9 @@ public class ClientTest
             return "Klient: Blad przy tworzeniu JSONa";
         }
 
-        String url_address = "http://localhost:8080/RestApi/service/uzytkownicy/postPassword";
+        //String url_address = "http://localhost:8084/RestApi/service/uzytkownicy/postPassword";
+        String url_address = "http://virt2.iiar.pwr.edu.pl:8080/RestApi/service/uzytkownicy/postPassword";
+        
         String help;
         help = dataTransfer(json, url_address);
         return help;
@@ -272,7 +277,9 @@ public class ClientTest
             return "Klient: Blad przy tworzeniu JSONa";
         }
 
-        String url_address = "http://localhost:8080/RestApi/service/uzytkownicy/updateUprawnienia";
+        //String url_address = "http://localhost:8084/RestApi/service/uzytkownicy/updateUprawnienia";
+        String url_address = "http://virt2.iiar.pwr.edu.pl:8080/RestApi/service/uzytkownicy/updateUprawnienia";
+        
         String help;
         help = dataTransfer(json, url_address);
         return help;
@@ -290,13 +297,14 @@ public class ClientTest
             return "Klient: Blad przy tworzeniu JSONa";
         }
 
-        String url_address = "http://localhost:8080/RestApi/service/uzytkownicy/logout";
+        //String url_address = "http://localhost:8084/RestApi/service/uzytkownicy/logout";
+        String url_address = "http://virt2.iiar.pwr.edu.pl:8080/RestApi/service/uzytkownicy/logout";
         String help;
         help = dataTransfer(json, url_address);
         return help;
     }
 
-    private String changeGoogle(String email, long google, String token) {
+    private String changeGoogle(String email, String google, String token) {
         JSONObject json = null;
         try {
             json = new JSONObject()
@@ -309,7 +317,9 @@ public class ClientTest
             return "Klient: Blad przy tworzeniu JSONa";
         }
 
-        String url_address = "http://localhost:8080/RestApi/service/uzytkownicy/changeGoogle";
+        //String url_address = "http://localhost:8084/RestApi/service/uzytkownicy/changeGoogle";
+        String url_address = "http://virt2.iiar.pwr.edu.pl:8080/RestApi/service/uzytkownicy/changeGoogle";
+        
         String help;
         help = dataTransfer(json, url_address);
         return help;
@@ -326,7 +336,9 @@ public class ClientTest
             return "Klient: Blad przy tworzeniu JSONa";
         }
 
-        String url_address = "http://localhost:8080/RestApi/service/uzytkownicy/activate";
+        //String url_address = "http://localhost:8084/RestApi/service/uzytkownicy/activate";
+        String url_address = "http://virt2.iiar.pwr.edu.pl:8080/RestApi/service/uzytkownicy/activate";
+        
         String help;
         help = dataTransfer(json, url_address);
         return help;
@@ -366,7 +378,7 @@ public class ClientTest
             return "Klient: Blad przy tworzeniu JSONa";
         }
 
-        //String url_address = "http://localhost:8084/RestApi/service/komentarze/post";
+        //String url_address = "http://localhost:8084/RestApi/service/uzytkownicy/valid";
         String url_address = ("http://virt2.iiar.pwr.edu.pl:8080/RestApi/service/uzytkownicy/valid");
 
         String help;
@@ -380,23 +392,23 @@ public class ClientTest
         String help = "";
 
         // TESTY - dokladniejsze informacje o bledach sa wypisywane w oknie serwera
-        //help = test.dodajUzytkownika("emaijl5", "12934", 324312413, 1576657, "restapi");
+        //help = test.dodajUzytkownika("emaijl5", "12934", "324312413", "1576657", "restapi");
         //help = test.register("kluski@makaron.pl", "1234");
 
         //help = test.login("superuser@a.pl", "202cb962ac59075b964b07152d234b70");
-        //help = test.loginWithFacebook("194217@student.pwr.wroc.pl", 817901084963190l);
-         //  help = test.loginWithGoogle("masa", 8123);
-        //help = test.dodajZgloszenie(1, 100.094703, 127.021475, "opis", "adres", "przyklad@email.com", "37c7f75dece46896c98e829f928c36c6");
-        //help = test.updatePassword("1234", "email");
-        //help = test.updateUprawnienia("email", "853babe4628d53896fa08402a43d9d4a", "email2", "moderator");
-        //help = test.updateStatusZgloszenia("email", "6c132f4f9897a335baf8140e37c8e65c", 120, 1);
-        //help = test.logout("email3", "fa6d70d545f979afc65799effba534ab");
-        //help = test.changeGoogle("przyklad2@email.com", 123456, "ac54e17ef970bb7acd7ecf247653f942");
-        //help = test.activate("email2");
-        //help = test.dodajKomentarz(35, "194217@student.pwr.wroc.pl", "testowy komentarz", "e117ef3f1092812688e5d2fa2bbbb002");
-        //help = test.valid("superuser@a.pl", "b9fc4dfcc91ce43fe20a82c42b1bb722");
+        //help = test.loginWithFacebook("srala@baba.pl", "99999999999999999999999999999999");
+        //help = test.loginWithGoogle("z@mostu.pl", "99999999999999999999999999999999");
+        //help = test.dodajZgloszenie(1, 100.094703, 127.021475, "opis", "adres", "kluski@makaron.pl", "a7a8f76db5659b4732560824f7a14129");
+        //help = test.updatePassword("haslo", "kluski@makaron.pl");
+        //help = test.updateUprawnienia("superuser@a.pl", "6a54f8c15047ab8b617849d15481fb88", "kluski@makaron.pl", "moderator");
+        //help = test.updateStatusZgloszenia("superuser@a.pl", "6a54f8c15047ab8b617849d15481fb88", 86, 2);
+        //help = test.logout("z@mostu.pl", "49d8a7398eab34195f48bae0249f4239");
+        //help = test.changeGoogle("masa", "8123", "be0cb68524da194428020f1b76ad81a4");
+        //help = test.activate("kluski@makaron.pl");
+        //help = test.dodajKomentarz(86, "kluski@makaron.pl", "jebie mmnie to", "a7a8f76db5659b4732560824f7a14129");
+        help = test.valid("superuser@a.pl", "6a54f8c15047ab8b617849d15481fb88");
         
-        addZdjecie();
+        //addZdjecie();
 
         System.out.println(help);
     }

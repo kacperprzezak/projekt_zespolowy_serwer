@@ -28,8 +28,8 @@ public class UzytkownicyDao
 
                 uzytkownicy.setEmail(resultSet.getString("email"));
                 uzytkownicy.setHaslo(resultSet.getString("haslo"));
-                uzytkownicy.setFacebook(resultSet.getLong("facebook"));
-                uzytkownicy.setGoogle(resultSet.getLong("google"));
+                uzytkownicy.setFacebook(resultSet.getString("facebook"));
+                uzytkownicy.setGoogle(resultSet.getString("google"));
                 uzytkownicy.setTyp(resultSet.getString("typ"));
                 uzytkownicy.setToken(resultSet.getString("token"));
                 uzytkownicy.setUprawnienia(resultSet.getString("uprawnienia"));
@@ -61,8 +61,8 @@ public class UzytkownicyDao
 
                 uzytkownicy.setEmail(resultSet.getString("email"));
                 uzytkownicy.setHaslo(resultSet.getString("haslo"));
-                uzytkownicy.setFacebook(resultSet.getLong("facebook"));
-                uzytkownicy.setGoogle(resultSet.getLong("google"));
+                uzytkownicy.setFacebook(resultSet.getString("facebook"));
+                uzytkownicy.setGoogle(resultSet.getString("google"));
                 uzytkownicy.setTyp(resultSet.getString("typ"));
                 uzytkownicy.setToken(resultSet.getString("token"));
                 uzytkownicy.setUprawnienia(resultSet.getString("uprawnienia"));
@@ -93,8 +93,8 @@ public class UzytkownicyDao
 
                 uzytkownicy.setEmail(resultSet.getString("email"));
                 uzytkownicy.setHaslo(resultSet.getString("haslo"));
-                uzytkownicy.setFacebook(resultSet.getLong("facebook"));
-                uzytkownicy.setGoogle(resultSet.getLong("google"));
+                uzytkownicy.setFacebook(resultSet.getString("facebook"));
+                uzytkownicy.setGoogle(resultSet.getString("google"));
                 uzytkownicy.setTyp(resultSet.getString("typ"));
                 uzytkownicy.setToken(resultSet.getString("token"));
                 uzytkownicy.setUprawnienia(resultSet.getString("uprawnienia"));
@@ -118,8 +118,8 @@ public class UzytkownicyDao
             connection.establishConnection();
             statement = connection.getConnection().createStatement();
             statement.executeQuery("SELECT adduzytkownik('" + uzytkownicy.getEmail()
-                    + "', '" + uzytkownicy.getHaslo() + "', " + uzytkownicy.getFacebook()
-                    + ", " + uzytkownicy.getGoogle() + ", '" + uzytkownicy.getTyp() + "'" + ")");
+                    + "', '" + uzytkownicy.getHaslo() + "', '" + uzytkownicy.getFacebook()
+                    + "', '" + uzytkownicy.getGoogle() + "', '" + uzytkownicy.getTyp() + "'" + ")");
         } catch (Exception ex) {
             // Wypisanie bledu na serwer
             System.err.println(ex);
@@ -207,7 +207,7 @@ public class UzytkownicyDao
         {
            connection.establishConnection();
             statement0 = connection.getConnection().createStatement();
-            resultSet0 = statement0.executeQuery("SELECT checkfacebook("+uzytkownicy.getFacebook()+",'"+uzytkownicy.getEmail()+"')");
+            resultSet0 = statement0.executeQuery("SELECT checkfacebook('"+uzytkownicy.getFacebook()+"','"+uzytkownicy.getEmail()+"')");
             while(resultSet0.next())
             {
             if(resultSet0.getString(1).equals("t"))
@@ -268,7 +268,7 @@ public class UzytkownicyDao
             connection.establishConnection();
             statement = connection.getConnection().createStatement();
             statement.executeQuery("SELECT registerWithFacebook('" + uzytkownicy.getEmail()
-                    + "', " + uzytkownicy.getFacebook() + ")");
+                    + "', '" + uzytkownicy.getFacebook() + "')");
         } catch (Exception ex) {
             // Wypisanie bledu na serwer
             System.err.println(ex);
@@ -285,7 +285,8 @@ public class UzytkownicyDao
         }
 
         connection.closeConnection();
-        return Response.ok("OK").build();
+        //return Response.ok("OK").build();
+        return loginWithFacebook(uzytkownicy);
         }
     }
 
@@ -297,7 +298,7 @@ public class UzytkownicyDao
         {
            connection.establishConnection();
             statement0 = connection.getConnection().createStatement();
-            resultSet0 = statement0.executeQuery("SELECT checkgoogle("+uzytkownicy.getGoogle()+",'"+uzytkownicy.getEmail()+"')");
+            resultSet0 = statement0.executeQuery("SELECT checkgoogle('"+uzytkownicy.getGoogle()+"','"+uzytkownicy.getEmail()+"')");
             while(resultSet0.next())
             {
             if(resultSet0.getString(1).equals("t"))
@@ -358,7 +359,7 @@ public class UzytkownicyDao
             connection.establishConnection();
             statement1 = connection.getConnection().createStatement();
             statement1.executeQuery("SELECT registerWithGoogle('" + uzytkownicy.getEmail()
-                    + "', " + uzytkownicy.getGoogle() + ")");
+                    + "', '" + uzytkownicy.getGoogle() + "')");
         } catch (Exception ex) {
             // Wypisanie bledu na serwer
             System.err.println(ex);
@@ -387,7 +388,7 @@ public class UzytkownicyDao
             connection.establishConnection();
             statement = connection.getConnection().createStatement();
             resultSet = statement.executeQuery("SELECT changeGoogle('" + uzytkownicy.getEmail()
-                    + "', " + uzytkownicy.getGoogle() + ", '" + uzytkownicy.getToken() + "')");
+                    + "', '" + uzytkownicy.getGoogle() + "', '" + uzytkownicy.getToken() + "')");
 
             while (resultSet.next()) {
                 connection.closeConnection();
@@ -449,8 +450,8 @@ public class UzytkownicyDao
 
             while (resultSet.next()) {
                 if (resultSet.getInt(1) == 1) {
-                    System.out.println("Funkcja z bazy zwrocila blad :(.");
-                    return Response.serverError().entity("Funkcja z bazy zwrocila blad :(.").build();
+                    System.out.println("Blad autoryzacji - uzytkownik nie ma odpowiednich praw");
+                    return Response.serverError().entity("Blad autoryzacji - uzytkownik nie ma odpowiednich praw").build();
                 }
             }
         } catch (Exception ex) {

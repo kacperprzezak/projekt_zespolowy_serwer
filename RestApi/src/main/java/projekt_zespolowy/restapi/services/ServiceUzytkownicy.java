@@ -48,8 +48,8 @@ public class ServiceUzytkownicy
 
         String email;
         String haslo;
-        long facebook;
-        long google;
+        String facebook;
+        String google;
         String typ;
 
         try {
@@ -61,8 +61,8 @@ public class ServiceUzytkownicy
             // Sprawdzenie czy JSON zgloszenia zawiera wszystkie potrzebne pola
             email = json.getString("email");
             haslo = json.getString("haslo");
-            facebook = json.getLong("facebook");
-            google = json.getLong("google");
+            facebook = json.getString("facebook");
+            google = json.getString("google");
             typ = json.getString("typ");
         } catch (JSONException ex) {
             return Response.ok("Niepoprawny format JSONa").build();
@@ -152,7 +152,7 @@ public class ServiceUzytkownicy
         Uzytkownicy uzytkownicy = new Uzytkownicy();
 
         String email;
-        long facebook;
+        String facebook;
 
         try {
             JSONObject json = new JSONObject(incomingData);
@@ -162,7 +162,8 @@ public class ServiceUzytkownicy
 
             // Sprawdzenie czy JSON zgloszenia zawiera wszystkie potrzebne pola
             email = json.getString("email");
-            facebook = json.getLong("facebook");
+            facebook = json.getString("facebook");
+
         } catch (JSONException ex) {
             System.err.println(ex.toString());
             return Response.status(500).entity("Niepoprawny format JSONa").build();
@@ -185,7 +186,7 @@ public class ServiceUzytkownicy
         Uzytkownicy uzytkownicy = new Uzytkownicy();
 
         String email;
-        long google;
+        String google;
 
         try {
             JSONObject json = new JSONObject(incomingData);
@@ -195,7 +196,7 @@ public class ServiceUzytkownicy
 
             // Sprawdzenie czy JSON zgloszenia zawiera wszystkie potrzebne pola
             email = json.getString("email");
-            google = json.getLong("google");
+            google = json.getString("google");
         } catch (JSONException ex) {
             System.err.println(ex.toString());
             return Response.status(500).entity("Niepoprawny format JSONa").build();
@@ -218,7 +219,7 @@ public class ServiceUzytkownicy
         Uzytkownicy uzytkownicy = new Uzytkownicy();
 
         String email;
-        long google;
+        String google;
         String token;
 
         try {
@@ -229,7 +230,7 @@ public class ServiceUzytkownicy
 
             // Sprawdzenie czy JSON zgloszenia zawiera wszystkie potrzebne pola
             email = json.getString("email");
-            google = json.getLong("google");
+            google = json.getString("google");
             token = json.getString("token");
         } catch (JSONException ex) {
             System.err.println(ex.toString());

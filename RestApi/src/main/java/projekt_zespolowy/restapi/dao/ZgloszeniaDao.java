@@ -163,8 +163,8 @@ public class ZgloszeniaDao
 
             while (resultSet.next()) {
                 if (resultSet.getInt(1) == 1) {
-                    System.out.println("Funkcja z bazy zwrocila blad :(");
-                    return Response.serverError().entity("Funkcja z bazy zwrocila blad :(").build();
+                    System.out.println("Blad autoryzacji - uzytkownik nie ma odpowiednich praw");
+                    return Response.serverError().entity("Blad autoryzacji - uzytkownik nie ma odpowiednich praw").build();
                 }
             }
         } catch (Exception ex) {
