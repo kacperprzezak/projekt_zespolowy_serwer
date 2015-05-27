@@ -5,6 +5,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.ByteBuffer;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.HeaderParam;
@@ -73,6 +74,57 @@ public class ServiceZdjecia {
             while ((read = incomingData.read(bytes)) != -1) {
                 out.write(bytes, 0, read);
             }
+            zdjeciaDao.postZdjecia(id, file);
+            file.delete();
+            dir.delete();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return Response.serverError().build();
+        }
+        return Response.ok().build();
+    }
+    
+    @POST
+    @Path("/addZdjecie")
+    @Consumes(MediaType.MULTIPART_FORM_DATA)
+    public Response addZdjecie(@FormDataParam("file") InputStream incomingData) {
+        System.out.println("weszlem");
+        int read, id;
+        byte[] bytes = new byte[1024], id_zgloszenia = new byte[4];
+        
+        //odczytanie numeru zgloszenia
+        try {
+            if (incomingData.read(id_zgloszenia) == -1) {
+                throw new Exception();
+            }
+            id = ByteBuffer.wrap(id_zgloszenia).getInt();
+        } catch (Exception ex) {
+            System.out.println("Wystapil blad przy odczytywaniu numeru zgloszenia");
+            return Response.serverError().entity("Wystapil blad przy odczytywaniu numeru zgloszenia").build();
+        }
+        
+        //File file = new File("C:\\Users\\Sebastian\\Desktop\\tmp" + id + ".jpg");
+        String fileName = "tmp" + id + ".jpg";
+        File dir = new File("/tmp");
+        dir.mkdir();
+        File file = new File(dir, fileName);
+        
+        try {
+            if (!file.createNewFile()) {
+                return Response.status(500).entity("Brak dostepu do pliku").build();
+            }
+        } catch (IOException e) {
+            return Response.status(500).entity("Inny blad z dostepem do pliku").build();
+        }
+        
+        try {
+            OutputStream out = new FileOutputStream(file);
+            
+            //odczytanie i zapisanie zdjęcia w tymczasowym pliku
+            while ((read = incomingData.read(bytes)) != -1) {
+                out.write(bytes, 0, read);
+            }
+
             zdjeciaDao.postZdjecia(id, file);
             file.delete();
             dir.delete();

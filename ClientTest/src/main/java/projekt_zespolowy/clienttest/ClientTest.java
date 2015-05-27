@@ -9,9 +9,11 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.URL;
 import java.net.URLConnection;
+import java.nio.ByteBuffer;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 import org.jboss.resteasy.client.ClientResponse;
@@ -207,7 +209,7 @@ public class ClientTest
         return print_returned;
     }
 
-    public static void addZdjecie() {
+    /*public static void addZdjecie() {
         try {
             //URL url = new URL("http://localhost:8084/RestApi/service/zdjecia/post");
             URL url = new URL("http://virt2.iiar.pwr.edu.pl:8080/RestApi/service/zdjecia/post");
@@ -240,7 +242,86 @@ public class ClientTest
         } catch (Exception e) {
             System.out.println("ten blad");
         }
+    }*/
+    
+    public static void addZdjecie() {
+        int id = 33;
+        
+        try {
+            //URL url = new URL("http://localhost:8084/RestApi/service/zdjecia/addZdjecie");
+            URL url = new URL("http://virt2.iiar.pwr.edu.pl:8080/RestApi/service/zdjecia/addZdjecie");
+            URLConnection connection = url.openConnection();
+            connection.setDoOutput(true);
+            connection.setRequestProperty("Content-Type", "multipart/form-data");
+            connection.setConnectTimeout(5000);
+            connection.setReadTimeout(5000);
+            
+            File file = new File("C:\\Users\\Sebastian\\Desktop\\test.jpg");
+
+            //numer zgłoszenia zapisany jako ciąg bajtów
+            byte[] id_zgloszenia = ByteBuffer.allocate(4).putInt(id).array();
+            
+            //zdjęcie w formie bajtów
+            byte[] photo = new byte[(int)file.length()];
+            BufferedInputStream bis = new BufferedInputStream(new FileInputStream(file));
+            bis.read(photo, 0, photo.length);
+            
+            //wyjściowy ciąg bajtów
+            byte[] bytes = new byte[(int)file.length() + id_zgloszenia.length];
+            
+            //połącz numer zgłoszenia i zdjęcie w jeden, wyjściowy ciąg bajtów
+            for (int i = 0; i < id_zgloszenia.length; i++) {
+                bytes[i] = id_zgloszenia[i];
+            }
+            for (int i = id_zgloszenia.length; i < bytes.length; i++) {
+                bytes[i] = photo[i - 4];
+            }
+            
+            OutputStream os = connection.getOutputStream();
+            os.write(bytes, 0, bytes.length);
+            os.flush();
+            
+            BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+
+            while (in.readLine() != null) {
+            }
+            System.out.println("\nSukces");
+            in.close();
+        } catch (Exception e) {
+            System.out.println("\nNie przeszlo");
+            System.out.println(e);
+        }
     }
+    
+    /*public static void addZdjecie() {
+        try {
+            URL url = new URL("http://localhost:8084/RestApi/service/zdjecia/addZdjecie");
+            URLConnection connection = url.openConnection();
+            connection.setDoOutput(true);
+            connection.setRequestProperty("Content-Type", "multipart/form-data");
+            connection.setConnectTimeout(5000);
+            connection.setReadTimeout(5000);
+            
+            File file = new File("C:\\Users\\Sebastian\\Desktop\\test.jpg");
+            byte[] bytes = new byte[(int)file.length()];
+            BufferedInputStream bis = new BufferedInputStream(new FileInputStream(file));
+            bis.read(bytes, 0, bytes.length);
+            OutputStream os = connection.getOutputStream();
+
+            os.write(bytes, 0, bytes.length);
+            os.flush();
+            
+            BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+
+            while (in.readLine() != null) {
+            }
+            System.out.println("\nSukces");
+            in.close();
+        } catch (Exception e) {
+            System.out.println("\nNie przeszlo");
+            System.out.println(e);
+        }
+    }*/
 
     private String updatePassword(String haslo, String email) {
         JSONObject json = null;
@@ -406,9 +487,9 @@ public class ClientTest
         //help = test.changeGoogle("masa", "8123", "be0cb68524da194428020f1b76ad81a4");
         //help = test.activate("kluski@makaron.pl");
         //help = test.dodajKomentarz(86, "kluski@makaron.pl", "jebie mmnie to", "a7a8f76db5659b4732560824f7a14129");
-        help = test.valid("superuser@a.pl", "6a54f8c15047ab8b617849d15481fb88");
+        //help = test.valid("superuser@a.pl", "6a54f8c15047ab8b617849d15481fb88");
         
-        //addZdjecie();
+        addZdjecie();
 
         System.out.println(help);
     }
