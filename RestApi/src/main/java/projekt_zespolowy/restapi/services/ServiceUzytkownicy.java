@@ -362,7 +362,7 @@ public class ServiceUzytkownicy
 
         return uzytkownicyDao.activate(uzytkownicy);
     }
-    
+
     @POST
     @Path("/valid")
     @Consumes(MediaType.APPLICATION_JSON)
@@ -390,5 +390,36 @@ public class ServiceUzytkownicy
         uzytkownicy.setToken(token);
 
         return uzytkownicyDao.valid(uzytkownicy);
+    }
+
+    @POST
+    @Path("/deleteUzytkownik")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response deleteUzytkownik(String incomingData) {
+        Uzytkownicy uzytkownicy = new Uzytkownicy();
+        String user_email;
+        String admin_email;
+        String token;
+
+        try {
+            JSONObject json = new JSONObject(incomingData);
+
+            json = json.getJSONObject("uzytkownicy");
+
+            user_email = json.getString("user_email");
+            admin_email = json.getString("admin_email");
+            token = json.getString("token");
+        } catch (JSONException ex) {
+            System.err.println(ex.toString());
+            return Response.status(500).entity("Niepoprawny format JSONa").build();
+        }catch (Exception ex) {
+            System.err.println(ex.toString());
+            return Response.serverError().build();
+        }
+
+        uzytkownicy.setEmail(admin_email);
+        uzytkownicy.setToken(token);
+
+        return uzytkownicyDao.deleteUzytkownik(uzytkownicy, user_email);
     }
 }

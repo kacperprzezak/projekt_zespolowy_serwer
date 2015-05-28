@@ -157,7 +157,7 @@ public class UzytkownicyDao
         catch(Exception ex){
             System.err.println(ex);
             connection.closeConnection();
-            
+
             if (ex.toString().contains("(email)=") && ex.toString().contains("już istnieje")) {
                 return Response.status(500).entity("Podany email jest juz zajety").build();
             }
@@ -519,7 +519,7 @@ public class UzytkownicyDao
 
         return Response.ok("ok").build();
     }
-    
+
     public Response valid(Uzytkownicy uzytkownicy) {
         Statement statement;
         ResultSet resultSet;
@@ -529,9 +529,38 @@ public class UzytkownicyDao
             statement = connection.getConnection().createStatement();
             resultSet = statement.executeQuery("SELECT checkUprawnienia(" + "'" + uzytkownicy.getEmail()
                     + "', '" + uzytkownicy.getToken() + "', 'admin');");
-            
+
             while (resultSet.next()) {
                 if (resultSet.getBoolean(1)) {
+                    return Response.ok("{\"valid\":\"" + 1 + "\"}").build();
+                }
+            }
+        } catch (Exception ex) {
+            if (!ex.toString().contains("Zapytanie nie zwróciło żadnych wyników.")
+                    && !ex.toString().contains("No results were returned")) {
+                System.out.println("Zapytanie nie zostalo wykonane: " + ex.toString());
+                connection.closeConnection();
+                return Response.serverError().entity("wystapil nieznany blad").build();
+            }
+        }
+        connection.closeConnection();
+        System.out.println("Zapytanie wykonane pomyslenie");
+
+        return Response.ok("{\"valid\":\"" + 0 + "\"}").build();
+    }
+
+    public Response deleteUzytkownik(Uzytkownicy uzytkownicy, String user_email) {
+        Statement statement;
+        ResultSet resultSet;
+
+        try {
+            connection.establishConnection();
+            statement = connection.getConnection().createStatement();
+            resultSet = statement.executeQuery("SELECT deleteUzytkownik(" + "'" + user_email
+                    + "', '" + uzytkownicy.getEmail()+ "', '" + uzytkownicy.getToken() + "'" + ");");
+
+            while (resultSet.next()) {
+                if (resultSet.getInt(1) == 0) {
                     return Response.ok("{\"valid\":\"" + 1 + "\"}").build();
                 }
             }

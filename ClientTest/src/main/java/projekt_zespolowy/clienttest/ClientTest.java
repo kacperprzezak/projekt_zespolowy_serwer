@@ -1,8 +1,5 @@
 package projekt_zespolowy.clienttest;
 
-import com.sun.jersey.api.client.Client;
-import com.sun.jersey.api.client.ClientHandlerException;
-import com.sun.jersey.api.client.WebResource;
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.File;
@@ -16,7 +13,6 @@ import java.net.URLConnection;
 import java.nio.ByteBuffer;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
-import org.jboss.resteasy.client.ClientResponse;
 
 public class ClientTest
 {
@@ -243,10 +239,10 @@ public class ClientTest
             System.out.println("ten blad");
         }
     }*/
-    
+
     public static void addZdjecie() {
         int id = 33;
-        
+
         try {
             //URL url = new URL("http://localhost:8084/RestApi/service/zdjecia/addZdjecie");
             URL url = new URL("http://virt2.iiar.pwr.edu.pl:8080/RestApi/service/zdjecia/addZdjecie");
@@ -255,20 +251,20 @@ public class ClientTest
             connection.setRequestProperty("Content-Type", "multipart/form-data");
             connection.setConnectTimeout(5000);
             connection.setReadTimeout(5000);
-            
+
             File file = new File("C:\\Users\\Sebastian\\Desktop\\test.jpg");
 
             //numer zgłoszenia zapisany jako ciąg bajtów
             byte[] id_zgloszenia = ByteBuffer.allocate(4).putInt(id).array();
-            
+
             //zdjęcie w formie bajtów
             byte[] photo = new byte[(int)file.length()];
             BufferedInputStream bis = new BufferedInputStream(new FileInputStream(file));
             bis.read(photo, 0, photo.length);
-            
+
             //wyjściowy ciąg bajtów
             byte[] bytes = new byte[(int)file.length() + id_zgloszenia.length];
-            
+
             //połącz numer zgłoszenia i zdjęcie w jeden, wyjściowy ciąg bajtów
             for (int i = 0; i < id_zgloszenia.length; i++) {
                 bytes[i] = id_zgloszenia[i];
@@ -276,11 +272,11 @@ public class ClientTest
             for (int i = id_zgloszenia.length; i < bytes.length; i++) {
                 bytes[i] = photo[i - 4];
             }
-            
+
             OutputStream os = connection.getOutputStream();
             os.write(bytes, 0, bytes.length);
             os.flush();
-            
+
             BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
 
             while (in.readLine() != null) {
@@ -292,7 +288,7 @@ public class ClientTest
             System.out.println(e);
         }
     }
-    
+
     /*public static void addZdjecie() {
         try {
             URL url = new URL("http://localhost:8084/RestApi/service/zdjecia/addZdjecie");
@@ -301,7 +297,7 @@ public class ClientTest
             connection.setRequestProperty("Content-Type", "multipart/form-data");
             connection.setConnectTimeout(5000);
             connection.setReadTimeout(5000);
-            
+
             File file = new File("C:\\Users\\Sebastian\\Desktop\\test.jpg");
             byte[] bytes = new byte[(int)file.length()];
             BufferedInputStream bis = new BufferedInputStream(new FileInputStream(file));
@@ -310,7 +306,7 @@ public class ClientTest
 
             os.write(bytes, 0, bytes.length);
             os.flush();
-            
+
             BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
 
             while (in.readLine() != null) {
@@ -338,7 +334,7 @@ public class ClientTest
 
         //String url_address = "http://localhost:8084/RestApi/service/uzytkownicy/postPassword";
         String url_address = "http://virt2.iiar.pwr.edu.pl:8080/RestApi/service/uzytkownicy/postPassword";
-        
+
         String help;
         help = dataTransfer(json, url_address);
         return help;
@@ -360,7 +356,7 @@ public class ClientTest
 
         //String url_address = "http://localhost:8084/RestApi/service/uzytkownicy/updateUprawnienia";
         String url_address = "http://virt2.iiar.pwr.edu.pl:8080/RestApi/service/uzytkownicy/updateUprawnienia";
-        
+
         String help;
         help = dataTransfer(json, url_address);
         return help;
@@ -400,7 +396,7 @@ public class ClientTest
 
         //String url_address = "http://localhost:8084/RestApi/service/uzytkownicy/changeGoogle";
         String url_address = "http://virt2.iiar.pwr.edu.pl:8080/RestApi/service/uzytkownicy/changeGoogle";
-        
+
         String help;
         help = dataTransfer(json, url_address);
         return help;
@@ -419,12 +415,12 @@ public class ClientTest
 
         //String url_address = "http://localhost:8084/RestApi/service/uzytkownicy/activate";
         String url_address = "http://virt2.iiar.pwr.edu.pl:8080/RestApi/service/uzytkownicy/activate";
-        
+
         String help;
         help = dataTransfer(json, url_address);
         return help;
     }
-    
+
     private String dodajKomentarz(int id_zgloszenia, String email, String komentarz, String token) {
         JSONObject json = null;
         try {
@@ -446,7 +442,7 @@ public class ClientTest
         help = dataTransfer(json, url_address);
         return help;
     }
-    
+
     private String valid(String email, String token) {
         JSONObject json = null;
         try {
@@ -461,6 +457,26 @@ public class ClientTest
 
         //String url_address = "http://localhost:8084/RestApi/service/uzytkownicy/valid";
         String url_address = ("http://virt2.iiar.pwr.edu.pl:8080/RestApi/service/uzytkownicy/valid");
+
+        String help;
+        help = dataTransfer(json, url_address);
+        return help;
+    }
+
+    private String deleteUzytkownik(String user_email, String admin_email, String token) {
+        JSONObject json = null;
+        try {
+            json = new JSONObject()
+                .put("uzytkownicy", new JSONObject()
+                    .put("user_email", user_email)
+                    .put("admin_email", admin_email)
+                    .put("token", token)
+            );
+        } catch (JSONException ex) {
+            return "Klient: Blad przy tworzeniu JSONa";
+        }
+
+        String url_address = "http://localhost:8080/RestApi/service/uzytkownicy/deleteUzytkownik";
 
         String help;
         help = dataTransfer(json, url_address);
@@ -488,8 +504,9 @@ public class ClientTest
         //help = test.activate("kluski@makaron.pl");
         //help = test.dodajKomentarz(86, "kluski@makaron.pl", "jebie mmnie to", "a7a8f76db5659b4732560824f7a14129");
         //help = test.valid("superuser@a.pl", "6a54f8c15047ab8b617849d15481fb88");
-        
-        addZdjecie();
+        help = test.deleteUzytkownik("email2", "test@test.pl", "d71bd27be98bfa18d7cc0556acc7ee91");
+
+        //addZdjecie();
 
         System.out.println(help);
     }
