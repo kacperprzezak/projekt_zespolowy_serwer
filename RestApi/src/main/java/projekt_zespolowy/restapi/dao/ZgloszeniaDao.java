@@ -178,5 +178,33 @@ public class ZgloszeniaDao
         connection.closeConnection();
         return Response.ok("OK").build();
     }
-     
+
+    public Response deleteZgloszenie(String admin_email, String token, int id_zgloszenia) {
+        Statement statement;
+        ResultSet resultSet;
+
+        try {
+            connection.establishConnection();
+            statement = connection.getConnection().createStatement();
+            resultSet = statement.executeQuery("SELECT deleteZgloszenie(" + id_zgloszenia
+                    + ", '" + admin_email+ "', '" + token + "'" + ");");
+
+            while (resultSet.next()) {
+                if (resultSet.getInt(1) == 0) {
+                    return Response.ok("{\"valid\":\"" + 1 + "\"}").build();
+                }
+            }
+        } catch (Exception ex) {
+            if (!ex.toString().contains("Zapytanie nie zwróciło żadnych wyników.")
+                    && !ex.toString().contains("No results were returned")) {
+                System.out.println("Zapytanie nie zostalo wykonane: " + ex.toString());
+                connection.closeConnection();
+                return Response.serverError().entity("wystapil nieznany blad").build();
+            }
+        }
+        connection.closeConnection();
+        System.out.println("Zapytanie wykonane pomyslenie");
+
+        return Response.ok("{\"valid\":\"" + 0 + "\"}").build();
+    }
 }

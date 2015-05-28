@@ -476,7 +476,29 @@ public class ClientTest
             return "Klient: Blad przy tworzeniu JSONa";
         }
 
-        String url_address = "http://localhost:8080/RestApi/service/uzytkownicy/deleteUzytkownik";
+        //String url_address = "http://localhost:8080/RestApi/service/uzytkownicy/deleteUzytkownik";
+        String url_address = ("http://virt2.iiar.pwr.edu.pl:8080/RestApi/service/uzytkownicy/deleteUzytkownik");
+
+        String help;
+        help = dataTransfer(json, url_address);
+        return help;
+    }
+
+    private String deleteZgloszenie(int id_zgloszenia, String admin_email, String token) {
+        JSONObject json = null;
+        try {
+            json = new JSONObject()
+                .put("zgloszenia", new JSONObject()
+                    .put("id_zgloszenia", id_zgloszenia)
+                    .put("admin_email", admin_email)
+                    .put("token", token)
+            );
+        } catch (JSONException ex) {
+            return "Klient: Blad przy tworzeniu JSONa";
+        }
+
+        //String url_address = "http://localhost:8080/RestApi/service/zgloszenia/deleteZgloszenie";
+        String url_address = ("http://virt2.iiar.pwr.edu.pl:8080/RestApi/service/zgloszenia/deleteZgloszenie");
 
         String help;
         help = dataTransfer(json, url_address);
@@ -504,7 +526,8 @@ public class ClientTest
         //help = test.activate("kluski@makaron.pl");
         //help = test.dodajKomentarz(86, "kluski@makaron.pl", "jebie mmnie to", "a7a8f76db5659b4732560824f7a14129");
         //help = test.valid("superuser@a.pl", "6a54f8c15047ab8b617849d15481fb88");
-        help = test.deleteUzytkownik("email2", "test@test.pl", "d71bd27be98bfa18d7cc0556acc7ee91");
+        //help = test.deleteUzytkownik("email2", "test@test.pl", "d71bd27be98bfa18d7cc0556acc7ee91");
+        //help = test.deleteZgloszenie(44, "email", "853babe4628d53896fa08402a43d9d4a");
 
         //addZdjecie();
 

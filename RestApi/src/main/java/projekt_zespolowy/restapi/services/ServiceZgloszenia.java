@@ -112,5 +112,32 @@ public class ServiceZgloszenia
 
         return zgloszeniaDao.updateStatusZgloszenia(zgloszenia, email, token);
     }
-    
+
+    @POST
+    @Path("/deleteZgloszenie")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response deleteZgloszenie(String incomingData) {
+        int id_zgloszenia;
+        String admin_email;
+        String token;
+
+        try {
+            JSONObject json = new JSONObject(incomingData);
+
+            json = json.getJSONObject("zgloszenia");
+
+            id_zgloszenia = json.getInt("id_zgloszenia");
+            admin_email = json.getString("admin_email");
+            token = json.getString("token");
+        } catch (JSONException ex) {
+            System.err.println(ex.toString());
+            return Response.status(500).entity("Niepoprawny format JSONa").build();
+        }catch (Exception ex) {
+            System.err.println(ex.toString());
+            return Response.serverError().build();
+        }
+
+
+        return zgloszeniaDao.deleteZgloszenie(admin_email, token, id_zgloszenia);
+    }
 }
