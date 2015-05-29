@@ -38,7 +38,7 @@ public class ServiceUzytkownicy
 
         try {
             json = new JSONObject(str);
-            
+
             if (json.getInt("valid") == 1) {
                 return uzytkownicyDao.getAll();
             }
@@ -53,10 +53,34 @@ public class ServiceUzytkownicy
     }
 
     @GET
-    @Path("/getByEmail/{email}")
+    @Path("/getByEmail/{user_email}/{admin_email}/{token}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Uzytkownicy getByEmail(@PathParam("email") String email) {
-        return uzytkownicyDao.getByEmail(email);
+    public Uzytkownicy getByEmail(@PathParam("user_email") String user_email, @PathParam("admin_email") String admin_email, @PathParam("token") String token) {
+        Uzytkownicy uzytkownicy = new Uzytkownicy();
+        Response response;
+        String str;
+        JSONObject json;
+
+        uzytkownicy.setEmail(admin_email);
+        uzytkownicy.setToken(token);
+
+        response = uzytkownicyDao.valid(uzytkownicy);
+        str = (String) response.getEntity();
+
+        try {
+            json = new JSONObject(str);
+
+            if (json.getInt("valid") == 1) {
+                return uzytkownicyDao.getByEmail(user_email);
+            }
+            else {
+                return null;
+            }
+
+        } catch (JSONException ex) {
+            Logger.getLogger(ServiceUzytkownicy.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }
     }
 
     @GET
