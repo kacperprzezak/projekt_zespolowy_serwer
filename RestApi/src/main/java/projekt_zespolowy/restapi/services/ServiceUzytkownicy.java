@@ -1,6 +1,8 @@
 package projekt_zespolowy.restapi.services;
 
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -20,10 +22,34 @@ public class ServiceUzytkownicy
     private UzytkownicyDao uzytkownicyDao = new UzytkownicyDao();
 
     @GET
-    @Path("/getAll")
+    @Path("/getAll/{admin_email}/{token}")
     @Produces(MediaType.APPLICATION_JSON)
-    public List<Uzytkownicy> getAll() {
-        return uzytkownicyDao.getAll();
+    public List<Uzytkownicy> getAll(@PathParam("admin_email") String admin_email, @PathParam("token") String token) {
+        Uzytkownicy uzytkownicy = new Uzytkownicy();
+        Response response;
+        String str;
+        JSONObject json;
+
+        uzytkownicy.setEmail(admin_email);
+        uzytkownicy.setToken(token);
+
+        response = uzytkownicyDao.valid(uzytkownicy);
+        str = (String) response.getEntity();
+
+        try {
+            json = new JSONObject(str);
+            
+            if (json.getInt("valid") == 1) {
+                return uzytkownicyDao.getAll();
+            }
+            else {
+                return null;
+            }
+
+        } catch (JSONException ex) {
+            Logger.getLogger(ServiceUzytkownicy.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }
     }
 
     @GET
