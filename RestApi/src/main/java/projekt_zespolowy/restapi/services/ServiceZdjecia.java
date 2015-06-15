@@ -1,6 +1,8 @@
 package projekt_zespolowy.restapi.services;
 
+import java.io.BufferedInputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -52,6 +54,8 @@ public class ServiceZdjecia {
     @Path("/post")
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     public Response add(@HeaderParam("id") int id, @FormDataParam("file") InputStream incomingData) {
+        boolean webKit = false;
+        System.out.println("weszlem");
         //File file = new File("C:\\Users\\Sebastian\\Desktop\\tmp" + id + ".jpg");
         String fileName = "tmp" + id + ".jpg";
         File dir = new File("/tmp");
@@ -72,8 +76,49 @@ public class ServiceZdjecia {
             byte[] bytes = new byte[1024];
             
             while ((read = incomingData.read(bytes)) != -1) {
+                int idx = 0;
+                if (bytes[0] == bytes[1] && bytes[1] == bytes[2] && bytes[2] == bytes[3] && bytes[3] == bytes[4] && bytes[4] == bytes[5] && bytes[5] == 45) {
+                    webKit = true;
+                    for (int i = 6; i < bytes.length; i++) {
+                        if (bytes[i] == -1) {
+                            idx = i;
+                            break;
+                        }
+                    }
+                    
+                    read -= idx;
+                    for (int i = 0; idx < bytes.length; idx++, i++) {
+                        bytes[i] = bytes[idx];
+                    }
+
+                }
+
                 out.write(bytes, 0, read);
             }
+            
+            if (webKit)
+            {
+                byte[] tmp = new byte[(int) file.length()];
+                BufferedInputStream bis = new BufferedInputStream(new FileInputStream(file));
+                bis.read(tmp, 0, tmp.length);
+                
+                file.delete();
+                //file = new File("C:\\Users\\Sebastian\\Desktop\\tmp" + id + ".jpg");
+                file = new File(dir, fileName);
+                
+                int idx = tmp.length;
+                for (int i = tmp.length - 1; i > 0; i--) {System.out.println(i);
+                    if (tmp[i] == tmp[i-1] && tmp[i-1] == tmp[i-2] && tmp[i-2] == tmp[i-3] && tmp[i-3] == tmp[i-4] && tmp[i-4] == tmp[i-5] && tmp[i-5] == 45) {
+                        idx = i - 5;
+                        break;
+                    }
+                }
+                
+                out.close();
+                out = new FileOutputStream(file);
+                out.write(tmp, 0, idx);
+            }
+            
             zdjeciaDao.postZdjecia(id, file);
             file.delete();
             dir.delete();

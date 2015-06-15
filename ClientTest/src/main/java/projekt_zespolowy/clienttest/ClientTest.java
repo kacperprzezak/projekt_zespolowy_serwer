@@ -1,5 +1,8 @@
 package projekt_zespolowy.clienttest;
 
+import com.sun.jersey.api.client.Client;
+import com.sun.jersey.api.client.ClientHandlerException;
+import com.sun.jersey.api.client.WebResource;
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.File;
@@ -13,6 +16,7 @@ import java.net.URLConnection;
 import java.nio.ByteBuffer;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
+import org.jboss.resteasy.client.ClientResponse;
 
 public class ClientTest
 {
@@ -205,12 +209,12 @@ public class ClientTest
         return print_returned;
     }
 
-    /*public static void addZdjecie() {
+    public static void addZdjecie() {
         try {
             //URL url = new URL("http://localhost:8084/RestApi/service/zdjecia/post");
             URL url = new URL("http://virt2.iiar.pwr.edu.pl:8080/RestApi/service/zdjecia/post");
             File file = new File("C:\\Users\\Sebastian\\Desktop\\test.jpg");
-            int id = 15;
+            int id = 173;
 
             //przygotowanie pliku do wysłania - konerwsja na ciąg bajtów
             byte[] bytes = new byte[(int)file.length()];
@@ -238,9 +242,9 @@ public class ClientTest
         } catch (Exception e) {
             System.out.println("ten blad");
         }
-    }*/
+    }
 
-    public static void addZdjecie() {
+    /*public static void addZdjecie() {
         int id = 33;
 
         try {
@@ -287,7 +291,7 @@ public class ClientTest
             System.out.println("\nNie przeszlo");
             System.out.println(e);
         }
-    }
+    }*/
 
     /*public static void addZdjecie() {
         try {
@@ -517,7 +521,7 @@ public class ClientTest
         //help = test.login("superuser@a.pl", "202cb962ac59075b964b07152d234b70");
         //help = test.loginWithFacebook("srala@baba.pl", "99999999999999999999999999999999");
         //help = test.loginWithGoogle("z@mostu.pl", "99999999999999999999999999999999");
-        //help = test.dodajZgloszenie(1, 100.094703, 127.021475, "opis", "adres", "kluski@makaron.pl", "a7a8f76db5659b4732560824f7a14129");
+        //help = test.dodajZgloszenie(1, 100.094703, 127.021475, "opis", "adres", "srala@baba.pl", "47546996f865d28629c71e80c4078db3");
         //help = test.updatePassword("haslo", "kluski@makaron.pl");
         //help = test.updateUprawnienia("superuser@a.pl", "6a54f8c15047ab8b617849d15481fb88", "kluski@makaron.pl", "moderator");
         //help = test.updateStatusZgloszenia("superuser@a.pl", "6a54f8c15047ab8b617849d15481fb88", 86, 2);
